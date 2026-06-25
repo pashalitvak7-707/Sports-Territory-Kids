@@ -1,3 +1,25 @@
+/* ===================== FONTS ===================== */
+@font-face {
+  font-family: 'Akzidenz-Grotesk Pro';
+  src: url('assets/fonts/ag-light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Akzidenz-Grotesk Pro';
+  src: url('assets/fonts/ag-regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Akzidenz-Grotesk Pro';
+  src: url('assets/fonts/ag-medium.woff2') format('woff2');
+  font-weight: 500 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Akzidenz-Grotesk Pro';
+  src: url('assets/fonts/ag-bold.woff2') format('woff2');
+  font-weight: 700 900; font-style: normal; font-display: swap;
+}
+
 /* ===================== TOKENS ===================== */
 :root {
   --green: #16BF41;
@@ -18,14 +40,14 @@
   --radius-lg: 32px;
   --shadow: 0 18px 40px rgba(20,40,30,.08);
   --shadow-sm: 0 8px 22px rgba(20,40,30,.07);
-  --maxw: 1600px;
+  --maxw: 1860px;
   --ease: cubic-bezier(.22,.61,.36,1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Montserrat', system-ui, sans-serif;
+  font-family: 'Akzidenz-Grotesk Pro', 'Montserrat', system-ui, sans-serif;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.5;
@@ -76,20 +98,17 @@ a { text-decoration: none; color: inherit; }
 .brandbar-actions { display: flex; align-items: center; gap: 12px; }
 
 /* ===================== HERO ===================== */
-.hero { background: #FEFEFE; position: relative; overflow: hidden; }
-.hero-inner { position: relative; min-height: 600px; display: flex; align-items: center; }
-.hero-text { position: relative; z-index: 3; max-width: 640px; padding: 52px 0 64px; }
-.hero-text h1 { font-size: clamp(36px, 4.4vw, 62px); line-height: 1.1; color: var(--green-d); font-weight: 400; letter-spacing: -.5px; white-space: nowrap; }
+.hero { background: #FFFFFF; position: relative; overflow: hidden; }
+.hero-media { width: 100%; line-height: 0; }
+.hero-media img { width: 100%; height: auto; display: block; }
+.hero-overlay { position: absolute; inset: 0; display: flex; align-items: flex-start; }
+.hero-overlay .container { width: 100%; }
+.hero-text { width: 44%; max-width: 700px; margin-top: 3.4%; margin-left: clamp(0px, 3vw, 60px); }
+.hero-text h1 { font-size: clamp(28px, 3.55vw, 58px); line-height: 1.12; color: var(--green-d); font-weight: 400; letter-spacing: -.5px; white-space: nowrap; }
 .hero-text h1 .h1-bold { font-weight: 700; }
-.hero-sub { margin: 24px 0 34px; color: var(--ink); font-size: 19px; font-weight: 500; }
-.hero-buttons { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-.hero-buttons .btn { border-radius: 14px; padding: 20px 38px; font-size: 16.5px; min-width: 370px; }
-.hero-image {
-  position: absolute; top: 30px; transform: none;
-  right: calc((100% - 100vw) / 2);   /* bleed to the viewport's right edge */
-  width: min(62vw, 1160px); z-index: 1; pointer-events: none;
-}
-.hero-image img { width: 100%; height: auto; }
+.hero-sub { margin: clamp(14px, 1.6vw, 26px) 0 clamp(18px, 2vw, 34px); color: var(--ink); font-size: clamp(14px, 1.3vw, 19px); font-weight: 400; }
+.hero-buttons { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(10px, 1vw, 16px); }
+.hero-buttons .btn { border-radius: 14px; padding: clamp(12px, 1.4vw, 20px) clamp(20px, 2.4vw, 38px); font-size: clamp(13px, 1.15vw, 16.5px); min-width: min(370px, 26vw); }
 
 /* ===================== FEATURE BAND ===================== */
 .features { background: #FEFEFE; padding: 6px 0 64px; }
@@ -310,8 +329,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 1080px) {
-  .hero-text { max-width: 460px; }
-  .hero-image { width: 60vw; }
+  .hero-text { width: 52%; max-width: 520px; margin-top: 3%; }
   .car-track > * { flex-basis: calc((100% - 40px) / 2.6); }
   .develop-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .how-grid { grid-template-columns: repeat(3, 1fr); }
@@ -320,12 +338,14 @@ a { text-decoration: none; color: inherit; }
 }
 @media (max-width: 900px) {
   .topnav { display: none; }
-  .hero-inner { flex-direction: column; min-height: 0; text-align: center; padding-top: 24px; }
-  .hero-text { max-width: 100%; order: 2; padding: 10px 0 50px; }
-  .hero-text h1 { white-space: normal; }
+  .hero { display: flex; flex-direction: column; }
+  .hero-media { order: 1; }
+  .hero-overlay { position: static; order: 2; display: block; padding: 18px 0 44px; }
+  .hero-text { width: 100%; max-width: 100%; margin-top: 0; text-align: center; }
+  .hero-text h1 { white-space: normal; font-size: clamp(28px, 7vw, 40px); }
+  .hero-sub { font-size: 17px; }
   .hero-buttons { align-items: center; width: 100%; }
-  .hero-buttons .btn { min-width: 0; width: 100%; max-width: 440px; }
-  .hero-image { position: static; transform: none; width: 100%; max-width: 540px; margin: 0 auto; order: 1; }
+  .hero-buttons .btn { min-width: 0; width: 100%; max-width: 440px; font-size: 16px; padding: 16px 30px; }
   .features-band { grid-template-columns: 1fr; gap: 36px; padding: 44px 28px; }
   .method-grid { grid-template-columns: 1fr; }
   .space-inner, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
@@ -335,7 +355,6 @@ a { text-decoration: none; color: inherit; }
 }
 @media (max-width: 620px) {
   .container { padding: 0 16px; }
-  .hero-text h1 { font-size: 34px; }
   .section-title { font-size: 27px; }
   .develop-grid { grid-template-columns: repeat(2, 1fr); }
   .how-grid { grid-template-columns: repeat(2, 1fr); }
