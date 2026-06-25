@@ -48,6 +48,10 @@ a { text-decoration: none; color: inherit; }
 .btn-orange:hover { background: var(--orange-d); transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,106,43,.4); }
 .btn-ghost { background: transparent; color: var(--green-d); border: 2px solid #d7e0d8; }
 .btn-ghost:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+.btn-teal { background: var(--green-d); color: #fff; box-shadow: 0 12px 26px rgba(12,92,70,.30); }
+.btn-teal:hover { background: var(--green-dd); transform: translateY(-2px); box-shadow: 0 16px 32px rgba(12,92,70,.38); }
+.btn-white-green { background: #fff; color: var(--green); border: 2px solid #B9E6BC; }
+.btn-white-green:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(22,191,65,.18); }
 .btn-link-light { background: transparent; color: #fff; text-decoration: underline; text-underline-offset: 4px; padding: 14px 10px; }
 .btn-link-light:hover { opacity: .8; }
 
@@ -66,31 +70,40 @@ a { text-decoration: none; color: inherit; }
 .topnav a:hover { opacity: .75; }
 .topbar-phone { color: #fff; font-weight: 800; font-size: 18px; letter-spacing: .3px; }
 
-.brandbar { background: #fff; box-shadow: 0 4px 18px rgba(0,0,0,.04); }
+.brandbar { background: #fff; border-bottom: 3px solid var(--green); }
 .brandbar-inner { display: flex; align-items: center; justify-content: space-between; height: 84px; }
 .logo { height: 46px; width: auto; }
 .brandbar-actions { display: flex; align-items: center; gap: 12px; }
 
 /* ===================== HERO ===================== */
 .hero { background: var(--bg-soft); position: relative; overflow: hidden; }
-.hero-inner { display: grid; grid-template-columns: 0.95fr 1.15fr; align-items: center; gap: 20px; padding: 56px 24px 40px; }
-.hero-text h1 { font-size: 52px; line-height: 1.08; color: var(--green-d); font-weight: 800; letter-spacing: -.5px; }
-.hero-sub { margin: 22px 0 30px; color: var(--muted); font-size: 18px; font-weight: 500; }
-.hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-inner { position: relative; min-height: 660px; display: flex; align-items: center; }
+.hero-text { position: relative; z-index: 3; max-width: 560px; padding: 60px 0 80px; }
+.hero-text h1 { font-size: clamp(40px, 4.6vw, 66px); line-height: 1.05; color: var(--green-d); font-weight: 400; letter-spacing: -.5px; }
+.hero-text h1 .h1-bold { font-weight: 700; }
+.hero-sub { margin: 26px 0 36px; color: var(--ink); font-size: 19px; font-weight: 500; }
+.hero-buttons { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.hero-image {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  right: calc((100% - 100vw) / 2);   /* bleed to the viewport's right edge */
+  width: min(63vw, 1180px); z-index: 1; pointer-events: none;
+}
 .hero-image img { width: 100%; height: auto; filter: drop-shadow(0 24px 40px rgba(20,40,30,.10)); }
 
-/* ===================== FEATURE PILLS ===================== */
-.features { background: var(--bg-soft); padding: 10px 0 60px; }
-.features-grid {
-  background: linear-gradient(110deg, var(--green-band2), var(--green));
-  border-radius: var(--radius-lg); padding: 38px 30px;
+/* ===================== FEATURE BAND ===================== */
+.features { background: var(--bg-soft); padding: 6px 0 64px; }
+.features-band {
+  position: relative; border-radius: 36px; padding: 56px 40px 50px;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-  box-shadow: 0 20px 44px rgba(22,191,65,.22);
+  background:
+    radial-gradient(120% 150% at 50% -25%, rgba(247,150,53,.85) 0%, rgba(247,170,60,.18) 38%, rgba(247,170,60,0) 60%),
+    linear-gradient(180deg, #9CC81E 0%, #5BC130 42%, var(--green) 100%);
+  box-shadow: 0 22px 48px rgba(22,191,65,.22);
+  overflow: hidden;
 }
-.feature { display: flex; align-items: center; gap: 16px; color: #fff; }
-.feature-ic { flex: 0 0 60px; height: 60px; border-radius: 18px; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; }
-.feature p { font-weight: 600; font-size: 16px; line-height: 1.3; }
-.feature + .feature { border-left: 1px solid rgba(255,255,255,.28); padding-left: 24px; }
+.feat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; color: #fff; }
+.feat-icon { width: 104px; height: 104px; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,.12)); }
+.feat p { font-weight: 700; font-size: 18px; line-height: 1.35; }
 
 /* ===================== SECTION TITLES ===================== */
 .section-title { text-align: center; font-size: 36px; font-weight: 800; color: var(--green-d); margin-bottom: 14px; }
@@ -296,7 +309,8 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 1080px) {
-  .hero-text h1 { font-size: 44px; }
+  .hero-text { max-width: 460px; }
+  .hero-image { width: 60vw; }
   .car-track > * { flex-basis: calc((100% - 40px) / 2.6); }
   .develop-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .how-grid { grid-template-columns: repeat(3, 1fr); }
@@ -305,11 +319,11 @@ a { text-decoration: none; color: inherit; }
 }
 @media (max-width: 900px) {
   .topnav { display: none; }
-  .hero-inner { grid-template-columns: 1fr; text-align: center; }
-  .hero-buttons { justify-content: center; }
-  .hero-image { order: -1; max-width: 520px; margin: 0 auto; }
-  .features-grid { grid-template-columns: 1fr; }
-  .feature + .feature { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,.25); padding-top: 22px; }
+  .hero-inner { flex-direction: column; min-height: 0; text-align: center; padding-top: 24px; }
+  .hero-text { max-width: 100%; order: 2; padding: 10px 0 50px; }
+  .hero-buttons { align-items: center; }
+  .hero-image { position: static; transform: none; width: 100%; max-width: 540px; margin: 0 auto; order: 1; }
+  .features-band { grid-template-columns: 1fr; gap: 36px; padding: 44px 28px; }
   .method-grid { grid-template-columns: 1fr; }
   .space-inner, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .car-track > * { flex-basis: calc((100% - 24px) / 2); }
