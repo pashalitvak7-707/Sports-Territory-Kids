@@ -379,20 +379,25 @@ a { text-decoration: none; color: inherit; }
 .equip { padding: 30px 0 90px; }
 .equip-inner { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: start; }
 .equip-plan { border-radius: var(--radius); margin-top: 20px; box-shadow: var(--shadow-sm); width: 100%; }
-.equip-list { padding-top: 10px; }
+.equip-list { padding-top: 6px; }
+/* light green line above the list */
+.equip-line { display: block; height: 4px; border-radius: 2px; background: #46B54A; margin-bottom: 18px; }
 
 /* Accordion */
-.acc { border-bottom: 1px solid #e7ece7; }
-.acc-head { width: 100%; background: none; border: none; text-align: left; font-family: inherit; font-size: 17px; font-weight: 700; color: var(--green-d); padding: 20px 40px 20px 0; cursor: pointer; position: relative; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
-.acc-ic { position: absolute; right: 0; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #d6e0d7; flex: 0 0 auto; transition: all .25s; }
-.acc-ic::before, .acc-ic::after { content: ""; position: absolute; background: var(--green); top: 50%; left: 50%; transform: translate(-50%,-50%); transition: all .25s; }
-.acc-ic::before { width: 11px; height: 2px; }
-.acc-ic::after { width: 2px; height: 11px; }
-.acc.open .acc-ic { background: var(--green); border-color: var(--green); }
-.acc.open .acc-ic::before, .acc.open .acc-ic::after { background: #fff; }
-.acc.open .acc-ic::after { height: 0; }
+.acc { border-bottom: 1px solid #e2e6e2; }
+.acc-head { width: 100%; background: none; border: none; text-align: left; font-family: inherit;
+  font-size: 18px; cursor: pointer; padding: 18px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.acc-title { color: var(--green-d); font-weight: 400; line-height: 1.3; transition: color .2s; }
+.acc.open .acc-title { color: #46B54A; font-weight: 700; }
+
+.acc-ic { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #cdd2cd; color: #aab0aa;
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: center; transition: border-color .25s, color .25s; }
+.acc-ic svg { width: 18px; height: 18px; transition: transform .3s var(--ease); }
+.acc.open .acc-ic { border-color: #46B54A; color: #46B54A; }
+.acc.open .acc-ic svg { transform: rotate(180deg); }
+
 .acc-body { max-height: 0; overflow: hidden; transition: max-height .35s var(--ease); }
-.acc-body p { padding: 0 30px 20px 0; color: var(--muted); font-weight: 500; font-size: 15.5px; }
+.acc-body p { padding: 0 30px 22px 2px; color: #111; font-weight: 400; font-size: 16px; line-height: 1.4; }
 
 /* ===================== SCHEDULE ===================== */
 .schedule { padding: 20px 0 90px; }

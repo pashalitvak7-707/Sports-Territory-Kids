@@ -160,6 +160,10 @@
         }
       });
     });
+    // expand any item marked open by default
+    document.querySelectorAll('.acc.open .acc-body').forEach(function (body) {
+      body.style.maxHeight = body.scrollHeight + 'px';
+    });
   }
 
   /* ---------- 4. WhatsApp form submission ---------- */
