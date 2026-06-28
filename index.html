@@ -428,43 +428,36 @@
   <!-- ================= REVIEWS ================= -->
   <section class="reviews" id="reviews">
     <div class="container reviews-inner">
-      <div class="reviews-left">
-        <h2 class="section-title section-title-left reveal">Отзывы<br />родителей</h2>
-        <div class="carousel reveal" data-carousel="reviews">
-          <div class="car-viewport">
-            <div class="car-track">
-              <article class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>Дочка стала увереннее в себе, улучшилась осанка и координация. Тренеры — настоящие профессионалы и очень внимательные!</p>
-                <span class="review-author">Елена, мама Софии, 6 лет</span>
-              </article>
-              <article class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>Дочка стала увереннее в себе, улучшилась осанка и координация. Тренеры — настоящие профессионалы и очень внимательные!</p>
-                <span class="review-author">Елена, мама Софии, 6 лет</span>
-              </article>
-              <article class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>Ребёнок ждёт каждое занятие как праздник. Спокойная атмосфера, маленькие группы и заметный прогресс уже через месяц.</p>
-                <span class="review-author">Марина, мама Артёма, 5 лет</span>
-              </article>
-            </div>
-          </div>
-          <div class="reviews-controls">
-            <button class="car-arrow car-prev" aria-label="Назад"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="car-arrow car-next" aria-label="Вперёд"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
-          </div>
-          <a href="#" class="link-all">БОЛЬШЕ отзывов</a>
+      <div class="reviews-card reveal">
+        <img class="reviews-wave" src="assets/img/reviews-wave.png" alt="" aria-hidden="true" />
+        <h2 class="reviews-heading">Отзывы<br />родителей</h2>
+        <span class="reviews-rule" aria-hidden="true"></span>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="stars">★★★★★</div>
+            <p>Дочка стала увереннее в себе, улучшилась осанка и координация. Тренеры — настоящие профессионалы и очень внимательные!</p>
+            <span class="review-author">Елена, мама Софии, 6 лет</span>
+          </article>
+          <article class="review-card">
+            <div class="stars">★★★★★</div>
+            <p>Дочка стала увереннее в себе, улучшилась осанка и координация. Тренеры — настоящие профессионалы и очень внимательные!</p>
+            <span class="review-author">Елена, мама Софии, 6 лет</span>
+          </article>
         </div>
+        <a href="#" class="reviews-more">БОЛЬШЕ ОТЗЫВОВ
+          <svg viewBox="0 0 92 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7H86"/><path d="M78 2l9 5-9 5"/></svg>
+        </a>
       </div>
 
       <div class="review-form-card reveal">
         <h3>Оставить<br />отзыв</h3>
         <form class="review-form" data-whatsapp-form data-context="Отзыв">
-          <input type="text" name="name" placeholder="Имя" required />
-          <input type="text" name="contact" placeholder="Контакты" />
-          <textarea name="text" placeholder="Текст отзыва" rows="4" required></textarea>
-          <button type="submit" class="btn btn-orange">Отправить</button>
+          <div class="review-fields">
+            <input type="text" name="name" placeholder="Имя" required />
+            <input type="text" name="contact" placeholder="Контакты" />
+            <textarea name="text" placeholder="Текст отзыва" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="review-submit">Отправить</button>
         </form>
       </div>
     </div>
