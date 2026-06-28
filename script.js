@@ -174,7 +174,8 @@
         var ctx = form.getAttribute('data-context') || 'Заявка';
         var data = new FormData(form);
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
-        var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение' };
+        var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение',
+          parent: 'Имя родителя', child: 'Имя ребёнка', childage: 'Возраст ребёнка', lesson: 'Занятие' };
         data.forEach(function (val, key) {
           val = (val || '').toString().trim();
           if (val) lines.push((labels[key] || key) + ': ' + val);
