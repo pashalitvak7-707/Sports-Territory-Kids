@@ -200,7 +200,7 @@ a { text-decoration: none; color: inherit; }
   background: linear-gradient(180deg, #FFFFFF 0%, #FDFEF6 30%, #E6F4BC 52%, #C7E97A 72%, #A8DD33 100%);
 }
 .dev-item { text-align: center; display: flex; flex-direction: column; align-items: center; }
-.dev-ic { width: auto; height: 150px; object-fit: contain; margin: 0 auto 22px; display: block; }
+.dev-ic { width: clamp(120px, 11vw, 170px); height: auto; margin: 0 auto 16px; display: block; }
 .dev-item p { font-weight: 700; font-size: 17px; line-height: 1.3; color: #005E50; }
 
 /* ===================== HOW ===================== */
