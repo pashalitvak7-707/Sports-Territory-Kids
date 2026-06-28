@@ -192,12 +192,16 @@ a { text-decoration: none; color: inherit; }
 .pc-yellow .pc-age { color: #F4B400; }
 
 /* ===================== DEVELOP ===================== */
-.develop { padding: 4px 0 80px; }
-.develop .container { background: linear-gradient(115deg, var(--green-band2), var(--green)); border-radius: 40px; padding: 50px 30px; box-shadow: 0 22px 48px rgba(22,191,65,.2); }
-.develop-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 30px; }
-.dev-item { text-align: center; color: #fff; }
-.dev-ic { width: 84px; height: 84px; border-radius: 24px; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-.dev-item p { font-weight: 700; font-size: 16px; line-height: 1.3; }
+.develop { padding: 30px 0 84px; }
+.develop .section-title { margin-bottom: 40px; }
+.develop-band {
+  border-radius: 44px; padding: 56px 40px 50px;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: end;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFEF6 30%, #E6F4BC 52%, #C7E97A 72%, #A8DD33 100%);
+}
+.dev-item { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.dev-ic { width: auto; height: 150px; object-fit: contain; margin: 0 auto 22px; display: block; }
+.dev-item p { font-weight: 700; font-size: 17px; line-height: 1.3; color: #005E50; }
 
 /* ===================== HOW ===================== */
 .how { padding: 30px 0 90px; }
@@ -358,7 +362,7 @@ a { text-decoration: none; color: inherit; }
   .hero-text { width: 46%; flex-basis: 46%; }
   .hero-media { width: min(70vw, 720px); }
   .car-track > * { flex-basis: calc((100% - 40px) / 2.6); }
-  .develop-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .develop-band { grid-template-columns: repeat(3, 1fr); gap: 28px 16px; }
   .how-grid { grid-template-columns: repeat(3, 1fr); }
   .how-step-down { margin-top: 0; }
   .how-callout { grid-column: span 3; flex-direction: row; justify-content: center; }
@@ -382,7 +386,7 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 620px) {
   .container { padding: 0 16px; }
   .section-title { font-size: 27px; }
-  .develop-grid { grid-template-columns: repeat(2, 1fr); }
+  .develop-band { grid-template-columns: repeat(2, 1fr); }
   .how-grid { grid-template-columns: repeat(2, 1fr); }
   .how-callout { grid-column: span 2; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
