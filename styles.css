@@ -227,7 +227,7 @@ a { text-decoration: none; color: inherit; }
   box-shadow: 0 4px 12px rgba(0,0,0,.15); }
 .how-num b { color: #fff; font-weight: 800; font-size: clamp(15px, 1.9vw, 30px); line-height: 1; }
 .deco { position: absolute; color: var(--c); }
-.deco-rays { width: 60%; height: 60%; top: -30%; left: -30%; }
+.deco-rays { width: 74%; height: 74%; top: -42%; left: -40%; }
 .deco-arc  { width: 50%; left: -58%; }
 .st2 .deco-arc { height: 136%; top: -18%; }
 .st4 .deco-arc { height: 95%;  top: 2%; }
