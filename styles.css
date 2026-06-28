@@ -325,8 +325,8 @@ a { text-decoration: none; color: inherit; }
 .coaches-all .all-arrow { width: 86px; height: 14px; color: #84C746; flex: none; }
 .coaches-all:hover .all-arrow { color: var(--green); }
 .coaches-mascot { position: relative; margin-top: 6px; }
-.mascot-arch { position: absolute; left: -6%; bottom: 4%; width: 76%; height: auto; z-index: 1; }
-.mascot-roo { position: relative; z-index: 2; display: block; width: 88%; margin-left: 22%; margin-top: -34px; height: auto; }
+.mascot-arch { position: absolute; left: -10%; bottom: 1%; width: 88%; height: auto; z-index: 1; }
+.mascot-roo { position: relative; z-index: 2; display: block; width: 104%; max-width: none; margin-left: 19%; margin-top: -54px; height: auto; }
 
 /* ---- right carousel stage ---- */
 .coaches-stage { position: relative; min-width: 0; }
@@ -335,7 +335,7 @@ a { text-decoration: none; color: inherit; }
           mask-image: linear-gradient(to right, transparent 0, #000 13%, #000 87%, transparent 100%); }
 .cstage-track { display: flex; gap: 30px; transition: transform .5s var(--ease); will-change: transform; align-items: stretch; }
 
-.coach-card { flex: 0 0 46%; background: #eef0ee; border-radius: 28px; padding: 22px 22px 26px;
+.coach-card { flex: 0 0 39%; background: #eef0ee; border-radius: 28px; padding: 20px 20px 26px;
   border: 3px solid transparent; opacity: .5; transition: opacity .45s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease); }
 .coach-card.is-active { opacity: 1; border-color: #5FC24A; box-shadow: 0 20px 44px rgba(20,40,30,.12); }
 
@@ -345,10 +345,10 @@ a { text-decoration: none; color: inherit; }
 .tag-pos { background: #E4F3DC; color: var(--green-d); }
 .tag-exp { background: var(--green); color: #fff; }
 
-.coach-photo { border-radius: 18px; overflow: hidden; background: #e9eae9; aspect-ratio: 1 / 1; }
-.coach-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
-.coach-card h3 { font-size: clamp(22px, 1.95vw, 32px); font-weight: 800; color: #4FBE3A; line-height: 1.08; margin: 20px 4px 12px; }
-.coach-card p { font-size: clamp(13px, 1vw, 16px); color: #2b2b2b; font-weight: 500; line-height: 1.45; margin: 0 4px; }
+.coach-photo { border-radius: 18px; overflow: hidden; background: #e9eae9; aspect-ratio: 1.12 / 1; }
+.coach-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+.coach-card h3 { font-size: clamp(22px, 1.95vw, 32px); font-weight: 800; color: #4FBE3A; line-height: 1.08; margin: 18px 4px 12px; }
+.coach-card p { font-size: clamp(13px, 1vw, 16px); color: #2b2b2b; font-weight: 400; line-height: 1.45; margin: 0 4px; }
 
 /* circular light-green arrows flanking the active card */
 .cstage-arrow { position: absolute; top: 50%; width: 68px; height: 68px; border-radius: 50%;
@@ -357,8 +357,8 @@ a { text-decoration: none; color: inherit; }
 .cstage-arrow svg { width: 30px; height: 30px; }
 .cstage-arrow:hover { background: #5FC24A; color: #fff; }
 .cstage-arrow:disabled { opacity: 0; pointer-events: none; }
-.cstage-prev { left: 24%; transform: translate(-50%, -50%); }
-.cstage-next { right: 24%; transform: translate(50%, -50%); }
+.cstage-prev { left: 25.5%; transform: translate(-50%, -50%); }
+.cstage-next { right: 25.5%; transform: translate(50%, -50%); }
 .cstage-prev:hover { transform: translate(-50%, -50%) scale(1.06); }
 .cstage-next:hover { transform: translate(50%, -50%) scale(1.06); }
 
