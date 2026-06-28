@@ -244,14 +244,43 @@ a { text-decoration: none; color: inherit; }
 .how-cta span { font-weight: 800; font-size: clamp(12px, 1.15vw, 18px); line-height: 1.2; }
 
 /* ===================== METHOD ===================== */
-.method { padding: 20px 0 90px; }
-.method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; }
-.method-card { border-radius: var(--radius-lg); padding: 38px 30px; color: #fff; box-shadow: var(--shadow); }
-.method-coral { background: linear-gradient(160deg, #FF8A6B, var(--coral)); }
-.method-yellow { background: linear-gradient(160deg, #FFD15C, var(--yellow)); }
-.method-green { background: linear-gradient(160deg, #4CD964, var(--green)); }
-.method-card h3 { font-size: 26px; font-weight: 800; margin-bottom: 16px; }
-.method-card p { font-size: 15.5px; font-weight: 500; opacity: .97; }
+.method { padding: 20px 0 70px; }
+.method-stage { position: relative; max-width: 1180px; margin: 30px auto 0; aspect-ratio: 1180 / 600; }
+.method-wave { position: absolute; left: -4%; top: 14%; width: 108%; height: auto; z-index: 0; pointer-events: none; user-select: none; }
+
+/* a tilted card + its outside decorations */
+.mcard-wrap { position: absolute; width: 35.5%; }
+.mw-red    { left: 1%;    top: 5%;  transform: rotate(-7deg); z-index: 2; }
+.mw-yellow { left: 31.5%; top: 32%; transform: rotate(4deg);  z-index: 4; }
+.mw-green  { left: 62%;   top: 11%; transform: rotate(7deg);  z-index: 3; }
+
+.method-card { position: relative; aspect-ratio: 1.1 / 1; border-radius: 30px;
+  padding: clamp(16px, 2.2vw, 38px); overflow: hidden;
+  box-shadow: 0 22px 46px rgba(20,40,30,.18);
+  display: flex; flex-direction: column; }
+.method-coral  { background: #ED4C39; color: #fff; }
+.method-yellow { background: #FCC400; color: #0E2E5E; }
+.method-green  { background: #46B449; color: #fff; }
+.method-card h3 { font-size: clamp(17px, 1.95vw, 30px); font-weight: 800; margin: 2px 0 clamp(8px, 1.4vw, 20px); position: relative; z-index: 2; }
+.method-card p { font-size: clamp(10.5px, 1.0vw, 15.5px); font-weight: 600; line-height: 1.5; position: relative; z-index: 2; overflow-wrap: break-word; }
+
+/* white streaks clipped inside the rounded card */
+.streak { position: absolute; z-index: 1; pointer-events: none; user-select: none; }
+.sk-red-a { width: 150%; top: -18%; left: -6%; transform: rotate(6deg); }
+.sk-red-b { width: 150%; bottom: -30%; left: -34%; transform: rotate(8deg); }
+.sk-yel-a { width: 78%; top: -16%; left: -14%; transform: rotate(2deg); }
+.sk-yel-b { width: 70%; top: -8%; left: 28%; transform: scaleX(-1) rotate(4deg); }
+.sk-green { width: 118%; top: -24%; right: -16%; left: auto; }
+
+/* coral corner curves on the red card (stick out past the corners) */
+.corner-curve { position: absolute; width: 30%; height: auto; z-index: 3; pointer-events: none; }
+.cc-tr { top: -9%; right: -10%; transform: rotate(180deg); }
+.cc-bl { bottom: -9%; left: -10%; }
+
+/* 3-line sparkles next to yellow & green cards */
+.spark { position: absolute; width: 16%; height: auto; z-index: 3; pointer-events: none; }
+.spark-yellow { color: #FCC400; top: -16%; left: -10%; }
+.spark-green  { color: #46B449; bottom: -12%; right: -10%; }
 
 /* ===================== SPACE ===================== */
 .space { padding: 20px 0 90px; }
@@ -410,7 +439,11 @@ a { text-decoration: none; color: inherit; }
   .hero-buttons { align-items: center; width: 100%; }
   .hero-buttons .btn { min-width: 0; width: 100%; max-width: 440px; font-size: 16px; padding: 16px 30px; }
   .features-band { grid-template-columns: 1fr; gap: 36px; padding: 44px 28px; }
-  .method-grid { grid-template-columns: 1fr; }
+  .method-stage { position: static; aspect-ratio: auto; max-width: 440px; display: flex; flex-direction: column; gap: 22px; }
+  .method-wave { display: none; }
+  .mcard-wrap { position: static; width: 100%; transform: none; }
+  .method-card { aspect-ratio: auto; padding: 30px 26px; }
+  .corner-curve, .spark { display: none; }
   .space-inner, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .car-track > * { flex-basis: calc((100% - 24px) / 2); }
   .review-card { flex-basis: 100% !important; }
