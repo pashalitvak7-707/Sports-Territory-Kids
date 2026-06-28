@@ -461,9 +461,9 @@ a { text-decoration: none; color: inherit; }
 /* ===================== FAQ ===================== */
 .faq { padding: 20px 0 90px; }
 .faq-line { display: block; height: 4px; border-radius: 2px; background: #46B54A; margin-bottom: 30px; }
-.faq-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.faq-inner { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: center; }
 .faq-list { margin-top: 24px; }
-.faq-mascot { width: 100%; max-width: 520px; justify-self: center; border-radius: 28px; }
+.faq-mascot { width: 100%; max-width: 100%; justify-self: center; border-radius: 28px; }
 
 /* ===================== SIGNUP ===================== */
 .signup { padding: 20px 0 90px; }
