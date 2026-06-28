@@ -322,11 +322,11 @@ a { text-decoration: none; color: inherit; }
 .coaches-lead { color: #141414; font-weight: 400; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.5; max-width: 360px; margin: 20px 0 26px; }
 .coaches-all { display: inline-flex; align-items: center; gap: 16px; color: var(--green-d); font-weight: 400;
   font-size: 16px; letter-spacing: 1.4px; text-transform: uppercase; }
-.coaches-all .all-arrow { width: 86px; height: 14px; color: #84C746; flex: none; }
+.coaches-all .all-arrow { width: 43px; height: 14px; color: #84C746; flex: none; }
 .coaches-all:hover .all-arrow { color: var(--green); }
 .coaches-mascot { position: relative; margin-top: 6px; }
-.mascot-arch { position: absolute; left: -10%; bottom: 1%; width: 88%; height: auto; z-index: 1; }
-.mascot-roo { position: relative; z-index: 2; display: block; width: 104%; max-width: none; margin-left: 19%; margin-top: -54px; height: auto; }
+.mascot-arch { position: absolute; left: -4%; bottom: 23%; width: 62%; height: auto; z-index: 1; }
+.mascot-roo { position: relative; z-index: 2; display: block; width: 71%; max-width: none; margin-left: 24%; margin-top: 52px; height: auto; }
 
 /* ---- right carousel stage ---- */
 .coaches-stage { position: relative; min-width: 0; }
