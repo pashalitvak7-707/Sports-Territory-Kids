@@ -310,20 +310,56 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== COACHES ===================== */
 .coaches { padding: 30px 0 90px; }
-.coaches-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 36px; }
-.coaches-lead { max-width: 420px; color: var(--muted); font-weight: 500; margin: 14px 0 14px; }
-.coaches-mascot { width: 150px; height: auto; }
 .link-all { color: var(--green); font-weight: 800; font-size: 14px; letter-spacing: .6px; display: inline-flex; align-items: center; gap: 8px; }
 .link-all:hover { color: var(--green-d); }
 .link-all-center { display: flex; justify-content: center; margin-top: 36px; }
 
-.coach-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid #eef1ee; position: relative; }
-.coach-badge { background: #f4f7f4; color: var(--green-d); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 12px 16px; display: flex; justify-content: space-between; }
-.coach-badge span { color: var(--orange); }
-.coach-photo { height: 230px; background: linear-gradient(160deg,#eef4ef,#e3eee5); }
-.coach-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-.coach-card h3 { font-size: 19px; font-weight: 800; color: var(--green-d); padding: 18px 20px 6px; }
-.coach-card p { font-size: 14px; color: var(--muted); font-weight: 500; padding: 0 20px 24px; }
+.coaches-grid { display: grid; grid-template-columns: 26% 1fr; gap: 2.5%; align-items: start; }
+
+/* ---- left intro column ---- */
+.coaches-intro { position: relative; }
+.coaches-title { color: var(--green-d); font-size: clamp(26px, 2.7vw, 44px); font-weight: 800; line-height: 1.05; white-space: nowrap; }
+.coaches-lead { color: #141414; font-weight: 600; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.5; max-width: 360px; margin: 20px 0 26px; }
+.coaches-all { display: inline-flex; align-items: center; gap: 16px; color: var(--green-d); font-weight: 800;
+  font-size: 16px; letter-spacing: 1.4px; text-transform: uppercase; }
+.coaches-all .all-arrow { width: 86px; height: 14px; color: #84C746; flex: none; }
+.coaches-all:hover .all-arrow { color: var(--green); }
+.coaches-mascot { position: relative; margin-top: 24px; min-height: 320px; }
+.mascot-arch { position: absolute; left: -4%; bottom: 2%; width: 54%; height: auto; z-index: 1; }
+.mascot-roo { position: relative; z-index: 2; display: block; width: 80%; margin-left: 16%; height: auto; }
+
+/* ---- right carousel stage ---- */
+.coaches-stage { position: relative; min-width: 0; }
+.cstage-viewport { overflow: hidden; min-width: 0; padding: 14px 0 18px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 13%, #000 87%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 13%, #000 87%, transparent 100%); }
+.cstage-track { display: flex; gap: 30px; transition: transform .5s var(--ease); will-change: transform; align-items: stretch; }
+
+.coach-card { flex: 0 0 46%; background: #eef0ee; border-radius: 28px; padding: 22px 22px 26px;
+  border: 3px solid transparent; opacity: .5; transition: opacity .45s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease); }
+.coach-card.is-active { opacity: 1; border-color: #5FC24A; box-shadow: 0 20px 44px rgba(20,40,30,.12); }
+
+.coach-tags { display: flex; gap: 12px; margin-bottom: 18px; }
+.tag-pos, .tag-exp { font-size: clamp(11px, .82vw, 13px); font-weight: 800; text-transform: uppercase;
+  letter-spacing: .6px; padding: 10px 18px; border-radius: 999px; white-space: nowrap; }
+.tag-pos { background: #E4F3DC; color: var(--green-d); }
+.tag-exp { background: var(--green); color: #fff; }
+
+.coach-photo { border-radius: 18px; overflow: hidden; background: #e3e7e3; aspect-ratio: 1 / 1; }
+.coach-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+.coach-card h3 { font-size: clamp(22px, 1.95vw, 32px); font-weight: 800; color: #4FBE3A; line-height: 1.08; margin: 20px 4px 12px; }
+.coach-card p { font-size: clamp(13px, 1vw, 16px); color: #2b2b2b; font-weight: 500; line-height: 1.45; margin: 0 4px; }
+
+/* circular light-green arrows flanking the active card */
+.cstage-arrow { position: absolute; top: 40%; width: 54px; height: 54px; border-radius: 50%;
+  background: #fff; border: 2.5px solid #5FC24A; color: #5FC24A; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 6; box-shadow: 0 8px 20px rgba(20,40,30,.14); transition: background .2s, color .2s, transform .2s; }
+.cstage-arrow:hover { background: #5FC24A; color: #fff; }
+.cstage-arrow:disabled { opacity: 0; pointer-events: none; }
+.cstage-prev { left: 24%; transform: translate(-50%, -50%); }
+.cstage-next { right: 24%; transform: translate(50%, -50%); }
+.cstage-prev:hover { transform: translate(-50%, -50%) scale(1.06); }
+.cstage-next:hover { transform: translate(50%, -50%) scale(1.06); }
 
 /* ===================== GALLERY ===================== */
 .gallery { padding: 30px 0 90px; }
@@ -461,6 +497,10 @@ a { text-decoration: none; color: inherit; }
   .corner-curve, .spark { display: none; }
   .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .space-photo { aspect-ratio: 4 / 3; }
+  .coaches-grid { grid-template-columns: 1fr; gap: 10px; }
+  .coaches-mascot { min-height: 0; max-width: 360px; margin: 8px auto 24px; }
+  .coach-card { flex-basis: 84%; }
+  .cstage-prev { left: 8%; } .cstage-next { right: 8%; }
   .car-track > * { flex-basis: calc((100% - 24px) / 2); }
   .review-card { flex-basis: 100% !important; }
   .sched-mascot, .faq-mascot { max-width: 220px; margin: 0 auto; }

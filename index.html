@@ -299,52 +299,60 @@
 
   <!-- ================= COACHES (carousel) ================= -->
   <section class="coaches" id="coaches">
-    <div class="container">
-      <div class="coaches-head reveal">
-        <div>
-          <h2 class="section-title section-title-left">Наши тренеры</h2>
-          <p class="coaches-lead">Для нас важно не только образование и опыт. Тренер должен видеть ребёнка, слышать его и уметь поддержать в нужный момент.</p>
-          <a href="#coaches" class="link-all">СМОТРЕТЬ ВСЕХ</a>
+    <div class="container coaches-grid">
+      <div class="coaches-intro reveal">
+        <h2 class="section-title section-title-left coaches-title">Наши тренеры</h2>
+        <p class="coaches-lead">Для нас важно не только образование и опыт. Тренер должен видеть ребёнка, слышать его и уметь поддержать в нужный момент.</p>
+        <a href="#coaches" class="coaches-all">СМОТРЕТЬ ВСЕХ
+          <svg class="all-arrow" viewBox="0 0 92 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7H86"/><path d="M78 2l9 5-9 5"/></svg>
+        </a>
+        <div class="coaches-mascot">
+          <img class="mascot-arch" src="assets/img/coach-arch.png" alt="" aria-hidden="true" />
+          <img class="mascot-roo" src="assets/img/mascot-wave.png" alt="Маскот «Территория Спорта КИДС»" />
         </div>
-        <img class="coaches-mascot" src="assets/img/mascot-wave.png" alt="" />
       </div>
 
-      <div class="carousel reveal" data-carousel="coaches">
-        <button class="car-arrow car-prev" aria-label="Назад">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div class="car-viewport">
-          <div class="car-track">
+      <div class="coaches-stage reveal">
+        <div class="cstage-viewport">
+          <div class="cstage-track">
             <article class="coach-card">
-              <div class="coach-badge">Старший тренер<span>8 лет опыта</span></div>
+              <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">7 лет опыта</span></div>
+              <div class="coach-photo"><img src="assets/img/coach-w2.png" alt="Анна Соколова" /></div>
+              <h3>Анна<br />Соколова</h3>
+              <p>Ведёт групповые занятия для дошкольников, выстраивает базовую гимнастику через игру.</p>
+            </article>
+            <article class="coach-card">
+              <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">5 лет опыта</span></div>
               <div class="coach-photo"><img src="assets/img/coach-1.png" alt="Екатерина Морозова" /></div>
               <h3>Екатерина<br />Морозова</h3>
               <p>Помогает детям мягко входить в спорт, развивать гибкость и уверенность без страха ошибки.</p>
             </article>
             <article class="coach-card">
-              <div class="coach-badge">Старший тренер<span>5 лет опыта</span></div>
-              <div class="coach-photo"><img src="assets/img/coach-2.png" alt="Екатерина Морозова" /></div>
-              <h3>Екатерина<br />Морозова</h3>
-              <p>Помогает детям мягко входить в спорт, развивать гибкость и уверенность без страха ошибки.</p>
+              <div class="coach-tags"><span class="tag-pos">Тренер</span><span class="tag-exp">4 года опыта</span></div>
+              <div class="coach-photo"><img src="assets/img/coach-m1.png" alt="Дмитрий Орлов" /></div>
+              <h3>Дмитрий<br />Орлов</h3>
+              <p>Работает с координацией и осанкой, готовит ребят к первым спортивным элементам.</p>
             </article>
             <article class="coach-card">
-              <div class="coach-badge">Старший тренер<span>5 лет опыта</span></div>
-              <div class="coach-photo"><img src="assets/img/coach-3.png" alt="Екатерина Морозова" /></div>
-              <h3>Екатерина<br />Морозова</h3>
-              <p>Помогает детям мягко входить в спорт, развивать гибкость и уверенность без страха ошибки.</p>
+              <div class="coach-tags"><span class="tag-pos">Тренер</span><span class="tag-exp">6 лет опыта</span></div>
+              <div class="coach-photo"><img src="assets/img/coach-w2.png" alt="Ольга Кузнецова" /></div>
+              <h3>Ольга<br />Кузнецова</h3>
+              <p>Специалист по растяжке и акробатике, помогает детям раскрыть пластику и силу.</p>
             </article>
             <article class="coach-card">
-              <div class="coach-badge">Тренер<span>4 года опыта</span></div>
-              <div class="coach-photo"><img src="assets/img/coach-1.png" alt="Екатерина Морозова" /></div>
-              <h3>Екатерина<br />Морозова</h3>
-              <p>Помогает детям мягко входить в спорт, развивать гибкость и уверенность без страха ошибки.</p>
+              <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">8 лет опыта</span></div>
+              <div class="coach-photo"><img src="assets/img/coach-m1.png" alt="Сергей Лебедев" /></div>
+              <h3>Сергей<br />Лебедев</h3>
+              <p>Готовит детей к выступлениям, развивает чувство ритма, уверенность и командный дух.</p>
             </article>
           </div>
         </div>
-        <button class="car-arrow car-next" aria-label="Вперёд">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        <button class="cstage-arrow cstage-prev" aria-label="Предыдущий тренер">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <div class="car-dots" aria-hidden="true"></div>
+        <button class="cstage-arrow cstage-next" aria-label="Следующий тренер">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
     </div>
   </section>

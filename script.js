@@ -102,6 +102,45 @@
     update();
   }
 
+  /* ---------- 2b. Coaches stage (centered active card) ---------- */
+  function initCoachStage(root) {
+    var viewport = root.querySelector('.cstage-viewport');
+    var track = root.querySelector('.cstage-track');
+    var cards = Array.prototype.slice.call(track.children);
+    var prev = root.querySelector('.cstage-prev');
+    var next = root.querySelector('.cstage-next');
+    var index = Math.min(1, cards.length - 1);
+
+    function layout() {
+      var vp = viewport.clientWidth;
+      var cw = cards[0].getBoundingClientRect().width;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
+      var offset = (vp - cw) / 2 - index * (cw + gap);
+      track.style.transform = 'translateX(' + offset + 'px)';
+      cards.forEach(function (c, i) { c.classList.toggle('is-active', i === index); });
+      if (prev) prev.disabled = index <= 0;
+      if (next) next.disabled = index >= cards.length - 1;
+    }
+    function go(i) { index = Math.min(Math.max(i, 0), cards.length - 1); layout(); }
+
+    if (prev) prev.addEventListener('click', function () { go(index - 1); });
+    if (next) next.addEventListener('click', function () { go(index + 1); });
+    cards.forEach(function (c, i) { c.addEventListener('click', function () { if (i !== index) go(i); }); });
+
+    var startX = 0, dragging = false;
+    root.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; dragging = true; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (!dragging) return; dragging = false;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
+    });
+
+    var rt;
+    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(layout, 150); });
+    window.addEventListener('load', layout);
+    layout();
+  }
+
   /* ---------- 3. Accordions (FAQ + equipment) ---------- */
   function initAccordions() {
     document.querySelectorAll('.acc-head').forEach(function (head) {
@@ -147,6 +186,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
+    document.querySelectorAll('.coaches-stage').forEach(initCoachStage);
     initAccordions();
     initForms();
   });
