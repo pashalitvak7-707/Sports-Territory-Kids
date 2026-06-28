@@ -38,7 +38,8 @@
       var style = getComputedStyle(track);
       var gap = parseFloat(style.columnGap || style.gap || '0') || 0;
       var sw = first.getBoundingClientRect().width + gap;
-      return Math.max(1, Math.round(vw / sw));
+      // count fully-visible cards (floor, with a small tolerance for sub-pixel rounding)
+      return Math.max(1, Math.floor((vw + 2) / sw));
     }
 
     function maxIndex() { return Math.max(0, slides.length - perView()); }

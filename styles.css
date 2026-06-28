@@ -152,7 +152,7 @@ a { text-decoration: none; color: inherit; }
 .carousel { position: relative; padding: 0 8px; }
 .car-viewport { overflow: hidden; min-width: 0; }
 .car-track { display: flex; gap: 24px; transition: transform .5s var(--ease); will-change: transform; align-items: stretch; }
-.car-track > * { flex: 0 0 calc((100% - 48px) / 3.3); }
+.car-track > * { flex: 0 0 calc((100% - 60px) / 3.7); }
 
 .car-arrow {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
@@ -180,7 +180,11 @@ a { text-decoration: none; color: inherit; }
 .pc-title { font-size: clamp(18px, 1.5vw, 23px); font-weight: 700; color: var(--green-d); margin-bottom: 14px; line-height: 1.15; }
 .pc-desc { font-size: 15px; color: #6f7378; font-weight: 400; line-height: 1.5; margin-bottom: 26px; }
 .pc-photo { margin: auto -28px 0; }
-.pc-photo img { width: 100%; height: auto; display: block; }
+.pc-photo img { width: 100%; height: clamp(240px, 19vw, 300px); object-fit: cover; object-position: center; display: block; }
+.pc-coral  .pc-photo img { object-position: center 40%; }
+.pc-green  .pc-photo img { object-position: center 30%; }
+.pc-blue   .pc-photo img { object-position: center 35%; }
+.pc-yellow .pc-photo img { object-position: center 62%; }
 
 .pc-coral { border-color: #FF6F5E; }
 .pc-coral .pc-age { color: #FF6F5E; }
