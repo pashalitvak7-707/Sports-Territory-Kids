@@ -206,7 +206,9 @@ a { text-decoration: none; color: inherit; }
 /* ===================== HOW ===================== */
 .how { padding: 34px 0 80px; }
 .how-stage { position: relative; width: 100%; max-width: 1340px; margin: 28px auto 0; aspect-ratio: 1989 / 1150; }
-.how-bg-curve { position: absolute; left: 1%; top: 24%; width: 98%; height: auto; z-index: 0; pointer-events: none; user-select: none; }
+.how-bg-curve { position: absolute; left: -4%; top: 24%; width: 109%; height: auto; z-index: 0; pointer-events: none; user-select: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 92%, transparent 100%); }
 
 /* a step = circular photo + label, absolutely placed */
 .how-step { position: absolute; width: 20%; text-align: center; z-index: 2; }
@@ -225,8 +227,10 @@ a { text-decoration: none; color: inherit; }
   box-shadow: 0 4px 12px rgba(0,0,0,.15); }
 .how-num b { color: #fff; font-weight: 800; font-size: clamp(15px, 1.9vw, 30px); line-height: 1; }
 .deco { position: absolute; color: var(--c); }
-.deco-rays { width: 62%; height: 62%; top: -46%; left: -40%; }
-.deco-arc  { width: 46%; height: 64%; top: -8%; left: -52%; }
+.deco-rays { width: 60%; height: 60%; top: -30%; left: -30%; }
+.deco-arc  { width: 50%; left: -58%; }
+.st2 .deco-arc { height: 136%; top: -18%; }
+.st4 .deco-arc { height: 95%;  top: 2%; }
 .deco-bigarc { width: 30%; height: 96%; top: 2%; right: -22%; left: auto; }
 
 .how-step h4 { font-size: clamp(14px, 1.25vw, 19px); font-weight: 700; color: var(--green-d); margin-top: clamp(10px, 1.4vw, 22px); line-height: 1.25; }
