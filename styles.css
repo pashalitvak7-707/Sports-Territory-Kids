@@ -144,38 +144,52 @@ a { text-decoration: none; color: inherit; }
 .section-lead { text-align: center; max-width: 720px; margin: 0 auto 40px; color: var(--muted); font-size: 17px; font-weight: 500; }
 
 /* ===================== PROGRAMS / CAROUSEL ===================== */
-.programs { padding: 70px 0; }
+.programs { position: relative; padding: 76px 0 96px; overflow: hidden; }
+.programs .container { position: relative; z-index: 1; }
+.section-title-prog { font-weight: 600; }
+.prog-curve { position: absolute; top: 6px; right: -1%; width: min(48%, 780px); height: auto; z-index: 0; pointer-events: none; user-select: none; }
+
 .carousel { position: relative; padding: 0 8px; }
 .car-viewport { overflow: hidden; min-width: 0; }
-.car-track { display: flex; gap: 24px; transition: transform .5s var(--ease); will-change: transform; }
+.car-track { display: flex; gap: 24px; transition: transform .5s var(--ease); will-change: transform; align-items: stretch; }
 .car-track > * { flex: 0 0 calc((100% - 48px) / 3.3); }
 
 .car-arrow {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
-  width: 50px; height: 50px; border-radius: 50%; background: #fff; color: var(--green);
-  border: 2px solid #e3ece4; display: flex; align-items: center; justify-content: center;
+  width: 54px; height: 54px; border-radius: 50%; background: #fff; color: var(--green);
+  border: 2px solid var(--green); display: flex; align-items: center; justify-content: center;
   cursor: pointer; box-shadow: var(--shadow-sm); transition: all .2s var(--ease);
 }
 .car-arrow:hover { background: var(--green); color: #fff; border-color: var(--green); }
 .car-arrow:disabled { opacity: .35; cursor: default; }
-.car-arrow:disabled:hover { background: #fff; color: var(--green); border-color: #e3ece4; }
-.car-prev { left: -18px; }
-.car-next { right: -18px; }
+.car-arrow:disabled:hover { background: #fff; color: var(--green); border-color: var(--green); }
+.car-prev { left: -22px; }
+.car-next { right: -22px; }
 
 .car-dots { display: flex; gap: 8px; justify-content: center; margin-top: 26px; }
 .car-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: #d6ded7; cursor: pointer; padding: 0; transition: all .2s; }
 .car-dots button.active { background: var(--green); width: 26px; border-radius: 5px; }
 
-.prog-card { border-radius: var(--radius); padding: 26px 24px 30px; color: #fff; min-height: 240px; box-shadow: var(--shadow-sm); }
-.prog-coral { background: linear-gradient(160deg, #FF8A6B, var(--coral)); }
-.prog-green { background: linear-gradient(160deg, #4CD964, var(--green)); }
-.prog-blue { background: linear-gradient(160deg, #63B8FF, var(--blue)); }
-.prog-yellow { background: linear-gradient(160deg, #FFD15C, var(--yellow)); }
-.prog-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; }
-.prog-age { font-size: 24px; font-weight: 800; }
-.prog-tag { font-size: 13px; font-weight: 600; opacity: .92; text-transform: uppercase; letter-spacing: .4px; }
-.prog-card h3 { font-size: 19px; font-weight: 800; margin-bottom: 10px; }
-.prog-card p { font-size: 15px; font-weight: 500; opacity: .96; }
+/* program cards: white card, coloured outline, big coloured age, title, description, photo */
+.prog-card {
+  background: #fff; border: 2.5px solid; border-radius: 26px;
+  padding: 30px 28px 0; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 14px 34px rgba(20,40,30,.06);
+}
+.pc-age { font-size: clamp(26px, 2.1vw, 34px); font-weight: 800; line-height: 1; margin-bottom: 16px; letter-spacing: -.5px; }
+.pc-title { font-size: clamp(18px, 1.5vw, 23px); font-weight: 700; color: var(--green-d); margin-bottom: 14px; line-height: 1.15; }
+.pc-desc { font-size: 15px; color: #6f7378; font-weight: 400; line-height: 1.5; margin-bottom: 26px; }
+.pc-photo { margin: auto -28px 0; }
+.pc-photo img { width: 100%; height: 248px; object-fit: cover; object-position: center bottom; display: block; }
+
+.pc-coral { border-color: #FF6F5E; }
+.pc-coral .pc-age { color: #FF6F5E; }
+.pc-green { border-color: #45BE54; }
+.pc-green .pc-age { color: #45BE54; }
+.pc-blue { border-color: #4FACEA; }
+.pc-blue .pc-age { color: #4FACEA; }
+.pc-yellow { border-color: #FBC02D; }
+.pc-yellow .pc-age { color: #F4B400; }
 
 /* ===================== DEVELOP ===================== */
 .develop { padding: 4px 0 80px; }
