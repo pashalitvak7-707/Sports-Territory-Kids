@@ -319,14 +319,14 @@ a { text-decoration: none; color: inherit; }
 /* ---- left intro column ---- */
 .coaches-intro { position: relative; }
 .coaches-title { color: var(--green-d); font-size: clamp(26px, 2.7vw, 44px); font-weight: 800; line-height: 1.05; white-space: nowrap; }
-.coaches-lead { color: #141414; font-weight: 600; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.5; max-width: 360px; margin: 20px 0 26px; }
+.coaches-lead { color: #141414; font-weight: 400; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.5; max-width: 360px; margin: 20px 0 26px; }
 .coaches-all { display: inline-flex; align-items: center; gap: 16px; color: var(--green-d); font-weight: 800;
   font-size: 16px; letter-spacing: 1.4px; text-transform: uppercase; }
 .coaches-all .all-arrow { width: 86px; height: 14px; color: #84C746; flex: none; }
 .coaches-all:hover .all-arrow { color: var(--green); }
-.coaches-mascot { position: relative; margin-top: 24px; min-height: 320px; }
-.mascot-arch { position: absolute; left: -4%; bottom: 2%; width: 54%; height: auto; z-index: 1; }
-.mascot-roo { position: relative; z-index: 2; display: block; width: 80%; margin-left: 16%; height: auto; }
+.coaches-mascot { position: relative; margin-top: 22px; min-height: 330px; }
+.mascot-arch { position: absolute; left: 0; top: 4%; width: 46%; height: auto; z-index: 1; }
+.mascot-roo { position: relative; z-index: 2; display: block; width: 74%; margin: 11% 0 0 30%; height: auto; }
 
 /* ---- right carousel stage ---- */
 .coaches-stage { position: relative; min-width: 0; }
@@ -345,15 +345,16 @@ a { text-decoration: none; color: inherit; }
 .tag-pos { background: #E4F3DC; color: var(--green-d); }
 .tag-exp { background: var(--green); color: #fff; }
 
-.coach-photo { border-radius: 18px; overflow: hidden; background: #e3e7e3; aspect-ratio: 1 / 1; }
-.coach-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+.coach-photo { border-radius: 18px; overflow: hidden; background: #e9eae9; aspect-ratio: 1 / 1; }
+.coach-photo img { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
 .coach-card h3 { font-size: clamp(22px, 1.95vw, 32px); font-weight: 800; color: #4FBE3A; line-height: 1.08; margin: 20px 4px 12px; }
 .coach-card p { font-size: clamp(13px, 1vw, 16px); color: #2b2b2b; font-weight: 500; line-height: 1.45; margin: 0 4px; }
 
 /* circular light-green arrows flanking the active card */
-.cstage-arrow { position: absolute; top: 40%; width: 54px; height: 54px; border-radius: 50%;
+.cstage-arrow { position: absolute; top: 50%; width: 68px; height: 68px; border-radius: 50%;
   background: #fff; border: 2.5px solid #5FC24A; color: #5FC24A; display: flex; align-items: center; justify-content: center;
   cursor: pointer; z-index: 6; box-shadow: 0 8px 20px rgba(20,40,30,.14); transition: background .2s, color .2s, transform .2s; }
+.cstage-arrow svg { width: 30px; height: 30px; }
 .cstage-arrow:hover { background: #5FC24A; color: #fff; }
 .cstage-arrow:disabled { opacity: 0; pointer-events: none; }
 .cstage-prev { left: 24%; transform: translate(-50%, -50%); }
