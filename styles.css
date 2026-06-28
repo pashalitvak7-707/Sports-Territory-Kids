@@ -99,7 +99,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== HERO ===================== */
 .hero { background: #FFFFFF; position: relative; overflow: hidden; }
-.hero-inner { position: relative; display: flex; align-items: center; min-height: clamp(460px, 39vw, 800px); }
+.hero-inner { position: relative; display: flex; align-items: center; min-height: clamp(480px, 41vw, 840px); }
 .hero-text { position: relative; z-index: 2; width: 42%; flex: 0 0 42%; margin-left: clamp(0px, 2.2vw, 46px); }
 .hero-text h1 { font-size: clamp(30px, 4.05vw, 80px); line-height: 1.1; color: var(--green-d); font-weight: 400; letter-spacing: -.5px; white-space: nowrap; }
 .hero-text h1 .h1-bold { font-weight: 700; }
@@ -107,14 +107,23 @@ a { text-decoration: none; color: inherit; }
 .hero-buttons { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(12px, 1.1vw, 18px); }
 .hero-buttons .btn { border-radius: 14px; padding: clamp(13px, 1.45vw, 21px) clamp(22px, 2.4vw, 40px); font-size: clamp(14px, 1.15vw, 17px); min-width: min(380px, 27vw); }
 .hero-media {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  right: calc((100% - 100vw) / 2);   /* bleed to the viewport's right edge */
-  width: min(74vw, 1480px); z-index: 1; pointer-events: none; line-height: 0;
+  position: absolute; top: 44%; transform: translateY(-50%);
+  right: calc((100% - 100vw) / 2 + 1vw);   /* nudged slightly left of the viewport edge */
+  width: min(78vw, 1560px); z-index: 1; pointer-events: none; line-height: 0;
+  /* fade all edges so the image melts into the white background (no visible rectangle) */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 8%, #000 95%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-image:
+    linear-gradient(to right, transparent 0, #000 8%, #000 95%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
+          mask-composite: intersect;
 }
 .hero-media img { width: 100%; height: auto; display: block; }
 
 /* ===================== FEATURE BAND ===================== */
-.features { background: #FEFEFE; padding: 6px 0 64px; }
+.features { background: #FFFFFF; padding: 78px 0 70px; }
 .features-band {
   position: relative; border-radius: 36px; padding: 56px 40px 50px;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
