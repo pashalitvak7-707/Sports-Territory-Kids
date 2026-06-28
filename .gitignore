@@ -141,3 +141,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Local dev tooling (Playwright screenshots) — not part of the static site
+package.json
+package-lock.json
