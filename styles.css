@@ -179,12 +179,8 @@ a { text-decoration: none; color: inherit; }
 .pc-age { font-size: clamp(26px, 2.1vw, 34px); font-weight: 800; line-height: 1; margin-bottom: 16px; letter-spacing: -.5px; }
 .pc-title { font-size: clamp(18px, 1.5vw, 23px); font-weight: 700; color: var(--green-d); margin-bottom: 14px; line-height: 1.15; }
 .pc-desc { font-size: 15px; color: #6f7378; font-weight: 400; line-height: 1.5; margin-bottom: 26px; }
-.pc-photo { margin: auto -28px 0; }
-.pc-photo img { width: 100%; height: clamp(240px, 19vw, 300px); object-fit: cover; object-position: center; display: block; }
-.pc-coral  .pc-photo img { object-position: center 40%; }
-.pc-green  .pc-photo img { object-position: center 30%; }
-.pc-blue   .pc-photo img { object-position: center 35%; }
-.pc-yellow .pc-photo img { object-position: center 62%; }
+.pc-photo { margin: auto -22px 0; }
+.pc-photo img { width: 100%; height: clamp(215px, 17.5vw, 268px); object-fit: contain; object-position: center bottom; display: block; }
 
 .pc-coral { border-color: #FF6F5E; }
 .pc-coral .pc-age { color: #FF6F5E; }
