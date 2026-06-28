@@ -245,7 +245,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== METHOD ===================== */
 .method { padding: 20px 0 70px; position: relative; overflow: hidden; }
-.method-wave { position: absolute; left: 0; top: 46%; width: 100%; height: auto; z-index: 0; pointer-events: none; user-select: none; }
+.method-wave { position: absolute; left: 0; top: 30%; width: 100%; height: auto; z-index: 0; pointer-events: none; user-select: none; }
 .method-stage { position: relative; max-width: 1180px; margin: 30px auto 0; aspect-ratio: 1180 / 600; z-index: 1; }
 
 /* a tilted card + its outside decorations */
@@ -279,7 +279,7 @@ a { text-decoration: none; color: inherit; }
 .sk-red-b { width: 150%; bottom: -30%; left: -34%; transform: rotate(8deg); }
 .sk-yel-a { width: 78%; top: -16%; left: -14%; transform: rotate(2deg); }
 .sk-yel-b { width: 70%; top: -8%; left: 28%; transform: scaleX(-1) rotate(4deg); }
-.sk-green { width: 116%; top: 4%; right: -14%; left: auto; }
+.sk-green { width: 138%; top: -16%; right: -20%; left: auto; }
 
 /* coral corner curves on the red card (stick out past the corners) */
 .corner-curve { position: absolute; width: 30%; height: auto; z-index: 3; pointer-events: none; }
@@ -292,16 +292,21 @@ a { text-decoration: none; color: inherit; }
 .spark-green  { color: #46B449; bottom: -12%; right: -10%; }
 
 /* ===================== SPACE ===================== */
-.space { padding: 20px 0 90px; }
-.space-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: stretch; }
-.space-card { background: linear-gradient(150deg, var(--green-band2), var(--green)); border-radius: var(--radius-lg); padding: 48px 44px; color: #fff; box-shadow: 0 22px 48px rgba(22,191,65,.2); }
-.space-card h2 { font-size: 34px; font-weight: 800; margin-bottom: 26px; }
-.space-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-.space-list li { position: relative; padding-left: 36px; font-size: 17px; font-weight: 600; }
-.space-list li::before { content: ""; position: absolute; left: 0; top: 1px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
-.space-list li::after { content: ""; position: absolute; left: 7px; top: 7px; width: 9px; height: 5px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg); }
-.space-photo { border-radius: var(--radius-lg); overflow: hidden; background: #eef4ef; }
-.space-photo img { width: 100%; height: 100%; object-fit: contain; }
+.space { padding: 30px 0 70px; }
+/* thin green lines above and below the big rectangle */
+.space-rule { display: block; height: 4px; border-radius: 2px; background: var(--green); margin: 0 6px; }
+.space-card { display: grid; grid-template-columns: 1.12fr 1fr; gap: clamp(28px, 3.5vw, 64px); align-items: center;
+  background: linear-gradient(180deg, #A6D85B 0%, #CFE9A0 38%, #FFFFFF 88%);
+  border-radius: 30px; padding: clamp(34px, 4vw, 64px); margin: 34px 0; }
+.space-text h2 { color: var(--green-d); font-size: clamp(28px, 3.1vw, 50px); font-weight: 800; line-height: 1.18; margin-bottom: clamp(26px, 3vw, 44px); }
+.space-list { list-style: none; display: flex; flex-direction: column; gap: clamp(18px, 2vw, 30px); }
+.space-list li { position: relative; padding-left: 52px; font-size: clamp(16px, 1.3vw, 21px); font-weight: 700; color: var(--green-d); }
+/* large green checkmark, no circle */
+.space-list li::before { content: ""; position: absolute; left: 4px; top: 50%;
+  width: 26px; height: 14px; border-left: 5px solid var(--green); border-bottom: 5px solid var(--green);
+  border-radius: 1px; transform: translateY(-65%) rotate(-45deg); }
+.space-photo { border-radius: 24px; overflow: hidden; background: #eef4ef; align-self: stretch; aspect-ratio: 1 / 1; }
+.space-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block; }
 
 /* ===================== COACHES ===================== */
 .coaches { padding: 30px 0 90px; }
@@ -454,7 +459,8 @@ a { text-decoration: none; color: inherit; }
   .method-card { aspect-ratio: auto; }
   .mcard-body { transform: none; padding: 30px 26px; }
   .corner-curve, .spark { display: none; }
-  .space-inner, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
+  .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
+  .space-photo { aspect-ratio: 4 / 3; }
   .car-track > * { flex-basis: calc((100% - 24px) / 2); }
   .review-card { flex-basis: 100% !important; }
   .sched-mascot, .faq-mascot { max-width: 220px; margin: 0 auto; }
