@@ -187,30 +187,87 @@
     });
   }
 
-  /* ---------- 5. Program cards (expand / collapse) ---------- */
+  /* ---------- 5. Program cards: carousel + expand/collapse ---------- */
   function initProgramCards() {
-    var row = document.querySelector('.prog-row');
-    if (!row) return;
-    var cards = Array.prototype.slice.call(row.querySelectorAll('[data-prog]'));
-    cards.forEach(function (card) {
+    var root = document.querySelector('.prog-carousel');
+    if (!root) return;
+    var track = root.querySelector('.prog-track');
+    var viewport = root.querySelector('.car-viewport');
+    var cards = Array.prototype.slice.call(track.querySelectorAll('.prog-card'));
+    var prev = root.querySelector('.car-prev');
+    var next = root.querySelector('.car-next');
+    var index = 0;
+    if (!cards.length) return;
+
+    function gap() {
+      var s = getComputedStyle(track);
+      return parseFloat(s.columnGap || s.gap || '0') || 0;
+    }
+    function step() {
+      // width of a resting (non-open) card + gap
+      var c = null;
+      for (var i = 0; i < cards.length; i++) { if (!cards[i].classList.contains('is-open')) { c = cards[i]; break; } }
+      if (!c) c = cards[0];
+      return c.getBoundingClientRect().width + gap();
+    }
+    function perView() { return Math.max(1, Math.floor((viewport.clientWidth + 2) / step())); }
+    function maxIndex() { return Math.max(0, cards.length - perView()); }
+    function moveTo(px) { track.style.transform = 'translateX(' + px + 'px)'; }
+    function update() {
+      moveTo(-index * step());
+      if (prev) prev.disabled = index <= 0;
+      if (next) next.disabled = index >= maxIndex();
+    }
+    function closeAll() {
+      cards.forEach(function (c) {
+        c.classList.remove('is-open');
+        var t = c.querySelector('[data-prog-toggle]');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      track.classList.remove('has-open');
+    }
+    function go(i) { index = Math.min(Math.max(i, 0), maxIndex()); update(); }
+
+    if (prev) prev.addEventListener('click', function () { var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index - 1); });
+    if (next) next.addEventListener('click', function () { var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index + 1); });
+
+    cards.forEach(function (card, i) {
       var toggle = card.querySelector('[data-prog-toggle]');
       if (!toggle) return;
       toggle.addEventListener('click', function (e) {
         e.preventDefault();
         var willOpen = !card.classList.contains('is-open');
-        // close all
-        cards.forEach(function (c) {
-          c.classList.remove('is-open');
-          var t = c.querySelector('[data-prog-toggle]');
-          if (t) t.setAttribute('aria-expanded', 'false');
-        });
+        closeAll();
         if (willOpen) {
           card.classList.add('is-open');
           toggle.setAttribute('aria-expanded', 'true');
+          track.classList.add('has-open');
+          index = i;
+          // slide the opened card to the left so it has room to expand
+          moveTo(-i * step());
+        } else {
+          update();
         }
-        row.classList.toggle('has-open', willOpen);
       });
     });
+
+    // Touch swipe (when nothing is open)
+    var startX = 0, dragging = false;
+    root.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; dragging = true; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (!dragging) return; dragging = false;
+      if (track.classList.contains('has-open')) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
+    });
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { if (!track.classList.contains('has-open')) go(index); }, 150);
+    });
+
+    update();
   }
 
   /* ---------- init ---------- */
