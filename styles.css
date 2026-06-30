@@ -172,9 +172,12 @@ a { text-decoration: none; color: inherit; }
 .car-dots button.active { background: var(--green); width: 26px; border-radius: 5px; }
 
 /* Program cards: carousel of expanding panels (resting / hover / open) */
-.prog-carousel { position: relative; padding: 0 8px; }
+.prog-carousel { position: relative; padding: 0 8px 0 78px; }
+.prog-carousel .car-prev { left: 8px; }
+.prog-carousel .car-next { right: -6px; }
 .prog-track { display: flex; gap: 22px; align-items: stretch; transition: transform .55s var(--ease); will-change: transform; }
-.prog-track > .prog-card { flex: 0 0 clamp(264px, 22vw, 318px); }
+/* show three full cards + a sliver of the next */
+.prog-track > .prog-card { flex: 0 0 calc((100% - 44px) / 3.15); }
 .prog-card {
   position: relative; min-width: 0;
   height: clamp(440px, 36vw, 520px);
@@ -198,22 +201,21 @@ a { text-decoration: none; color: inherit; }
 .pc-benefits li::before { content: ""; position: absolute; left: 0; top: -1px; width: 23px; height: 23px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='none' stroke='%2346B54A' stroke-width='2'/%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%2346B54A' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain; }
 
-/* photo — sits behind the text, fades into white at the edges, re-positions per state */
-.pc-photo { position: absolute; z-index: 1; pointer-events: none; left: 0; right: 0; bottom: -2%; width: 100%; height: 53%; transition: all .5s var(--ease); }
+/* photo — sits behind the text; a soft radial mask fades every edge into white (no visible border) */
+.pc-photo { position: absolute; z-index: 1; pointer-events: none; left: -2%; right: -2%; bottom: 0; width: auto; height: 58%; transition: all .5s var(--ease); }
 .pc-photo img { width: 100%; height: 100%; object-fit: contain; object-position: bottom center; display: block;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%); }
-/* navy resting + every open card: subject on the right, fade the left/top blank into white */
-.pc-navy .pc-photo { left: auto; right: -2%; width: 64%; height: 94%; bottom: 0; }
-.pc-navy .pc-photo img,
+  -webkit-mask-image: radial-gradient(82% 98% at 50% 84%, #000 52%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(82% 98% at 50% 84%, #000 52%, rgba(0,0,0,0) 100%); }
+/* the two right-most resting cards + every open card: text grouped on the left, subject on the right */
+.pc-yellow .pc-photo, .pc-navy .pc-photo { left: auto; right: -3%; width: 60%; height: 96%; bottom: 0; }
+.pc-yellow .pc-photo img, .pc-navy .pc-photo img,
 .prog-card.is-open .pc-photo img {
   object-position: bottom right;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 9%, #000 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 9%, #000 100%);
-  mask-composite: intersect;
+  -webkit-mask-image: radial-gradient(90% 96% at 71% 56%, #000 50%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(90% 96% at 71% 56%, #000 50%, rgba(0,0,0,0) 100%);
 }
-.pc-navy .pc-desc, .pc-navy .pc-title { max-width: 52%; }
+.pc-yellow .pc-desc, .pc-yellow .pc-title,
+.pc-navy .pc-desc, .pc-navy .pc-title { max-width: 54%; }
 
 /* CTA — shown on hover/open */
 .pc-cta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: auto; padding-top: 18px;
@@ -239,8 +241,12 @@ a { text-decoration: none; color: inherit; }
 .prog-track:not(.has-open):hover .prog-card:not(:hover) { opacity: .32; }
 .prog-track:not(.has-open) .prog-card:hover .pc-cta { opacity: 1; transform: none; pointer-events: auto; }
 .prog-track:not(.has-open) .prog-card:hover .pc-toggle { opacity: 1; transform: none; }
-.prog-track:not(.has-open) .prog-card:hover .pc-photo,
-.pc-navy:hover .pc-photo { left: auto; right: -4%; bottom: 88px; width: 62%; height: 60%; }
+.prog-track:not(.has-open) .prog-card:hover .pc-photo { left: auto; right: -3%; bottom: 0; width: 66%; height: 94%; }
+.prog-track:not(.has-open) .prog-card:hover .pc-photo img {
+  object-position: bottom right;
+  -webkit-mask-image: radial-gradient(90% 96% at 71% 56%, #000 50%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(90% 96% at 71% 56%, #000 50%, rgba(0,0,0,0) 100%);
+}
 
 /* ---- OPEN: card expands far more; siblings keep size + slide right + fade out ---- */
 .prog-card.is-open { flex-basis: clamp(620px, 56vw, 800px); border-width: 4px; box-shadow: 0 28px 56px rgba(20,40,30,.18); }
@@ -255,8 +261,8 @@ a { text-decoration: none; color: inherit; }
 .prog-card.is-open .pc-secondary { display: inline-flex; }
 .prog-card.is-open .pc-toggle { opacity: 1; transform: none; }
 .prog-card.is-open .pc-arrow { transform: rotate(180deg); }
-.prog-card.is-open .pc-photo { left: auto; right: -1%; bottom: 0; width: 50%; height: 90%; }
-.prog-card.is-open .pc-navy .pc-desc, .pc-navy.is-open .pc-title { max-width: 100%; }
+.prog-card.is-open .pc-photo { left: auto; right: -1%; bottom: 0; width: 62%; height: 94%; }
+.prog-card.is-open .pc-title, .prog-card.is-open .pc-desc-long { max-width: none; }
 
 /* colour variants */
 .pc-coral { border-color: #FF6F5E; } .pc-coral .pc-age { color: #FF6F5E; }
