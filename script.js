@@ -187,6 +187,32 @@
     });
   }
 
+  /* ---------- 5. Program cards (expand / collapse) ---------- */
+  function initProgramCards() {
+    var row = document.querySelector('.prog-row');
+    if (!row) return;
+    var cards = Array.prototype.slice.call(row.querySelectorAll('[data-prog]'));
+    cards.forEach(function (card) {
+      var toggle = card.querySelector('[data-prog-toggle]');
+      if (!toggle) return;
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        var willOpen = !card.classList.contains('is-open');
+        // close all
+        cards.forEach(function (c) {
+          c.classList.remove('is-open');
+          var t = c.querySelector('[data-prog-toggle]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        if (willOpen) {
+          card.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+        row.classList.toggle('has-open', willOpen);
+      });
+    });
+  }
+
   /* ---------- init ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
@@ -194,5 +220,6 @@
     document.querySelectorAll('.coaches-stage').forEach(initCoachStage);
     initAccordions();
     initForms();
+    initProgramCards();
   });
 })();
