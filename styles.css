@@ -215,6 +215,14 @@ a { text-decoration: none; color: inherit; }
   -webkit-mask-image: linear-gradient(104deg, transparent 2%, #000 36%, #000 100%);
   mask-image: linear-gradient(104deg, transparent 2%, #000 36%, #000 100%);
 }
+/* 7-10: show the whole boy (contain) so the legs are fully visible; white backdrop blends borderlessly */
+.pc-yellow .pc-photo { right: 0; width: 64%; top: auto; bottom: 0; height: 102%; }
+.pc-yellow .pc-photo img { object-fit: contain; object-position: right bottom; }
+/* 5-7: fade the right edge of the photo so its border can't be seen */
+.pc-blue .pc-photo {
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, #000 16%, #000 100%);
+  mask-image: linear-gradient(to left, transparent 0%, #000 16%, #000 100%);
+}
 .pc-yellow .pc-desc, .pc-yellow .pc-title,
 .pc-navy .pc-desc, .pc-navy .pc-title { max-width: 54%; }
 
@@ -261,12 +269,16 @@ a { text-decoration: none; color: inherit; }
 /* the red (first) card's open image reaches further across the right */
 .pc-coral.is-open .pc-photo { right: -3%; width: 70%; }
 /* open image: show the whole subject (contain) integrated on the right, gently faded only at the outer edge */
+/* two-level mask: the container softens the outer edges, the image fades its own left half —
+   both always apply, with no reliance on mask-composite support */
+.prog-card.is-open .pc-photo {
+  -webkit-mask-image: radial-gradient(120% 104% at 70% 58%, #000 62%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(120% 104% at 70% 58%, #000 62%, rgba(0,0,0,0) 100%);
+}
 .prog-card.is-open .pc-photo img {
   object-fit: contain; object-position: bottom right;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 100%), radial-gradient(120% 104% at 70% 58%, #000 62%, rgba(0,0,0,0) 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 100%), radial-gradient(120% 104% at 70% 58%, #000 62%, rgba(0,0,0,0) 100%);
-  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to right, transparent 5%, #000 55%, #000 100%);
+  mask-image: linear-gradient(to right, transparent 5%, #000 55%, #000 100%);
 }
 .prog-card.is-open .pc-title, .prog-card.is-open .pc-desc-long { max-width: none; }
 
@@ -343,12 +355,14 @@ a { text-decoration: none; color: inherit; }
 .how-num b { color: #fff; font-weight: 800; font-size: clamp(15px, 1.9vw, 30px); line-height: 1; }
 .deco { position: absolute; color: var(--c); }
 .deco-rays { width: 80%; height: 82%; top: -50%; left: -44%; }
+/* step 1: the spark sits directly above the number */
+.st1 .deco-rays { top: -78%; left: 2%; }
 .deco-arc  { width: 50%; left: -58%; }
 .st2 .deco-arc { height: 136%; top: -18%; }
 /* number 4: a gentle curve that wraps above the top of the badge */
 .deco-arc-top { width: 60%; height: auto; top: -34%; left: -20%; }
-/* number 5: an arc that follows the circle's curvature, hugging its right side */
-.deco-bigarc { width: 34%; height: 100%; top: 0; right: -24%; left: auto; }
+/* number 5: an arc concentric with the photo circle (same curvature), just outside its right side */
+.deco-bigarc { width: 115%; height: 100%; top: 0; left: 0; right: auto; }
 
 .how-step h4 { font-size: clamp(14px, 1.25vw, 19px); font-weight: 700; color: var(--green-d); margin-top: clamp(10px, 1.4vw, 22px); line-height: 1.25; }
 
