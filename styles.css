@@ -426,8 +426,8 @@ a { text-decoration: none; color: inherit; }
 .spark { position: absolute; width: 15%; height: auto; z-index: 3; pointer-events: none; }
 /* yellow spark lives at stage level (not inside the yellow wrap) so it can sit
    ABOVE the red card that overlaps the yellow card's corner */
-.spark-yellow { position: absolute; z-index: 5; width: 6.2%; color: #FCC400; left: 31.8%; top: 31%; transform: rotate(-42deg); }
-.spark-green  { color: #7DC243; bottom: -6.5%; right: -5%; transform: rotate(150deg); }
+.spark-yellow { position: absolute; z-index: 5; width: 6.2%; color: #FCC400; left: calc(31.8% + 4px); top: calc(31% - 10px); transform: rotate(208deg); }
+.spark-green  { color: #7DC243; bottom: calc(-6.5% - 4px); right: calc(-5% + 2px); transform: rotate(360deg); }
 
 /* ===================== SPACE ===================== */
 .space { padding: 30px 0 70px; }
