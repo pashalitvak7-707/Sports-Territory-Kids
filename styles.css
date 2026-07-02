@@ -355,14 +355,14 @@ a { text-decoration: none; color: inherit; }
 .how-num b { color: #fff; font-weight: 800; font-size: clamp(15px, 1.9vw, 30px); line-height: 1; }
 .deco { position: absolute; color: var(--c); }
 .deco-rays { width: 80%; height: 82%; top: -50%; left: -44%; }
-/* step 1: the spark sits directly above the number */
-.st1 .deco-rays { top: -78%; left: 2%; }
+/* step 1: the spark sits slightly above the number, centred over it */
+.st1 .deco-rays { width: 66%; top: -50%; left: 18%; }
 .deco-arc  { width: 50%; left: -58%; }
 .st2 .deco-arc { height: 136%; top: -18%; }
 /* number 4: a gentle curve that wraps above the top of the badge */
 .deco-arc-top { width: 60%; height: auto; top: -34%; left: -20%; }
 /* number 5: an arc concentric with the photo circle (same curvature), just outside its right side */
-.deco-bigarc { width: 115%; height: 100%; top: 0; left: 0; right: auto; }
+.deco-bigarc { width: 115%; height: 100%; top: 0; left: 8%; right: auto; }
 
 .how-step h4 { font-size: clamp(14px, 1.25vw, 19px); font-weight: 700; color: var(--green-d); margin-top: clamp(10px, 1.4vw, 22px); line-height: 1.25; }
 
@@ -382,10 +382,12 @@ a { text-decoration: none; color: inherit; }
 .method-stage { position: relative; max-width: 1180px; margin: clamp(-90px, -6.5vw, -40px) auto 0; aspect-ratio: 1180 / 600; z-index: 1; }
 
 /* a tilted card + its outside decorations */
-.mcard-wrap { position: absolute; width: 35.5%; }
-.mw-red    { left: 1%;    top: 5%;  transform: rotate(-5deg); z-index: 2; }
-.mw-yellow { left: 31.5%; top: 32%; transform: rotate(4deg);  z-index: 4; }
-.mw-green  { left: 64.5%; top: 11%; transform: rotate(5deg);  z-index: 3; }
+.mcard-wrap { position: absolute; width: 34%; }
+/* red & green sit IN FRONT of the yellow card, overlapping only its corners;
+   yellow is the middle card, tilted right, sitting behind the other two */
+.mw-red    { left: 1%;    top: 5%;  transform: rotate(-5deg); z-index: 4; }
+.mw-yellow { left: 33%;   top: 32%; transform: rotate(4deg);  z-index: 2; }
+.mw-green  { left: 65%;   top: 11%; transform: rotate(-3deg); z-index: 3; }
 
 .method-card { position: relative; aspect-ratio: 1.1 / 1; border-radius: 30px;
   box-shadow: 0 22px 46px rgba(20,40,30,.18); display: flex; }
@@ -402,7 +404,7 @@ a { text-decoration: none; color: inherit; }
   display: flex; flex-direction: column; transform-origin: 50% 50%; }
 .mw-red    .mcard-body { transform: rotate(5deg); }
 .mw-yellow .mcard-body { transform: rotate(-4deg); }
-.mw-green  .mcard-body { transform: translateX(8px) rotate(-5deg); }
+.mw-green  .mcard-body { transform: translateX(8px) rotate(3deg); }
 .method-card h3 { font-size: clamp(16px, 1.85vw, 28px); font-weight: 700; margin: 2px 0 clamp(10px, 1.8vw, 28px); }
 .method-card p { font-size: clamp(10px, 1vw, 15px); font-weight: 400; line-height: 1.5; }
 
@@ -416,14 +418,14 @@ a { text-decoration: none; color: inherit; }
 
 /* coral corner arcs on the red card — drawn inside the tilted wrap, so they stay
    parallel to the card's rounded corners */
-.corner-curve { position: absolute; width: 24%; height: auto; z-index: 3; pointer-events: none; color: #F0552F; }
-.cc-tr { top: -11%; right: -10%; }
-.cc-bl { bottom: -11%; left: -10%; transform: rotate(180deg); }
+.corner-curve { position: absolute; width: 33%; height: auto; z-index: 3; pointer-events: none; color: #F0552F; }
+.cc-tr { top: -13%; right: -13%; }
+.cc-bl { bottom: -13%; left: -13%; transform: rotate(180deg); }
 
 /* 3-line sparks next to yellow & green cards (same style as the first-lesson section) */
 .spark { position: absolute; width: 15%; height: auto; z-index: 3; pointer-events: none; }
-.spark-yellow { color: #FCC400; top: -15%; left: -9%; }
-.spark-green  { color: #7DC243; bottom: -14%; right: -9%; transform: rotate(180deg); }
+.spark-yellow { color: #FCC400; top: -16%; left: 14%; transform: rotate(-10deg); }
+.spark-green  { color: #7DC243; bottom: -17%; right: -5%; transform: rotate(192deg); }
 
 /* ===================== SPACE ===================== */
 .space { padding: 30px 0 70px; }
