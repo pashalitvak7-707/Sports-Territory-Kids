@@ -137,6 +137,8 @@ a { text-decoration: none; color: inherit; }
 .feat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; color: #fff; }
 .feat-icon { width: 104px; height: 104px; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,.12)); }
 .feat p { font-weight: 700; font-size: 18px; line-height: 1.35; }
+/* mobile-only line breaks in the feature text (desktop keeps its own breaks) */
+.feat p .br-m { display: none; }
 
 /* ===================== SECTION TITLES ===================== */
 .section-title { text-align: center; font-size: 36px; font-weight: 800; color: var(--green-d); margin-bottom: 14px; }
@@ -744,6 +746,21 @@ a { text-decoration: none; color: inherit; }
   .footer-spacer { display: none; }
   .signup-form input { min-width: 100%; }
   .topbar-phone { font-size: 15px; }
+
+  /* second slide (features): rounded square, each item is icon-left + text-right */
+  .features-band {
+    aspect-ratio: 1 / 1;
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: start;
+    gap: clamp(14px, 4vw, 26px);
+    padding: clamp(22px, 6vw, 34px);
+    border-radius: 40px;
+  }
+  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(14px, 4vw, 20px); width: 100%; }
+  .feat-icon { width: clamp(52px, 15vw, 66px); height: auto; flex: 0 0 auto; }
+  .feat p .br-d { display: none; }
+  .feat p .br-m { display: inline; }
 }
 
 /* ===================== SCHEDULE PAGE ===================== */
