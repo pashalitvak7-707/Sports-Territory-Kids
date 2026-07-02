@@ -751,14 +751,15 @@ a { text-decoration: none; color: inherit; }
   .features-band {
     aspect-ratio: 1 / 1;
     grid-template-columns: 1fr;
-    align-content: center;
+    align-content: space-between;
     justify-items: start;
-    gap: clamp(14px, 4vw, 26px);
-    padding: clamp(22px, 6vw, 34px);
+    gap: clamp(8px, 2.4vw, 14px);
+    padding: clamp(18px, 5vw, 28px) clamp(10px, 3vw, 18px);
     border-radius: 40px;
   }
-  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(14px, 4vw, 20px); width: 100%; }
-  .feat-icon { width: clamp(52px, 15vw, 66px); height: auto; flex: 0 0 auto; }
+  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(10px, 3vw, 16px); width: 100%; }
+  .feat-icon { width: clamp(60px, 18vw, 76px); height: auto; flex: 0 0 auto; }
+  .feat p { font-size: clamp(18px, 5.3vw, 21px); }
   .feat p .br-d { display: none; }
   .feat p .br-m { display: inline; }
 }
