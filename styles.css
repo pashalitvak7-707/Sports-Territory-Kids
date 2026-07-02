@@ -126,7 +126,7 @@ a { text-decoration: none; color: inherit; }
 /* ===================== FEATURE BAND ===================== */
 .features { background: #FFFFFF; padding: 78px 0 70px; }
 .features-band {
-  position: relative; border-radius: 36px; padding: 56px 40px 50px;
+  position: relative; border-radius: 36px; padding: 56px clamp(40px, 12vw, 195px) 50px;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   background:
     radial-gradient(120% 150% at 50% -25%, rgba(247,150,53,.85) 0%, rgba(247,170,60,.18) 38%, rgba(247,170,60,0) 60%),
