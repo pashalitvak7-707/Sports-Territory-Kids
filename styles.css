@@ -384,7 +384,7 @@ a { text-decoration: none; color: inherit; }
 /* a tilted card + its outside decorations */
 .mcard-wrap { position: absolute; width: 35.5%; }
 .mw-red    { left: 0.5%;  top: 3%;  transform: rotate(-5deg); z-index: 4; }
-.mw-yellow { left: 35%;   top: 41%; transform: rotate(4deg);  z-index: 2; }
+.mw-yellow { left: 35%;   top: 35%; transform: rotate(4deg);  z-index: 2; }
 .mw-green  { left: 66.5%; top: 8%;  transform: rotate(-3deg); z-index: 3; }
 
 .method-card { position: relative; aspect-ratio: 1.1 / 1; border-radius: 30px;
@@ -412,7 +412,8 @@ a { text-decoration: none; color: inherit; }
 .sk-red-b { width: 150%; bottom: -30%; left: -34%; transform: rotate(8deg); }
 .sk-yel-a { width: 78%; top: -16%; left: -14%; transform: rotate(2deg); }
 .sk-yel-b { width: 70%; top: -8%; left: 28%; transform: scaleX(-1) rotate(4deg); }
-.sk-green { width: 138%; top: -16%; right: -20%; left: auto; }
+/* new corner swoosh in the green card's top-right corner (from supplied vector) */
+.sk-green-corner { width: 82%; top: -10%; right: -12%; left: auto; opacity: .22; transform: rotate(180deg); }
 
 /* coral corner brackets on the red card — straight arms with a rounded corner
    (matching the card's corner curvature), drawn inside the tilted wrap so they
@@ -423,8 +424,8 @@ a { text-decoration: none; color: inherit; }
 
 /* 3-line sparks next to yellow & green cards (same style as the first-lesson section) */
 .spark { position: absolute; width: 15%; height: auto; z-index: 3; pointer-events: none; }
-.spark-yellow { color: #FCC400; top: -18%; left: -2%; transform: rotate(-16deg); }
-.spark-green  { color: #7DC243; bottom: -17%; right: -2%; transform: rotate(196deg); }
+.spark-yellow { color: #FCC400; top: -18%; left: -3%; transform: rotate(-16deg); }
+.spark-green  { color: #7DC243; bottom: -18%; right: -6%; transform: rotate(212deg); }
 
 /* ===================== SPACE ===================== */
 .space { padding: 30px 0 70px; }
