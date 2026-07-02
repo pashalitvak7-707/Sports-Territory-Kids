@@ -413,7 +413,7 @@ a { text-decoration: none; color: inherit; }
 .sk-yel-a { width: 78%; top: -16%; left: -14%; transform: rotate(2deg); }
 .sk-yel-b { width: 70%; top: -8%; left: 28%; transform: scaleX(-1) rotate(4deg); }
 /* new corner swoosh in the green card's top-right corner (from supplied vector) */
-.sk-green-corner { width: 82%; top: -10%; right: -12%; left: auto; opacity: .22; transform: rotate(180deg); }
+.sk-green-corner { width: 82%; top: -10%; right: -12%; left: auto; opacity: .22; transform: rotate(0deg); }
 
 /* coral corner brackets on the red card — straight arms with a rounded corner
    (matching the card's corner curvature), drawn inside the tilted wrap so they
@@ -424,8 +424,10 @@ a { text-decoration: none; color: inherit; }
 
 /* 3-line sparks next to yellow & green cards (same style as the first-lesson section) */
 .spark { position: absolute; width: 15%; height: auto; z-index: 3; pointer-events: none; }
-.spark-yellow { color: #FCC400; top: -18%; left: -3%; transform: rotate(-16deg); }
-.spark-green  { color: #7DC243; bottom: -18%; right: -6%; transform: rotate(212deg); }
+/* yellow spark lives at stage level (not inside the yellow wrap) so it can sit
+   ABOVE the red card that overlaps the yellow card's corner */
+.spark-yellow { position: absolute; z-index: 5; width: 6.2%; color: #FCC400; left: 31%; top: 26%; transform: rotate(-42deg); }
+.spark-green  { color: #7DC243; bottom: -16%; right: -7%; transform: rotate(150deg); }
 
 /* ===================== SPACE ===================== */
 .space { padding: 30px 0 70px; }
