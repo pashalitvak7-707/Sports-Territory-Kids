@@ -383,7 +383,7 @@ a { text-decoration: none; color: inherit; }
 
 /* a tilted card + its outside decorations */
 .mcard-wrap { position: absolute; width: 35.5%; }
-.mw-red    { left: 0.5%;  top: 3%;  transform: rotate(-5deg); z-index: 4; }
+.mw-red    { left: 0.5%;  top: 6%;  transform: rotate(-5deg); z-index: 4; }
 .mw-yellow { left: 35%;   top: 35%; transform: rotate(4deg);  z-index: 2; }
 .mw-green  { left: 66.5%; top: 8%;  transform: rotate(-3deg); z-index: 3; }
 
@@ -426,8 +426,8 @@ a { text-decoration: none; color: inherit; }
 .spark { position: absolute; width: 15%; height: auto; z-index: 3; pointer-events: none; }
 /* yellow spark lives at stage level (not inside the yellow wrap) so it can sit
    ABOVE the red card that overlaps the yellow card's corner */
-.spark-yellow { position: absolute; z-index: 5; width: 6.2%; color: #FCC400; left: 31%; top: 26%; transform: rotate(-42deg); }
-.spark-green  { color: #7DC243; bottom: -16%; right: -7%; transform: rotate(150deg); }
+.spark-yellow { position: absolute; z-index: 5; width: 6.2%; color: #FCC400; left: 31.8%; top: 31%; transform: rotate(-42deg); }
+.spark-green  { color: #7DC243; bottom: -6.5%; right: -5%; transform: rotate(150deg); }
 
 /* ===================== SPACE ===================== */
 .space { padding: 30px 0 70px; }
