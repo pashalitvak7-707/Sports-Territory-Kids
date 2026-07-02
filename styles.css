@@ -633,7 +633,8 @@ a { text-decoration: none; color: inherit; }
 .faq-mascot { width: 100%; max-width: 100%; justify-self: center; border-radius: 28px; }
 
 /* ===================== SIGNUP ===================== */
-.signup { padding: 20px 0 90px; }
+/* horizontal padding leaves a bit of empty space between the green box and the screen edges */
+.signup { padding: 20px clamp(20px, 3.5vw, 64px) 90px; }
 .signup-inner { position: relative; overflow: hidden; border-radius: 44px; text-align: center; color: #fff;
   background: linear-gradient(180deg, #A8CB3A 0%, #84C13E 12%, #49B24B 30%, #3CAF49 58%, #36A948 100%);
   padding: clamp(48px, 5vw, 78px) clamp(30px, 4vw, 60px) clamp(40px, 4.4vw, 70px);
