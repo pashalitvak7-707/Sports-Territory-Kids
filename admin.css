@@ -123,3 +123,6 @@ textarea { resize: vertical; }
   .adm-header-inner { gap: 8px; }
   .adm-tabs { order: 3; width: 100%; }
 }
+
+/* Атрибут hidden должен побеждать display:flex у панелей */
+[hidden] { display: none !important; }
