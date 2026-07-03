@@ -1,0 +1,15 @@
+name: site-check
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show what the live site serves
+        run: |
+          base="https://pashalitvak7-707.github.io/Sports-Territory-Kids"
+          echo "===== panel.html (key lines) ====="
+          curl -sS "$base/panel.html" | grep -n "CMS_CONFIG\|supabase.co\|admin.js\|viewNoConfig" || true
+          echo "===== cms-config.js ====="
+          curl -sS "$base/cms-config.js"
+          echo "===== admin.js?v=2 (first lines) ====="
+          curl -sS "$base/admin.js?v=2" | head -16

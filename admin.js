@@ -2,7 +2,14 @@
 (function () {
   'use strict';
 
+  // Запасная копия ключей: страница работает, даже если cms-config.js
+  // не загрузился или пришёл из устаревшего кеша
+  var FALLBACK_CONFIG = {
+    url: 'https://zuntxqtceskpcdwwwrnh.supabase.co',
+    anonKey: 'sb_publishable_z1f4A_NisVriQ3hDSlNIUg_w4szVbuN'
+  };
   var cfg = window.CMS_CONFIG || {};
+  if (!cfg.url || !cfg.anonKey) cfg = FALLBACK_CONFIG;
   var $ = function (id) { return document.getElementById(id); };
 
   if (!cfg.url || !cfg.anonKey) {

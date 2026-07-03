@@ -7,7 +7,13 @@
 (function () {
   'use strict';
 
+  // Запасная копия ключей на случай устаревшего кеша cms-config.js
+  var FALLBACK_CONFIG = {
+    url: 'https://zuntxqtceskpcdwwwrnh.supabase.co',
+    anonKey: 'sb_publishable_z1f4A_NisVriQ3hDSlNIUg_w4szVbuN'
+  };
   var cfg = window.CMS_CONFIG || {};
+  if (!cfg.url || !cfg.anonKey) cfg = FALLBACK_CONFIG;
   var configured = !!(cfg.url && cfg.anonKey);
 
   /* ---------- Справочники (совпадают с фильтрами на schedule.html) ---------- */
