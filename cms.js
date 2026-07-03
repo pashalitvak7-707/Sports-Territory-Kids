@@ -34,9 +34,10 @@
   function rest(path, method, body) {
     var headers = {
       apikey: cfg.anonKey,
-      Authorization: 'Bearer ' + cfg.anonKey,
       'Content-Type': 'application/json'
     };
+    // Старые (JWT) ключи требуют Authorization; новым sb_publishable_ хватает apikey
+    if (cfg.anonKey.indexOf('sb_') !== 0) headers.Authorization = 'Bearer ' + cfg.anonKey;
     if (method === 'POST') headers.Prefer = 'return=minimal';
     return fetch(cfg.url + '/rest/v1/' + path, {
       method: method || 'GET',

@@ -6,6 +6,6 @@
  * anonKey — anon / publishable key (публичный ключ, его можно хранить в коде)
  */
 window.CMS_CONFIG = {
-  url: '',
-  anonKey: ''
+  url: 'https://zuntxqtceskpcdwwwrnh.supabase.co',
+  anonKey: 'sb_publishable_z1f4A_NisVriQ3hDSlNIUg_w4szVbuN'
 };
