@@ -55,7 +55,7 @@ create table if not exists public.reviews (
 
 create or replace function public.is_admin() returns boolean
 language sql stable as $$
-  select coalesce(lower(auth.jwt() ->> 'email'), '') = lower('paulinalitvak04@gmail.com')
+  select coalesce(lower(auth.jwt() ->> 'email'), '') = lower('pashalitvak07@gmail.com')
 $$;
 
 alter table public.settings enable row level security;
