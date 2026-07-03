@@ -1,11 +1,14 @@
 name: site-check
-on: workflow_dispatch
+on:
+  push:
+    branches: [claude/modest-albattani-uq42kn]
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Show what the live site serves
+      - name: Wait for Pages deploy, then show what the live site serves
         run: |
+          sleep 150
           base="https://pashalitvak7-707.github.io/Sports-Territory-Kids"
           echo "===== panel.html (key lines) ====="
           curl -sS "$base/panel.html" | grep -n "CMS_CONFIG\|supabase.co\|admin.js\|viewNoConfig" || true
