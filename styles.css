@@ -137,8 +137,8 @@ a { text-decoration: none; color: inherit; }
 .feat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; color: #fff; }
 .feat-icon { width: 104px; height: 104px; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,.12)); }
 .feat p { font-weight: 700; font-size: 18px; line-height: 1.35; }
-/* mobile-only line breaks in the feature text (desktop keeps its own breaks) */
-.feat p .br-m { display: none; }
+/* mobile shows its own shorter feature text; desktop keeps the original copy */
+.feat p .ft-m { display: none; }
 
 /* ===================== SECTION TITLES ===================== */
 .section-title { text-align: center; font-size: 36px; font-weight: 800; color: var(--green-d); margin-bottom: 14px; }
@@ -753,15 +753,16 @@ a { text-decoration: none; color: inherit; }
     grid-template-columns: 1fr;
     align-content: space-between;
     justify-items: start;
-    gap: clamp(8px, 2.4vw, 14px);
-    padding: clamp(18px, 5vw, 28px) clamp(10px, 3vw, 18px);
+    gap: clamp(10px, 3vw, 18px);
+    /* extra left padding pushes the icons + text to the right, like the screenshot */
+    padding: clamp(22px, 6vw, 34px) clamp(8px, 2.5vw, 16px) clamp(22px, 6vw, 34px) clamp(16px, 5vw, 40px);
     border-radius: 40px;
   }
-  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(10px, 3vw, 16px); width: 100%; }
-  .feat-icon { width: clamp(60px, 18vw, 76px); height: auto; flex: 0 0 auto; }
-  .feat p { font-size: clamp(18px, 5.3vw, 21px); }
-  .feat p .br-d { display: none; }
-  .feat p .br-m { display: inline; }
+  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(14px, 4.5vw, 24px); width: 100%; }
+  .feat-icon { width: clamp(64px, 20vw, 92px); height: auto; flex: 0 0 auto; }
+  .feat p { font-size: clamp(18px, 5.9vw, 26px); }
+  .feat p .ft-d { display: none; }
+  .feat p .ft-m { display: inline; }
 }
 
 /* ===================== SCHEDULE PAGE ===================== */
