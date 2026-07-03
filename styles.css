@@ -42,12 +42,13 @@
   --shadow-sm: 0 8px 22px rgba(20,40,30,.07);
   --maxw: 1860px;
   --ease: cubic-bezier(.22,.61,.36,1);
+  --font-body: 'Akzidenz-Grotesk Pro', 'Montserrat', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Akzidenz-Grotesk Pro', 'Montserrat', system-ui, sans-serif;
+  font-family: var(--font-body);
   color: var(--ink);
   background: var(--bg);
   line-height: 1.5;
@@ -856,3 +857,7 @@ a { text-decoration: none; color: inherit; }
   .filter-check, .filter-reset { width: 100%; justify-content: center; }
   .sch-row { grid-template-columns: 1fr; }
 }
+
+/* ===================== CMS ADDITIONS ===================== */
+.sch-spots.sch-none { color: #D14836; font-weight: 700; }
+.review-thanks { margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--green-d); }

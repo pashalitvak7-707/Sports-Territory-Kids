@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админ-панель — Территория Спорта КИДС</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+  <link rel="stylesheet" href="admin.css?v=1" />
+</head>
+<body>
+
+  <!-- Не настроено -->
+  <div id="viewNoConfig" class="adm-center" hidden>
+    <div class="adm-card adm-login">
+      <img src="assets/img/logo.png" alt="" class="adm-logo" />
+      <h1>Админ-панель не подключена</h1>
+      <p>Заполните адрес проекта и ключ Supabase в файле <code>cms-config.js</code>, затем обновите страницу.</p>
+    </div>
+  </div>
+
+  <!-- Вход -->
+  <div id="viewLogin" class="adm-center" hidden>
+    <form id="loginForm" class="adm-card adm-login">
+      <img src="assets/img/logo.png" alt="" class="adm-logo" />
+      <h1>Вход в админ-панель</h1>
+      <label>Email
+        <input type="email" id="loginEmail" autocomplete="username" required />
+      </label>
+      <label>Пароль
+        <input type="password" id="loginPass" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="adm-btn adm-btn-primary" id="loginBtn">Войти</button>
+      <p class="adm-error" id="loginError" hidden></p>
+    </form>
+  </div>
+
+  <!-- Панель -->
+  <div id="viewPanel" hidden>
+    <header class="adm-header">
+      <div class="adm-header-inner">
+        <img src="assets/img/logo.png" alt="" class="adm-logo-sm" />
+        <span class="adm-title">Админ-панель</span>
+        <nav class="adm-tabs" id="tabs">
+          <button data-tab="messages">Заявки <span class="adm-badge" id="badgeMessages" hidden></span></button>
+          <button data-tab="reviews">Отзывы <span class="adm-badge" id="badgeReviews" hidden></span></button>
+          <button data-tab="schedule">Расписание</button>
+          <button data-tab="coaches">Тренеры</button>
+          <button data-tab="texts">Тексты</button>
+          <button data-tab="design">Оформление</button>
+          <button data-tab="contacts">Контакты</button>
+        </nav>
+        <div class="adm-header-right">
+          <a href="index.html" target="_blank" rel="noopener" class="adm-link">Открыть сайт ↗</a>
+          <button id="logoutBtn" class="adm-btn adm-btn-ghost">Выйти</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="adm-main">
+      <section id="tab-messages" class="adm-tabpane" hidden>
+        <h2>Заявки с сайта</h2>
+        <p class="adm-hint">Здесь появляются все заявки, отправленные через формы сайта (копия также открывается у посетителя в WhatsApp).</p>
+        <div id="messagesList" class="adm-list"></div>
+      </section>
+
+      <section id="tab-reviews" class="adm-tabpane" hidden>
+        <h2>Отзывы</h2>
+        <p class="adm-hint">Новые отзывы попадают сюда на проверку. На сайте показываются только опубликованные (последние 4).</p>
+        <h3>Ожидают проверки</h3>
+        <div id="reviewsPending" class="adm-list"></div>
+        <h3>Опубликованные</h3>
+        <div id="reviewsApproved" class="adm-list"></div>
+      </section>
+
+      <section id="tab-schedule" class="adm-tabpane" hidden>
+        <h2>Расписание занятий</h2>
+        <p class="adm-hint">Занятия автоматически сортируются по дню недели и времени. «Мест: 0» показывается на сайте как «Нет мест».</p>
+        <form id="schForm" class="adm-card adm-form">
+          <h3 id="schFormTitle">Добавить занятие</h3>
+          <div class="adm-grid">
+            <label>Направление
+              <select id="schDir" required></select>
+            </label>
+            <label>Возраст
+              <select id="schAge" required></select>
+            </label>
+            <label>День недели
+              <select id="schDay" required></select>
+            </label>
+            <label>Время
+              <input type="text" id="schTime" placeholder="10:00–10:45" required />
+            </label>
+            <label>Тренер
+              <input type="text" id="schCoach" list="coachNames" placeholder="Имя тренера" />
+              <datalist id="coachNames"></datalist>
+            </label>
+            <label>Свободных мест
+              <input type="number" id="schSpots" min="0" max="99" value="4" required />
+            </label>
+          </div>
+          <div class="adm-form-actions">
+            <button type="submit" class="adm-btn adm-btn-primary" id="schSaveBtn">Добавить</button>
+            <button type="button" class="adm-btn adm-btn-ghost" id="schCancelBtn" hidden>Отмена</button>
+          </div>
+        </form>
+        <div id="scheduleList" class="adm-list"></div>
+      </section>
+
+      <section id="tab-coaches" class="adm-tabpane" hidden>
+        <h2>Тренеры</h2>
+        <p class="adm-hint">Порядок карточек на сайте меняется стрелками ↑ ↓. Фото: лучше вертикальное, на прозрачном или однотонном фоне.</p>
+        <form id="coachForm" class="adm-card adm-form">
+          <h3 id="coachFormTitle">Добавить тренера</h3>
+          <div class="adm-grid">
+            <label>Имя и фамилия
+              <input type="text" id="coachName" placeholder="Анна Соколова" required />
+            </label>
+            <label>Должность
+              <input type="text" id="coachPos" placeholder="Старший тренер" required />
+            </label>
+            <label>Опыт
+              <input type="text" id="coachExp" placeholder="7 лет опыта" />
+            </label>
+            <label>Фото
+              <input type="file" id="coachPhoto" accept="image/*" />
+            </label>
+          </div>
+          <label>Описание
+            <textarea id="coachBio" rows="2" placeholder="Помогает детям мягко входить в спорт…"></textarea>
+          </label>
+          <div class="adm-form-actions">
+            <button type="submit" class="adm-btn adm-btn-primary" id="coachSaveBtn">Добавить</button>
+            <button type="button" class="adm-btn adm-btn-ghost" id="coachCancelBtn" hidden>Отмена</button>
+          </div>
+        </form>
+        <div id="coachesList" class="adm-list"></div>
+      </section>
+
+      <section id="tab-texts" class="adm-tabpane" hidden>
+        <h2>Тексты сайта</h2>
+        <p class="adm-hint">Пустое поле = используется стандартный текст (показан серым). Перенос строки в поле = перенос строки на сайте.</p>
+        <form id="textsForm"></form>
+        <div class="adm-savebar">
+          <button class="adm-btn adm-btn-primary" id="textsSaveBtn">Сохранить тексты</button>
+          <span class="adm-saved" id="textsSaved" hidden>Сохранено ✓</span>
+        </div>
+      </section>
+
+      <section id="tab-design" class="adm-tabpane" hidden>
+        <h2>Оформление</h2>
+        <p class="adm-hint">Цвета применяются ко всему сайту. Кнопка «Сбросить» возвращает фирменные цвета и шрифт.</p>
+        <div class="adm-card adm-form">
+          <h3>Цвета</h3>
+          <div class="adm-grid" id="colorsGrid"></div>
+        </div>
+        <div class="adm-card adm-form">
+          <h3>Шрифт</h3>
+          <label>Основной шрифт сайта
+            <select id="fontSelect"></select>
+          </label>
+        </div>
+        <div class="adm-card adm-form">
+          <h3>Изображения</h3>
+          <div class="adm-grid">
+            <label>Логотип
+              <input type="file" id="imgLogo" accept="image/*" />
+              <span class="adm-imgstate" id="imgLogoState"></span>
+            </label>
+            <label>Главное фото (на первом экране)
+              <input type="file" id="imgHero" accept="image/*" />
+              <span class="adm-imgstate" id="imgHeroState"></span>
+            </label>
+          </div>
+        </div>
+        <div class="adm-savebar">
+          <button class="adm-btn adm-btn-primary" id="designSaveBtn">Сохранить оформление</button>
+          <button class="adm-btn adm-btn-ghost" id="designResetBtn">Сбросить к стандартному</button>
+          <span class="adm-saved" id="designSaved" hidden>Сохранено ✓</span>
+        </div>
+      </section>
+
+      <section id="tab-contacts" class="adm-tabpane" hidden>
+        <h2>Контакты</h2>
+        <p class="adm-hint">Эти данные подставляются во все телефоны, кнопки и ссылки WhatsApp на сайте.</p>
+        <div class="adm-card adm-form">
+          <div class="adm-grid">
+            <label>Телефон (как показан на сайте)
+              <input type="text" id="cPhoneDisplay" placeholder="8 705 429 0000" />
+            </label>
+            <label>Телефон для звонка (с +7)
+              <input type="text" id="cPhoneTel" placeholder="+77054290000" />
+            </label>
+            <label>Номер WhatsApp (только цифры, с кодом страны)
+              <input type="text" id="cWhatsapp" placeholder="77054290000" />
+            </label>
+          </div>
+        </div>
+        <div class="adm-savebar">
+          <button class="adm-btn adm-btn-primary" id="contactsSaveBtn">Сохранить контакты</button>
+          <span class="adm-saved" id="contactsSaved" hidden>Сохранено ✓</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="cms-config.js?v=1"></script>
+  <script src="admin.js?v=1"></script>
+</body>
+</html>

@@ -171,8 +171,15 @@
     document.querySelectorAll('[data-whatsapp-form]').forEach(function (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+        var cms = window.TSKCMS;
         var ctx = form.getAttribute('data-context') || 'Заявка';
         var data = new FormData(form);
+        // Отзывы уходят на модерацию в админку (если она подключена), а не в WhatsApp
+        if (form.hasAttribute('data-review-form') && cms && cms.configured) {
+          cms.submitReview(form);
+          return;
+        }
+        if (cms && cms.configured) cms.saveMessage(ctx, data); // копия заявки в админку
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
         var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение',
           parent: 'Имя родителя', child: 'Имя ребёнка', childage: 'Возраст ребёнка', lesson: 'Занятие' };
@@ -180,7 +187,8 @@
           val = (val || '').toString().trim();
           if (val) lines.push((labels[key] || key) + ': ' + val);
         });
-        var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+        var wa = (cms && cms.settings['contact.whatsapp']) || WHATSAPP_NUMBER;
+        var url = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(lines.join('\n'));
         window.open(url, '_blank', 'noopener');
         form.reset();
       });
@@ -271,6 +279,9 @@
   }
 
   /* ---------- init ---------- */
+  // cms.js пере-инициализирует карусель тренеров после загрузки данных
+  window.TSK = { initCarousel: initCarousel, initCoachStage: initCoachStage };
+
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
