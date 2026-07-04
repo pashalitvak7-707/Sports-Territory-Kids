@@ -9,7 +9,19 @@
   <link rel="preload" href="assets/fonts/ag-bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/ag-medium.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="styles.css?v=20260630-21" />
+  <link rel="stylesheet" href="styles.css?v=20260704-1" />
+  <script>
+    /* Enable the scroll-reveal animation only when JS is running, and add a
+       fail-safe: if the reveal observer hasn't marked itself ready shortly
+       after load, force every section visible so nothing stays blank. */
+    document.documentElement.className += ' js-reveal';
+    setTimeout(function () {
+      if (!window.__revealReady) {
+        var e = document.querySelectorAll('.reveal');
+        for (var i = 0; i < e.length; i++) e[i].classList.add('in');
+      }
+    }, 3000);
+  </script>
 </head>
 <body>
 
@@ -608,6 +620,6 @@
 
   <script src="cms-config.js?v=2"></script>
   <script src="cms.js?v=3"></script>
-  <script src="script.js?v=20260630-21"></script>
+  <script src="script.js?v=20260704-1"></script>
 </body>
 </html>

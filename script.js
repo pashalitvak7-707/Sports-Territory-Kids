@@ -9,6 +9,7 @@
     var els = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) {
       els.forEach(function (el) { el.classList.add('in'); });
+      window.__revealReady = true;
       return;
     }
     var io = new IntersectionObserver(function (entries) {
@@ -18,8 +19,9 @@
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.02, rootMargin: '0px 0px -4% 0px' });
     els.forEach(function (el) { io.observe(el); });
+    window.__revealReady = true;
   }
 
   /* ---------- 2. Carousels with working arrows ---------- */
