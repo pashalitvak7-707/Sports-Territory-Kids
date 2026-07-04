@@ -172,6 +172,11 @@
     // Клонируем сцену, чтобы сбросить старые обработчики карусели, и инициализируем заново
     var clone = stage.cloneNode(true);
     clone.querySelector('.cstage-track').innerHTML = html;
+    // Клон — новый узел, за которым НЕ следит IntersectionObserver из script.js,
+    // поэтому reveal-класс никогда не получит «.in» и карточки остались бы
+    // скрытыми (opacity:0). Снимаем reveal-гейт, чтобы сцена была видима сразу.
+    clone.classList.remove('reveal');
+    clone.classList.add('in');
     stage.parentNode.replaceChild(clone, stage);
     if (window.TSK && window.TSK.initCoachStage) window.TSK.initCoachStage(clone);
   }
