@@ -9,7 +9,7 @@
   <link rel="preload" href="assets/fonts/ag-bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/ag-medium.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="styles.css?v=20260704-1" />
+  <link rel="stylesheet" href="styles.css?v=20260705-1" />
   <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -464,23 +464,39 @@
 
   <!-- ================= EQUIPMENT ================= -->
   <section class="equip">
-    <div class="container equip-inner">
-      <div class="equip-left reveal">
+    <div class="container">
+      <div class="equip-head reveal">
         <h2 class="section-title section-title-left" data-cms="equip.title">Что есть у нас в зале?</h2>
-        <img class="equip-plan" src="assets/img/floorplan.jpg" alt="План зала" />
-      </div>
-      <div class="equip-list reveal">
         <span class="equip-line" aria-hidden="true"></span>
-        <div class="acc open">
-          <button class="acc-head"><span class="acc-title">1. Шведская стенка</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button>
-          <div class="acc-body"><p>Развивает силу, координацию и уверенность в движении.</p></div>
+      </div>
+      <div class="equip-inner">
+        <div class="equip-left reveal">
+          <div class="equip-plan-wrap">
+            <img class="equip-plan" src="assets/img/hall-plan.png" alt="План зала" />
+            <span class="plan-dot" style="left:93.6%;top:40%">1</span>
+            <span class="plan-dot" style="left:86.4%;top:22%">2</span>
+            <span class="plan-dot" style="left:70.8%;top:23%">3</span>
+            <span class="plan-dot" style="left:13.4%;top:38%">4</span>
+            <span class="plan-dot" style="left:41.5%;top:23.5%">5</span>
+            <span class="plan-dot" style="left:79.5%;top:29.5%">6</span>
+            <span class="plan-dot" style="left:54%;top:56%">7</span>
+            <span class="plan-dot" style="left:78.5%;top:55%">8</span>
+            <span class="plan-dot" style="left:31.6%;top:58%">8</span>
+          </div>
         </div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">2. Акробатическая дорожка</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Безопасная поверхность для кувырков, перекатов и первых акробатических элементов.</p></div></div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">3. Перекладина</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Укрепляет руки и спину, формирует правильный хват и осанку.</p></div></div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">4. Кольца</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Развивают силу рук, баланс и контроль над телом в висе.</p></div></div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">5. Брусья</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Помогают освоить опорные элементы и уверенно держать вес тела.</p></div></div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">6. Полоса препятствий</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Игровой формат для развития ловкости, координации и выносливости.</p></div></div>
-        <div class="acc"><button class="acc-head"><span class="acc-title">7. Батутная зона</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p>Учит группироваться, чувствовать тело в воздухе и приземляться мягко.</p></div></div>
+        <div class="equip-list reveal">
+          <div class="acc open">
+            <button class="acc-head"><span class="acc-title" data-cms="equip.i1.title">1. Шведская стенка</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button>
+            <div class="acc-body"><p data-cms="equip.i1.text">Развивает силу, координацию и уверенность в движении.</p></div>
+          </div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i2.title">2. Перекладина</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i2.text">Укрепляет руки и спину, формирует правильный хват и осанку.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i3.title">3. Брусья</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i3.text">Помогают освоить опорные элементы и уверенно держать вес тела.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i4.title">4. Батутная зона</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i4.text">Учит группироваться, чувствовать тело в воздухе и приземляться мягко.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i5.title">5. Акробатическая дорожка</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i5.text">Безопасная поверхность для кувырков, перекатов и первых акробатических элементов.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i6.title">6. Кольца</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i6.text">Развивают силу рук, баланс и контроль над телом в висе.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i7.title">7. Полоса препятствий</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i7.text">Игровой формат для развития ловкости, координации и выносливости.</p></div></div>
+          <div class="acc"><button class="acc-head"><span class="acc-title" data-cms="equip.i8.title">8. Бревно и малое бревно</span><span class="acc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></button><div class="acc-body"><p data-cms="equip.i8.text">Развивают равновесие, координацию и уверенность в каждом шаге.</p></div></div>
+        </div>
       </div>
     </div>
   </section>
