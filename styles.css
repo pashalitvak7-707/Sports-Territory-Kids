@@ -406,13 +406,13 @@ a { text-decoration: none; color: inherit; }
 
 /* text kept upright while the card itself is tilted; pivot on the text mass
    (~top third) so it doesn't swing off the tilted card */
-.mcard-body { position: relative; z-index: 2; width: 100%; padding: clamp(22px, 2.7vw, 46px);
+.mcard-body { position: relative; z-index: 2; width: 100%; padding: clamp(20px, 2.2vw, 34px);
   display: flex; flex-direction: column; transform-origin: 50% 50%; }
 .mw-red    .mcard-body { transform: rotate(5deg); }
 .mw-yellow .mcard-body { transform: rotate(-4deg); }
 .mw-green  .mcard-body { transform: translateX(8px) rotate(3deg); }
-.method-card h3 { font-size: clamp(16px, 1.85vw, 28px); font-weight: 700; margin: 2px 0 clamp(10px, 1.8vw, 28px); }
-.method-card p { font-size: clamp(10px, 1vw, 15px); font-weight: 400; line-height: 1.5; }
+.method-card h3 { font-size: clamp(20px, 2.65vw, 38px); font-weight: 700; margin: 2px 0 clamp(10px, 1.7vw, 24px); }
+.method-card p { font-size: clamp(12px, 1.45vw, 21px); font-weight: 400; line-height: 1.45; }
 
 /* white streaks */
 .streak { position: absolute; pointer-events: none; user-select: none; }
@@ -724,6 +724,8 @@ a { text-decoration: none; color: inherit; }
   .mcard-wrap { position: static; width: 100%; transform: none; }
   .method-card { aspect-ratio: auto; }
   .mcard-body { transform: none; padding: 30px 26px; }
+  .method-card h3 { font-size: 27px; }
+  .method-card p { font-size: 17px; }
   .corner-curve, .spark { display: none; }
   .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
