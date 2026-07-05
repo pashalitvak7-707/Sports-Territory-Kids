@@ -152,7 +152,39 @@
       var hero = document.querySelector('.hero-media img');
       if (hero) hero.src = s['image.hero'];
     }
+
+    applyTextSizes();
   }
+
+  /* ---------- Размер текста (настройки tsize.* в процентах) ---------- */
+  function applyTextSizes() {
+    var reg = window.TSK_TEXT_SIZES || [];
+    var s = api.settings;
+    var global = parseFloat(s['tsize.global']) || 100;
+    // 1) сбрасываем прежние инлайновые размеры, чтобы измерить «родные» —
+    //    так настройка остаётся отзывчивой (проценты от текущего адаптивного размера)
+    reg.forEach(function (e) {
+      document.querySelectorAll(e.sel).forEach(function (el) { el.style.fontSize = ''; });
+    });
+    // 2) измеряем базовые размеры ДО применения, чтобы вложенные
+    //    элементы не масштабировались дважды
+    var jobs = [];
+    reg.forEach(function (e) {
+      var pct = (parseFloat(s['tsize.' + e.key]) || 100) * global / 100;
+      if (Math.abs(pct - 100) < 0.5) return;
+      document.querySelectorAll(e.sel).forEach(function (el) {
+        jobs.push([el, parseFloat(getComputedStyle(el).fontSize) * pct / 100]);
+      });
+    });
+    jobs.forEach(function (j) { j[0].style.fontSize = j[1].toFixed(2) + 'px'; });
+  }
+  api.applyTextSizes = applyTextSizes;
+
+  var tsResize;
+  window.addEventListener('resize', function () {
+    clearTimeout(tsResize);
+    tsResize = setTimeout(applyTextSizes, 200);
+  });
 
   /* ---------- Тренеры ---------- */
   function renderCoaches(coaches) {
@@ -238,14 +270,16 @@
   /* ---------- Загрузка ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     quiet(rest('settings?select=key,value')).then(applySettings);
+    // после каждой перерисовки заново применяем настроенные размеры текста,
+    // т.к. рендер заменяет узлы новыми
     if (document.querySelector('.coaches-stage')) {
-      quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(renderCoaches);
+      quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
     }
     if (document.querySelector('.reviews-grid')) {
-      quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(renderReviews);
+      quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
     }
     if (document.querySelector('.sched-table')) {
-      quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(renderSchedule);
+      quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });
     }
   });
 })();

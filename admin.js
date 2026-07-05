@@ -412,6 +412,26 @@
     }).join('');
     $('imgLogoState').textContent = settings['image.logo'] ? 'загружен свой логотип' : 'используется стандартный';
     $('imgHeroState').textContent = settings['image.hero'] ? 'загружено своё фото' : 'используется стандартное';
+    renderTextSizes();
+  }
+
+  /* Размер текста: поле на каждый текстовый блок сайта (реестр в textsizes.js) */
+  function sizeInput(key, label) {
+    return '<label>' + esc(label) +
+      '<input type="number" min="50" max="250" step="5" data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>';
+  }
+  function renderTextSizes() {
+    var box = $('sizesForm');
+    if (!box) return;
+    var groups = {};
+    (window.TSK_TEXT_SIZES || []).forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
+    box.innerHTML =
+      '<div class="adm-grid">' + sizeInput('tsize.global', 'Весь сайт сразу (%)') + '</div>' +
+      Object.keys(groups).map(function (g) {
+        return '<details class="adm-textgroup"><summary>' + esc(g) + '</summary><div class="adm-card"><div class="adm-grid">' +
+          groups[g].map(function (f) { return sizeInput('tsize.' + f.key, f.label + ' (%)'); }).join('') +
+          '</div></div></details>';
+      }).join('');
   }
   $('designSaveBtn').addEventListener('click', function () {
     var btn = $('designSaveBtn');
@@ -422,6 +442,11 @@
       map[inp.dataset.key] = inp.value.toUpperCase() === inp.dataset.def.toUpperCase() ? '' : inp.value;
     });
     map['theme.font_body'] = $('fontSelect').value;
+    document.querySelectorAll('#sizesForm input[data-key]').forEach(function (inp) {
+      var v = inp.value.trim();
+      // 100% = стандартный размер, хранить не нужно
+      map[inp.dataset.key] = (v === '' || v === '100') ? '' : v;
+    });
     var logoFile = $('imgLogo').files[0];
     var heroFile = $('imgHero').files[0];
     Promise.all([
@@ -438,12 +463,14 @@
     }).catch(fail).then(function () { btn.disabled = false; });
   });
   $('designResetBtn').addEventListener('click', function () {
-    if (!confirm('Вернуть фирменные цвета, шрифт и стандартные изображения?')) return;
+    if (!confirm('Вернуть фирменные цвета, шрифт, размеры текста и стандартные изображения?')) return;
     var map = {};
     COLOR_FIELDS.forEach(function (f) { map[f.key] = ''; });
     map['theme.font_body'] = '';
     map['image.logo'] = '';
     map['image.hero'] = '';
+    map['tsize.global'] = '';
+    (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; });
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
