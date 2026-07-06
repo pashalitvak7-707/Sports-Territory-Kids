@@ -53,6 +53,44 @@
     { g: 'Подвал', key: 'footer.copyright', label: 'Копирайт', def: '©2026 Все права защищены' }
   ];
 
+  /* Все заменяемые изображения сайта (селекторы применяет cms.js) */
+  var IMG_FIELDS = [
+    { g: 'Общие', key: 'image.logo', label: 'Логотип (шапка и подвал)', def: 'assets/img/logo.png' },
+    { g: 'Общие', key: 'image.hero', label: 'Главное фото (первый экран)', def: 'assets/img/hero.png' },
+    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_1', label: 'Иконка 1 — «программы от 1,5 лет»', def: 'assets/img/feat-active.png' },
+    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_2', label: 'Иконка 2 — «без давления»', def: 'assets/img/feat-heart.png' },
+    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_3', label: 'Иконка 3 — «группы по возрасту»', def: 'assets/img/feat-group.png' },
+    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_1', label: 'Мягкий старт (1,5–3 года)', def: 'assets/img/prog-1.png' },
+    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_2', label: 'Самостоятельные шаги (3–4 года)', def: 'assets/img/prog-2.png' },
+    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_3', label: 'Координация и гибкость (5–7 лет)', def: 'assets/img/prog-3.png' },
+    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_4', label: 'Сила и техника (7–10 лет)', def: 'assets/img/prog-4.png' },
+    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_5', label: 'Навыки и цели (10+ лет)', def: 'assets/img/prog-10plus.png' },
+    { g: '«Что будем развивать» (иконки)', key: 'image.dev_1', label: 'Координация и баланс', def: 'assets/img/dev-icon-1.png' },
+    { g: '«Что будем развивать» (иконки)', key: 'image.dev_2', label: 'Гибкость и подвижность', def: 'assets/img/dev-icon-2.png' },
+    { g: '«Что будем развивать» (иконки)', key: 'image.dev_3', label: 'Сила и выносливость', def: 'assets/img/dev-icon-3.png' },
+    { g: '«Что будем развивать» (иконки)', key: 'image.dev_4', label: 'Осанка и здоровье спины', def: 'assets/img/dev-icon-4.png' },
+    { g: '«Что будем развивать» (иконки)', key: 'image.dev_5', label: 'Уверенность в себе', def: 'assets/img/dev-icon-5.png' },
+    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_1', label: 'Шаг 1 — знакомство с тренером', def: 'assets/img/step-mascot.png' },
+    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_2', label: 'Шаг 2 — разминка', def: 'assets/img/kid-stretch.png' },
+    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_3', label: 'Шаг 3 — упражнения на снарядах', def: 'assets/img/step-rings.png' },
+    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_4', label: 'Шаг 4 — игры и задания', def: 'assets/img/kid-jump.png' },
+    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_5', label: 'Шаг 5 — обратная связь', def: 'assets/img/kid-30.png' },
+    { g: '«Пространство для движения»', key: 'image.space', label: 'Фото ребёнка', def: 'assets/img/kid-hero.png' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_1', label: 'Фото 1', def: 'assets/img/gal-1.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_2', label: 'Фото 2', def: 'assets/img/gal-2.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_3', label: 'Фото 3', def: 'assets/img/gal-3.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_4', label: 'Фото 4', def: 'assets/img/gal-4.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_5', label: 'Фото 5', def: 'assets/img/gal-5.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_6', label: 'Фото 6', def: 'assets/img/gal-6.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_7', label: 'Фото 7', def: 'assets/img/gal-7.jpg' },
+    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_8', label: 'Фото 8', def: 'assets/img/gal-8.jpg' },
+    { g: '«Что есть у нас в зале?»', key: 'image.plan', label: 'План зала', def: 'assets/img/floorplan.jpg' },
+    { g: 'Маскоты и декор', key: 'image.mascot_coaches', label: 'Маскот в разделе «Тренеры»', def: 'assets/img/mascot-stand.png' },
+    { g: 'Маскоты и декор', key: 'image.mascot_sched', label: 'Маскот в блоке «Расписание»', def: 'assets/img/mascot-wave.png' },
+    { g: 'Маскоты и декор', key: 'image.sched_cal', label: 'Календарь в блоке «Расписание»', def: 'assets/img/sched-calendar.png' },
+    { g: 'Маскоты и декор', key: 'image.mascot_faq', label: 'Маскот в разделе FAQ', def: 'assets/img/faq-kangaroo.png' }
+  ];
+
   var COLOR_FIELDS = [
     { key: 'theme.green', label: 'Основной зелёный', def: '#16BF41' },
     { key: 'theme.green_d', label: 'Тёмно-зелёный', def: '#0C5C46' },
@@ -158,7 +196,7 @@
   });
 
   /* ---------- Вкладки ---------- */
-  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, design: renderDesign, contacts: renderContacts };
+  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, contacts: renderContacts };
   function openTab(name) {
     document.querySelectorAll('.adm-tabpane').forEach(function (p) { p.hidden = true; });
     document.querySelectorAll('.adm-tabs button').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
@@ -385,6 +423,39 @@
     saveSettings(map).then(function () { flash('textsSaved'); }).catch(fail);
   });
 
+  /* ---------- Изображения ---------- */
+  function renderImages() {
+    var groups = {};
+    IMG_FIELDS.forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
+    $('imagesList').innerHTML = Object.keys(groups).map(function (g, gi) {
+      return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-list">' +
+        groups[g].map(function (f) {
+          var custom = !!settings[f.key];
+          return '<div class="adm-item">' +
+            '<img class="adm-thumb" src="' + esc(settings[f.key] || f.def) + '" alt="" loading="lazy" />' +
+            '<div class="adm-item-body">' +
+            '<p class="adm-item-title">' + esc(f.label) + '</p>' +
+            '<p class="adm-item-meta">' + (custom ? 'загружена своя картинка' : 'стандартная картинка') + '</p>' +
+            '</div>' +
+            '<div class="adm-item-actions">' +
+            '<label class="adm-btn adm-btn-sm adm-btn-ok adm-upload">Заменить<input type="file" accept="image/*" data-imgkey="' + f.key + '" hidden /></label>' +
+            (custom ? '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="img-reset" data-key="' + f.key + '">Вернуть стандартное</button>' : '') +
+            '</div></div>';
+        }).join('') + '</div></details>';
+    }).join('');
+  }
+
+  document.addEventListener('change', function (e) {
+    var inp = e.target.closest('input[data-imgkey]');
+    if (!inp || !inp.files[0]) return;
+    var key = inp.dataset.imgkey;
+    inp.disabled = true;
+    uploadImage(inp.files[0], 'site')
+      .then(function (url) { var m = {}; m[key] = url; return saveSettings(m); })
+      .then(renderImages)
+      .catch(fail);
+  });
+
   /* ---------- Оформление ---------- */
   function renderDesign() {
     $('colorsGrid').innerHTML = COLOR_FIELDS.map(function (f) {
@@ -394,8 +465,6 @@
     $('fontSelect').innerHTML = FONT_OPTIONS.map(function (o) {
       return '<option value="' + esc(o.value) + '"' + ((settings['theme.font_body'] || '') === o.value ? ' selected' : '') + '>' + esc(o.label) + '</option>';
     }).join('');
-    $('imgLogoState').textContent = settings['image.logo'] ? 'загружен свой логотип' : 'используется стандартный';
-    $('imgHeroState').textContent = settings['image.hero'] ? 'загружено своё фото' : 'используется стандартное';
   }
   $('designSaveBtn').addEventListener('click', function () {
     var btn = $('designSaveBtn');
@@ -406,28 +475,16 @@
       map[inp.dataset.key] = inp.value.toUpperCase() === inp.dataset.def.toUpperCase() ? '' : inp.value;
     });
     map['theme.font_body'] = $('fontSelect').value;
-    var logoFile = $('imgLogo').files[0];
-    var heroFile = $('imgHero').files[0];
-    Promise.all([
-      logoFile ? uploadImage(logoFile, 'site') : null,
-      heroFile ? uploadImage(heroFile, 'site') : null
-    ]).then(function (urls) {
-      if (urls[0]) map['image.logo'] = urls[0];
-      if (urls[1]) map['image.hero'] = urls[1];
-      return saveSettings(map);
-    }).then(function () {
-      $('imgLogo').value = ''; $('imgHero').value = '';
+    saveSettings(map).then(function () {
       renderDesign();
       flash('designSaved');
     }).catch(fail).then(function () { btn.disabled = false; });
   });
   $('designResetBtn').addEventListener('click', function () {
-    if (!confirm('Вернуть фирменные цвета, шрифт и стандартные изображения?')) return;
+    if (!confirm('Вернуть фирменные цвета и шрифт?')) return;
     var map = {};
     COLOR_FIELDS.forEach(function (f) { map[f.key] = ''; });
     map['theme.font_body'] = '';
-    map['image.logo'] = '';
-    map['image.hero'] = '';
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
@@ -482,5 +539,9 @@
     }
     if (act === 'coach-up') swapCoaches(parseInt(btn.dataset.i, 10), parseInt(btn.dataset.i, 10) - 1);
     if (act === 'coach-down') swapCoaches(parseInt(btn.dataset.i, 10), parseInt(btn.dataset.i, 10) + 1);
+    if (act === 'img-reset') {
+      var m = {}; m[btn.dataset.key] = '';
+      saveSettings(m).then(renderImages).catch(fail);
+    }
   });
 })();
