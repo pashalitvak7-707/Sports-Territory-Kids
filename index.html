@@ -9,7 +9,7 @@
   <link rel="preload" href="assets/fonts/ag-bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/ag-medium.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="styles.css?v=20260706-2" />
+  <link rel="stylesheet" href="styles.css?v=20260706-3" />
   <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -447,6 +447,10 @@
     <div class="container">
       <div class="gallery-card reveal">
         <h2 class="section-title" data-cms="gallery.title">Познакомьтесь<br class="br-m" /> с залом!</h2>
+        <div class="gallery-strip">
+        <button class="car-arrow gal-arrow gal-prev" type="button" aria-label="Назад">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        </button>
         <div class="gallery-grid">
           <div class="gal-item"><img src="assets/img/gal-1.jpg" alt="Игровая зона с мягкими модулями" loading="lazy" /></div>
           <div class="gal-item"><img src="assets/img/gal-2.jpg" alt="Стена с нишами и наградами" loading="lazy" /></div>
@@ -456,6 +460,10 @@
           <div class="gal-item"><img src="assets/img/gal-6.jpg" alt="Зеркальный зал с зоной отдыха" loading="lazy" /></div>
           <div class="gal-item"><img src="assets/img/gal-7.jpg" alt="Холл с навигацией и лестницей" loading="lazy" /></div>
           <div class="gal-item"><img src="assets/img/gal-8.jpg" alt="Скалодром" loading="lazy" /></div>
+        </div>
+        <button class="car-arrow gal-arrow gal-next" type="button" aria-label="Вперёд">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
         </div>
         <a href="#gallery-all" class="link-all gallery-more">БОЛЬШЕ ФОТО
           <svg class="all-arrow" viewBox="0 0 92 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7H86"/><path d="M78 2l9 5-9 5"/></svg>
@@ -630,6 +638,6 @@
   <script src="cms-config.js?v=2"></script>
   <script src="textsizes.js?v=1"></script>
   <script src="cms.js?v=5"></script>
-  <script src="script.js?v=20260704-1"></script>
+  <script src="script.js?v=20260706-3"></script>
 </body>
 </html>

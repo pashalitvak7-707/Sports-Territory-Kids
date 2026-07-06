@@ -282,6 +282,34 @@
 
   /* ---------- init ---------- */
   // cms.js пере-инициализирует карусель тренеров после загрузки данных
+  /* ---------- Gallery strip (mobile): prev/next arrows scroll the row ---------- */
+  function initGalleryStrip() {
+    var strip = document.querySelector('.gallery-strip');
+    if (!strip) return;
+    var scroller = strip.querySelector('.gallery-grid');
+    var prev = strip.querySelector('.gal-prev');
+    var next = strip.querySelector('.gal-next');
+    if (!scroller || !prev || !next) return;
+
+    function step() {
+      var item = scroller.querySelector('.gal-item');
+      if (!item) return scroller.clientWidth;
+      var s = getComputedStyle(scroller);
+      var gap = parseFloat(s.columnGap || s.gap || '0') || 0;
+      return item.getBoundingClientRect().width + gap;
+    }
+    function update() {
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      prev.disabled = scroller.scrollLeft <= 1;
+      next.disabled = scroller.scrollLeft >= max - 1;
+    }
+    prev.addEventListener('click', function () { scroller.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { scroller.scrollBy({ left: step(), behavior: 'smooth' }); });
+    scroller.addEventListener('scroll', function () { update(); }, { passive: true });
+    window.addEventListener('resize', function () { update(); });
+    update();
+  }
+
   window.TSK = { initCarousel: initCarousel, initCoachStage: initCoachStage };
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -291,5 +319,6 @@
     initAccordions();
     initForms();
     initProgramCards();
+    initGalleryStrip();
   });
 })();

@@ -521,6 +521,8 @@ a { text-decoration: none; color: inherit; }
 .gal-item:hover { box-shadow: 0 0 0 3px #5FC24A; }
 .gallery-more { margin-top: clamp(24px, 2.6vw, 38px); }
 .gallery-more .all-arrow { width: 86px; height: 14px; color: var(--green); flex: none; }
+/* gallery nav arrows: hidden on desktop (grid), shown on mobile over the strip */
+.gal-arrow { display: none; }
 
 /* ===================== EQUIP ===================== */
 .equip { padding: 30px 0 90px; }
@@ -820,6 +822,11 @@ a { text-decoration: none; color: inherit; }
   }
   .gallery-grid::-webkit-scrollbar { display: none; }
   .gal-item { flex: 0 0 auto; width: clamp(150px, 58vw, 210px); scroll-snap-align: center; border-radius: 18px; }
+  /* prev/next arrows identical to the desktop «Чем будем заниматься?» carousel */
+  .gallery-strip { position: relative; }
+  .gal-arrow { display: flex; }
+  .gal-prev { left: -8px; }
+  .gal-next { right: -8px; }
   .gallery-more {
     display: flex; justify-content: center; align-items: center;
     margin-top: clamp(18px, 5vw, 26px);
