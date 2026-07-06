@@ -802,7 +802,30 @@ a { text-decoration: none; color: inherit; }
   .space-list li:last-child { border-bottom: 1.5px solid #46B54A; }  /* line below the last */
   .space-photo { margin-top: clamp(20px, 6vw, 28px); aspect-ratio: 4 / 3; }
   .space-photo img { transform: scaleX(-1); }  /* horizontal flip */
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Gallery «Познакомьтесь с залом!»: drop the boxed outline — separate the
+     slide with a green line on top and bottom. Photos scroll in one row.
+     «БОЛЬШЕ ФОТО» centred at the bottom, above the lower line. */
+  .gallery { padding: 8px 0 40px; }
+  .gallery-card {
+    background: none; border: none; border-radius: 0; box-shadow: none;
+    border-top: 3px solid #46B54A; border-bottom: 3px solid #46B54A;
+    padding: clamp(20px, 6vw, 30px) 0;
+  }
+  .gallery-card .section-title { font-weight: 600; margin-bottom: clamp(16px, 5vw, 24px); }
+  .gallery-grid {
+    display: flex; grid-template-columns: none;
+    gap: 12px; overflow-x: auto;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    padding: 6px 2px; scrollbar-width: none;
+  }
+  .gallery-grid::-webkit-scrollbar { display: none; }
+  .gal-item { flex: 0 0 auto; width: clamp(150px, 58vw, 210px); scroll-snap-align: center; border-radius: 18px; }
+  .gallery-more {
+    display: flex; justify-content: center; align-items: center;
+    margin-top: clamp(18px, 5vw, 26px);
+    color: #0E4B57; font-weight: 400;      /* dark greenish-blue, not bold */
+  }
+  .gallery-more .all-arrow { color: var(--dev-green); }   /* light green, points right */
   .car-track > * { flex-basis: 100%; }
   .car-prev { left: -6px; } .car-next { right: -6px; }
   .footer-phone { font-size: 26px; }
