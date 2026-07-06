@@ -29,6 +29,44 @@
     mon: 'Понедельник', tue: 'Вторник', wed: 'Среда', thu: 'Четверг',
     fri: 'Пятница', sat: 'Суббота', sun: 'Воскресенье'
   };
+  /* Ключи изображений и куда они подставляются (совпадают с admin.js) */
+  var IMAGE_SELECTORS = {
+    'image.logo': 'img.logo, img.footer-logo',
+    'image.hero': '.hero-media img',
+    'image.feat_1': '.features-band .feat:nth-child(1) .feat-icon',
+    'image.feat_2': '.features-band .feat:nth-child(2) .feat-icon',
+    'image.feat_3': '.features-band .feat:nth-child(3) .feat-icon',
+    'image.prog_1': '.prog-track .prog-card:nth-child(1) .pc-photo img',
+    'image.prog_2': '.prog-track .prog-card:nth-child(2) .pc-photo img',
+    'image.prog_3': '.prog-track .prog-card:nth-child(3) .pc-photo img',
+    'image.prog_4': '.prog-track .prog-card:nth-child(4) .pc-photo img',
+    'image.prog_5': '.prog-track .prog-card:nth-child(5) .pc-photo img',
+    'image.dev_1': '.develop-band .dev-item:nth-child(1) .dev-ic',
+    'image.dev_2': '.develop-band .dev-item:nth-child(2) .dev-ic',
+    'image.dev_3': '.develop-band .dev-item:nth-child(3) .dev-ic',
+    'image.dev_4': '.develop-band .dev-item:nth-child(4) .dev-ic',
+    'image.dev_5': '.develop-band .dev-item:nth-child(5) .dev-ic',
+    'image.how_1': '.how-step.st1 .how-photo img',
+    'image.how_2': '.how-step.st2 .how-photo img',
+    'image.how_3': '.how-step.st3 .how-photo img',
+    'image.how_4': '.how-step.st4 .how-photo img',
+    'image.how_5': '.how-step.st5 .how-photo img',
+    'image.space': '.space-photo img',
+    'image.gal_1': '.gallery-grid .gal-item:nth-child(1) img',
+    'image.gal_2': '.gallery-grid .gal-item:nth-child(2) img',
+    'image.gal_3': '.gallery-grid .gal-item:nth-child(3) img',
+    'image.gal_4': '.gallery-grid .gal-item:nth-child(4) img',
+    'image.gal_5': '.gallery-grid .gal-item:nth-child(5) img',
+    'image.gal_6': '.gallery-grid .gal-item:nth-child(6) img',
+    'image.gal_7': '.gallery-grid .gal-item:nth-child(7) img',
+    'image.gal_8': '.gallery-grid .gal-item:nth-child(8) img',
+    'image.plan': 'img.equip-plan',
+    'image.sched_cal': '.sched-cal',
+    'image.mascot_coaches': '.coaches-mascot .mascot-roo',
+    'image.mascot_sched': '.sched-mascot',
+    'image.mascot_faq': '.faq-mascot'
+  };
+
   var THEME_VARS = {
     'theme.green': '--green', 'theme.green_d': '--green-d', 'theme.orange': '--orange',
     'theme.coral': '--coral', 'theme.blue': '--blue', 'theme.yellow': '--yellow',
@@ -145,13 +183,10 @@
     }
 
     // Изображения
-    if (s['image.logo']) {
-      document.querySelectorAll('img.logo, img.footer-logo').forEach(function (img) { img.src = s['image.logo']; });
-    }
-    if (s['image.hero']) {
-      var hero = document.querySelector('.hero-media img');
-      if (hero) hero.src = s['image.hero'];
-    }
+    Object.keys(IMAGE_SELECTORS).forEach(function (key) {
+      if (!s[key]) return;
+      document.querySelectorAll(IMAGE_SELECTORS[key]).forEach(function (img) { img.src = s[key]; });
+    });
 
     applyTextSizes();
   }
