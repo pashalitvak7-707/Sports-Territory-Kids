@@ -532,10 +532,6 @@ a { text-decoration: none; color: inherit; }
 .equip-plan-wrap { position: relative; }
 .equip-plan { display: block; width: 100%; }
 .equip-list { padding-top: 6px; }
-/* numbered markers over the hall plan */
-.plan-dot { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
-  background: #46B54A; color: #fff; font-weight: 700; font-size: 15px; line-height: 1;
-  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.28); }
 
 /* Accordion */
 .acc { border-bottom: 1px solid #e2e6e2; }
@@ -751,7 +747,6 @@ a { text-decoration: none; color: inherit; }
   .section-title { font-size: 27px; }
   .equip-head { gap: 14px; }
   .equip-head .section-title { white-space: normal; }
-  .plan-dot { width: 20px; height: 20px; margin: -10px 0 0 -10px; font-size: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
   /* «Что будем развивать»: everything inside one rounded, light-green→white card.
      Title white/bold at the top; items in a 2 + 2 + 1(centred) grid. */
   .develop { padding: 22px 0 56px; }
