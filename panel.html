@@ -47,6 +47,7 @@
           <button data-tab="schedule">Расписание</button>
           <button data-tab="coaches">Тренеры</button>
           <button data-tab="texts">Тексты</button>
+          <button data-tab="images">Изображения</button>
           <button data-tab="design">Оформление</button>
           <button data-tab="contacts">Контакты</button>
         </nav>
@@ -147,6 +148,12 @@
         </div>
       </section>
 
+      <section id="tab-images" class="adm-tabpane" hidden>
+        <h2>Изображения сайта</h2>
+        <p class="adm-hint">Каждую картинку можно заменить своей — по разделам. Изменения применяются сразу после загрузки файла. «Вернуть стандартное» — возвращает исходную картинку сайта.</p>
+        <div id="imagesList"></div>
+      </section>
+
       <section id="tab-design" class="adm-tabpane" hidden>
         <h2>Оформление</h2>
         <p class="adm-hint">Цвета применяются ко всему сайту. Кнопка «Сбросить» возвращает фирменные цвета и шрифт.</p>
@@ -159,19 +166,6 @@
           <label>Основной шрифт сайта
             <select id="fontSelect"></select>
           </label>
-        </div>
-        <div class="adm-card adm-form">
-          <h3>Изображения</h3>
-          <div class="adm-grid">
-            <label>Логотип
-              <input type="file" id="imgLogo" accept="image/*" />
-              <span class="adm-imgstate" id="imgLogoState"></span>
-            </label>
-            <label>Главное фото (на первом экране)
-              <input type="file" id="imgHero" accept="image/*" />
-              <span class="adm-imgstate" id="imgHeroState"></span>
-            </label>
-          </div>
         </div>
         <div class="adm-savebar">
           <button class="adm-btn adm-btn-primary" id="designSaveBtn">Сохранить оформление</button>
