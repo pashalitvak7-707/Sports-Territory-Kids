@@ -775,6 +775,33 @@ a { text-decoration: none; color: inherit; }
   .develop-band .dev-item:nth-child(5) { grid-column: 1 / -1; }
   .develop-band .dev-ic { width: clamp(84px, 30vw, 132px); margin-bottom: clamp(6px, 2vw, 12px); }
   .develop-band .dev-item p { font-size: clamp(13px, 4vw, 17px); }
+
+  /* «Пространство для движения…»: one rounded card with a light-green
+     outline and a light-green→white ombré. Title (3 lines) at the top,
+     then tick rows divided by green lines, then the flipped photo. */
+  .space { padding: 22px 0 56px; }
+  .space-rule { display: none; }             /* the card carries its own outline */
+  .space-card {
+    border: 2px solid var(--dev-green);
+    background: linear-gradient(180deg, var(--dev-green) 0%, #E9F6CC 42%, #FFFFFF 100%);
+    border-radius: 30px;
+    padding: clamp(22px, 6vw, 32px) clamp(18px, 5vw, 26px) clamp(24px, 7vw, 34px);
+    margin: 18px 0;
+    box-shadow: 0 14px 32px rgba(120, 185, 40, .16);
+  }
+  .space-text h2 { text-align: center; font-size: clamp(24px, 7.4vw, 32px); line-height: 1.16;
+    margin-bottom: clamp(14px, 4.5vw, 22px); }
+  .space-list { gap: 0; }
+  .space-list li {
+    font-weight: 400;                        /* not bold */
+    color: #0E4B57;                          /* dark greenish-blue */
+    font-size: clamp(15px, 4.4vw, 19px);
+    padding: clamp(11px, 3.4vw, 15px) 0 clamp(11px, 3.4vw, 15px) 48px;
+    border-top: 1.5px solid #46B54A;         /* line above each tick + text */
+  }
+  .space-list li:last-child { border-bottom: 1.5px solid #46B54A; }  /* line below the last */
+  .space-photo { margin-top: clamp(20px, 6vw, 28px); aspect-ratio: 4 / 3; }
+  .space-photo img { transform: scaleX(-1); }  /* horizontal flip */
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .car-track > * { flex-basis: 100%; }
   .car-prev { left: -6px; } .car-next { right: -6px; }
