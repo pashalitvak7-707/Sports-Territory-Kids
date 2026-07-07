@@ -198,9 +198,36 @@
   }
 
   /* ---------- 5. Program cards: carousel + expand/collapse ---------- */
+  /* Mobile: the programs carousel is a native horizontal scroll strip with
+     side arrows (no expand-on-tap). Cards are ~86% wide so the next peeks. */
+  function initProgMobile(root) {
+    var track = root.querySelector('.prog-track');
+    var prev = root.querySelector('.car-prev');
+    var next = root.querySelector('.car-next');
+    if (!track) return;
+    function step() {
+      var card = track.querySelector('.prog-card');
+      if (!card) return track.clientWidth;
+      var s = getComputedStyle(track);
+      var gap = parseFloat(s.columnGap || s.gap || '0') || 0;
+      return card.getBoundingClientRect().width + gap;
+    }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (prev) prev.disabled = track.scrollLeft <= 1;
+      if (next) next.disabled = track.scrollLeft >= max - 1;
+    }
+    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', function () { update(); }, { passive: true });
+    window.addEventListener('resize', function () { update(); });
+    update();
+  }
+
   function initProgramCards() {
     var root = document.querySelector('.prog-carousel');
     if (!root) return;
+    if (window.matchMedia('(max-width: 620px)').matches) { initProgMobile(root); return; }
     var track = root.querySelector('.prog-track');
     var viewport = root.querySelector('.car-viewport');
     var cards = Array.prototype.slice.call(track.querySelectorAll('.prog-card'));

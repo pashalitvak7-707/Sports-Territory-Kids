@@ -147,6 +147,8 @@ a { text-decoration: none; color: inherit; }
 .section-title-left { text-align: left; }
 .section-title-light { color: #fff; }
 .section-lead { text-align: center; max-width: 720px; margin: 0 auto 40px; color: var(--muted); font-size: 17px; font-weight: 500; }
+/* programs lead: .lead-d desktop copy, .lead-m mobile copy (defined before media queries) */
+.lead-m { display: none; }
 
 /* ===================== PROGRAMS / CAROUSEL ===================== */
 .programs { position: relative; padding: 76px 0 96px; overflow: hidden; }
@@ -317,13 +319,57 @@ a { text-decoration: none; color: inherit; }
   .prog-card.is-open .pc-cta { flex-wrap: wrap; }
 }
 @media (max-width: 620px) {
-  .pc-desc, .pc-desc-long, .pc-benefits,
-  .pc-navy .pc-desc, .pc-navy .pc-title { max-width: 100%; }
-  .pc-benefits { grid-template-columns: 1fr; }
-  .pc-photo, .pc-navy .pc-photo, .prog-card.is-open .pc-photo { opacity: .16; width: 78%; }
-  .prog-card.is-open .pc-content, .prog-card .pc-content { width: 100% !important; }
-  .pc-cta { flex-direction: column; align-items: stretch; }
-  .pc-primary, .pc-secondary { width: 100%; }
+  /* ===== «Чем будем заниматься?» — mobile carousel ===== */
+  /* heading + lead: left-aligned, mobile-specific wording */
+  .lead-d { display: none; }
+  .lead-m { display: inline; }
+  .programs { padding: 30px 0 54px; }
+  .section-title-prog { text-align: left; font-size: clamp(30px, 8.8vw, 38px); line-height: 1.1; }
+  .programs .section-lead { text-align: left; max-width: none; margin: 0 0 26px;
+    font-size: clamp(12.5px, 3.6vw, 15px); line-height: 1.5; color: #6f7378; }
+
+  /* wavy line to the right of the heading, fading in from the left */
+  .prog-curve { top: clamp(6px, 3vw, 22px); right: -4%; left: auto; width: 68%; height: auto; opacity: .95;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 55%); }
+
+  /* one card ~full width, next peeking; side arrows scroll the strip */
+  .prog-carousel { padding: 0; }
+  .prog-carousel .car-arrow { display: flex; }
+  .prog-carousel .car-prev { left: -6px; }
+  .prog-carousel .car-next { right: -6px; }
+  .car-viewport { overflow: visible; }
+  .prog-track { flex-direction: row; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 6px 2px;
+    transform: none !important; transition: none; }
+  .prog-track::-webkit-scrollbar { display: none; }
+  .prog-track > .prog-card { flex: 0 0 86%; width: 86%; height: clamp(430px, 118vw, 500px);
+    scroll-snap-align: center; border-width: 3px; padding: 24px 22px 22px;
+    box-shadow: 0 14px 32px rgba(20,40,30,.10); opacity: 1 !important; }
+  /* neutralise the desktop hover-expand / dim behaviour on touch */
+  .prog-track .prog-card:hover { flex-basis: 86%; box-shadow: 0 14px 32px rgba(20,40,30,.10); }
+  .prog-track:hover .prog-card:not(:hover) { opacity: 1; }
+
+  /* content on the left: age + time, title, short desc, dark-green button */
+  .prog-card .pc-content, .prog-card.is-open .pc-content { width: 60% !important; }
+  .pc-head { margin-bottom: 12px; }
+  .pc-age { font-size: clamp(26px, 8vw, 34px); }
+  .pc-title, .pc-navy .pc-title, .pc-yellow .pc-title { font-size: clamp(16px, 4.6vw, 20px); margin-bottom: 10px; max-width: 100%; }
+  .pc-desc, .pc-navy .pc-desc, .pc-yellow .pc-desc { font-size: clamp(13px, 3.7vw, 15px); max-width: 100%; line-height: 1.45; }
+  .pc-desc-long, .pc-benefits, .pc-secondary, .pc-toggle { display: none !important; }
+  .pc-cta { flex-direction: row; align-items: stretch; margin-top: 18px; padding-top: 0;
+    opacity: 1; transform: none; pointer-events: auto; }
+  .pc-primary { width: 100%; background: var(--green-d); }
+  .pc-primary .t-short { display: inline; }
+  .pc-primary .t-long { display: none; }
+
+  /* image on the right, blended into the white card (transparent PNG cutout) */
+  .pc-photo, .pc-navy .pc-photo, .pc-yellow .pc-photo, .pc-blue .pc-photo,
+  .prog-card.is-open .pc-photo {
+    position: absolute; left: auto; right: -2%; bottom: 0; top: auto;
+    width: 60%; height: 72%; opacity: 1; z-index: 1; }
+  .pc-photo img, .pc-yellow .pc-photo img, .pc-navy .pc-photo img,
+  .prog-card.is-open .pc-photo img { object-fit: contain; object-position: right bottom; }
 }
 
 /* ===================== DEVELOP ===================== */
