@@ -764,32 +764,35 @@ a { text-decoration: none; color: inherit; }
   .hero-buttons { order: 4; align-items: center; width: 100%; }
   .hero-buttons .btn { min-width: 0; width: 100%; max-width: 440px; font-size: 16px; padding: 16px 30px; }
   .features-band { grid-template-columns: 1fr; gap: 36px; padding: 44px 28px; }
-  /* «Наша методика»: stacked, tilted, slightly overlapping cards that keep
-     the desktop decorations (red top-right curve, yellow & green sparks) */
-  .method-stage { --mw: min(440px, 100vw - 32px);
-    position: relative; aspect-ratio: auto; max-width: 440px;
-    display: flex; flex-direction: column; gap: 0; margin: 30px auto 0; }
+  /* «Наша методика»: smaller stacked cards with clear gaps, stronger tilts,
+     desktop decorations (red top-right curve, yellow & green sparks) */
+  .method-stage { position: relative; aspect-ratio: auto; max-width: 400px;
+    width: calc(100vw - 64px); display: flex; flex-direction: column; gap: 0; margin: 32px auto 0; }
   .method-wave { display: none; }
   .mcard-wrap { position: relative; width: 100%; }
-  .mw-red    { left: auto; top: auto; transform: rotate(-4deg); z-index: 1; }
-  .mw-yellow { left: auto; top: auto; transform: rotate(3deg);  z-index: 2; margin-top: -7%; }
-  .mw-green  { left: auto; top: auto; transform: rotate(-4deg); z-index: 3; margin-top: -7%; }
-  .method-card { aspect-ratio: 1.1 / 1; }
+  .mw-red    { left: auto; top: auto; transform: rotate(-6deg); z-index: 1; }
+  .mw-yellow { left: auto; top: auto; transform: rotate(5deg);  z-index: 2; margin-top: 28px; }
+  .mw-green  { left: auto; top: auto; transform: rotate(-6deg); z-index: 3; margin-top: 28px; }
+  /* preferred square-ish shape, but let the card grow if the text needs more */
+  .method-card { aspect-ratio: auto; min-height: calc(min(400px, 100vw - 64px) / 1.15); }
   .mcard-body { padding: 30px 26px; }
-  .mw-red    .mcard-body { transform: rotate(4deg); }
-  .mw-yellow .mcard-body { transform: rotate(-3deg); }
-  .mw-green  .mcard-body { transform: translateX(0) rotate(4deg); }
+  /* text tilts together with the card, matching the mock */
+  .mw-red .mcard-body, .mw-yellow .mcard-body, .mw-green .mcard-body { transform: none; }
   .method-card h3 { font-size: 27px; }
   .method-card p { font-size: 17px; }
-  /* red curve: keep only the top-right one */
+  /* narrower cards: let the paragraphs wrap naturally like the mock */
+  .method-card p br { display: none; }
+  /* red curve: only at the top-right, outside the card */
   .corner-curve.cc-bl { display: none; }
-  .corner-curve.cc-tr { width: 82px; top: -34px; right: -32px; }
-  /* yellow spark at the yellow card's top-left, overlapping the red card;
-     top ≈ red card height (--mw / 1.1) minus the overlap */
-  .spark-yellow { width: 46px; left: -8px;
-    top: calc(var(--mw) / 1.1 - var(--mw) * 0.07 - 52px); z-index: 4; transform: rotate(208deg); }
-  /* green spark out of the green card's bottom-left corner */
-  .spark-green { width: 46px; left: -26px; right: auto; bottom: -38px; transform: scaleX(-1); }
+  .corner-curve.cc-tr { width: 82px; top: -36px; right: -30px; }
+  /* yellow spark anchored to the yellow card's top-left corner
+     (drawn as a pseudo-element so it follows the card on any screen) */
+  .spark-yellow { display: none; }
+  .mw-yellow::before { content: ""; position: absolute; width: 48px; height: 49px;
+    top: -46px; left: -14px; z-index: 4; transform: rotate(208deg);
+    background: url("data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 64.957092 66.326172%22 fill%3D%22%23FCC400%22%3E%3Cpath d%3D%22M8.98 29.34 C8.39 27.21 6.19 25.96 4.06 26.55 C1.93 27.13 0.68 29.34 1.27 31.47 L5.12 30.40 L8.98 29.34 Z M10.06 63.39 C10.64 65.52 12.84 66.77 14.97 66.18 C17.10 65.60 18.35 63.39 17.77 61.26 L13.91 62.33 L10.06 63.39 Z M5.12 30.40 L1.27 31.47 L10.06 63.39 L13.91 62.33 L17.77 61.26 L8.98 29.34 L5.12 30.40 Z M19.53 20.31 C18.00 18.72 15.47 18.67 13.88 20.20 C12.29 21.74 12.24 24.27 13.77 25.86 L16.65 23.08 L19.53 20.31 Z M40.19 53.25 C41.72 54.84 44.26 54.89 45.85 53.35 C47.44 51.82 47.48 49.29 45.95 47.70 L43.07 50.47 L40.19 53.25 Z M16.65 23.08 L13.77 25.86 L40.19 53.25 L43.07 50.47 L45.95 47.70 L19.53 20.31 L16.65 23.08 Z M23.98 4.31 C21.82 3.83 19.68 5.18 19.20 7.34 C18.71 9.49 20.06 11.63 22.22 12.12 L23.10 8.22 L23.98 4.31 Z M54.74 19.46 C56.89 19.95 59.03 18.59 59.52 16.44 C60.01 14.28 58.66 12.14 56.50 11.66 L55.62 15.56 L54.74 19.46 Z M23.10 8.22 L22.22 12.12 L54.74 19.46 L55.62 15.56 L56.50 11.66 L23.98 4.31 L23.10 8.22 Z%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat; }
+  /* green spark bursting out of the green card's bottom-right corner */
+  .spark-green { width: 46px; left: auto; right: -20px; bottom: -32px; transform: rotate(14deg); }
   .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
   .space-photo { aspect-ratio: 4 / 3; }
