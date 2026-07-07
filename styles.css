@@ -783,13 +783,13 @@ a { text-decoration: none; color: inherit; }
   .method-card p { font-size: 17px; }
   /* red curve: keep only the top-right one */
   .corner-curve.cc-bl { display: none; }
-  .corner-curve.cc-tr { width: 82px; top: -26px; right: -4px; }
+  .corner-curve.cc-tr { width: 82px; top: -34px; right: -32px; }
   /* yellow spark at the yellow card's top-left, overlapping the red card;
      top ≈ red card height (--mw / 1.1) minus the overlap */
   .spark-yellow { width: 46px; left: -8px;
     top: calc(var(--mw) / 1.1 - var(--mw) * 0.07 - 52px); z-index: 4; transform: rotate(208deg); }
   /* green spark out of the green card's bottom-left corner */
-  .spark-green { width: 46px; left: -12px; right: auto; bottom: -18px; transform: scaleX(-1); }
+  .spark-green { width: 46px; left: -26px; right: auto; bottom: -38px; transform: scaleX(-1); }
   .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
   .space-photo { aspect-ratio: 4 / 3; }
