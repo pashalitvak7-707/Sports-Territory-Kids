@@ -198,36 +198,13 @@
   }
 
   /* ---------- 5. Program cards: carousel + expand/collapse ---------- */
-  /* Mobile: the programs carousel is a native horizontal scroll strip with
-     side arrows (no expand-on-tap). Cards are ~86% wide so the next peeks. */
-  function initProgMobile(root) {
-    var track = root.querySelector('.prog-track');
-    var prev = root.querySelector('.car-prev');
-    var next = root.querySelector('.car-next');
-    if (!track) return;
-    function step() {
-      var card = track.querySelector('.prog-card');
-      if (!card) return track.clientWidth;
-      var s = getComputedStyle(track);
-      var gap = parseFloat(s.columnGap || s.gap || '0') || 0;
-      return card.getBoundingClientRect().width + gap;
-    }
-    function update() {
-      var max = track.scrollWidth - track.clientWidth;
-      if (prev) prev.disabled = track.scrollLeft <= 1;
-      if (next) next.disabled = track.scrollLeft >= max - 1;
-    }
-    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
-    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
-    track.addEventListener('scroll', function () { update(); }, { passive: true });
-    window.addEventListener('resize', function () { update(); });
-    update();
-  }
-
   function initProgramCards() {
     var root = document.querySelector('.prog-carousel');
     if (!root) return;
-    if (window.matchMedia('(max-width: 620px)').matches) { initProgMobile(root); return; }
+    // ≤620px the strip is a native horizontal scroller (no expand-on-tap);
+    // above that it is the desktop transform carousel. The mode is checked
+    // at event time so resizing across the breakpoint keeps working.
+    var mqMobile = window.matchMedia('(max-width: 620px)');
     var track = root.querySelector('.prog-track');
     var viewport = root.querySelector('.car-viewport');
     var cards = Array.prototype.slice.call(track.querySelectorAll('.prog-card'));
@@ -265,8 +242,27 @@
     }
     function go(i) { index = Math.min(Math.max(i, 0), maxIndex()); update(); }
 
-    if (prev) prev.addEventListener('click', function () { var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index - 1); });
-    if (next) next.addEventListener('click', function () { var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index + 1); });
+    /* mobile strip: native scroll one card per click, arrows disable at the ends */
+    function mUpdate() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (prev) prev.disabled = track.scrollLeft <= 1;
+      if (next) next.disabled = track.scrollLeft >= max - 1;
+    }
+    function refresh() { if (mqMobile.matches) { mUpdate(); } else { update(); } }
+
+    if (prev) prev.addEventListener('click', function () {
+      if (mqMobile.matches) { track.scrollBy({ left: -step(), behavior: 'smooth' }); return; }
+      var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index - 1);
+    });
+    if (next) next.addEventListener('click', function () {
+      if (mqMobile.matches) { track.scrollBy({ left: step(), behavior: 'smooth' }); return; }
+      var open = track.classList.contains('has-open'); closeAll(); if (open) update(); else go(index + 1);
+    });
+    track.addEventListener('scroll', function () { if (mqMobile.matches) mUpdate(); }, { passive: true });
+    if (mqMobile.addEventListener) mqMobile.addEventListener('change', function () {
+      closeAll(); index = 0;
+      if (mqMobile.matches) { track.style.transform = ''; mUpdate(); } else { update(); }
+    });
 
     cards.forEach(function (card, i) {
       var toggle = card.querySelector('[data-prog-toggle]');
@@ -288,11 +284,12 @@
       });
     });
 
-    // Touch swipe (when nothing is open)
+    // Touch swipe (desktop/tablet carousel only — mobile scrolls natively)
     var startX = 0, dragging = false;
     root.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; dragging = true; }, { passive: true });
     root.addEventListener('touchend', function (e) {
       if (!dragging) return; dragging = false;
+      if (mqMobile.matches) return;
       if (track.classList.contains('has-open')) return;
       var dx = e.changedTouches[0].clientX - startX;
       if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
@@ -301,10 +298,13 @@
     var rt;
     window.addEventListener('resize', function () {
       clearTimeout(rt);
-      rt = setTimeout(function () { if (!track.classList.contains('has-open')) go(index); }, 150);
+      rt = setTimeout(function () {
+        if (mqMobile.matches) { mUpdate(); return; }
+        if (!track.classList.contains('has-open')) go(index);
+      }, 150);
     });
 
-    update();
+    refresh();
   }
 
   /* ---------- init ---------- */

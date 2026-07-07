@@ -300,23 +300,17 @@ a { text-decoration: none; color: inherit; }
 .pc-yellow { border-color: #FBC02D; } .pc-yellow .pc-age { color: #F4B400; }
 .pc-navy { border-color: #0C5C46; } .pc-navy .pc-age { color: #0C5C46; }
 
-/* stacked on smaller screens — arrows hidden, cards full width */
+/* tablet (621–1080): keep the desktop carousel, two cards per view */
 @media (max-width: 1080px) {
-  .prog-carousel { padding: 0; }
-  .prog-carousel .car-arrow { display: none; }
-  .car-viewport { overflow: visible; }
-  .prog-track { flex-direction: column; gap: 18px; transform: none !important; transition: none; }
-  .prog-track > .prog-card { flex: none; width: 100%; height: auto; min-height: 300px; }
-  .prog-card .pc-content { width: 100% !important; }
-  .pc-desc, .pc-desc-long, .pc-benefits { max-width: 58%; }
+  .prog-carousel { padding: 0 8px 0 64px; }
+  .prog-carousel .car-prev { left: 4px; }
+  .prog-track > .prog-card { flex: 0 0 calc((100% - 22px) / 2.06); height: clamp(430px, 56vw, 500px); }
+  .prog-track:not(.has-open) .prog-card:hover { flex-basis: clamp(330px, 48vw, 470px); }
+  .prog-card.is-open { flex-basis: clamp(460px, 78vw, 800px); }
+  .pc-desc, .pc-desc-long { max-width: 100%; }
+  .pc-yellow .pc-desc, .pc-yellow .pc-title,
   .pc-navy .pc-desc, .pc-navy .pc-title { max-width: 58%; }
-  .pc-cta { opacity: 1; transform: none; pointer-events: auto; }
-  .pc-toggle { opacity: 1; transform: none; top: 22px; bottom: auto; width: 46px; height: 46px; }
-  .pc-photo, .pc-navy .pc-photo,
-  .prog-card.is-open .pc-photo { left: auto; right: 0; bottom: 0; width: 42%; height: 88%; }
-  .prog-track.has-open .prog-card:not(.is-open) { opacity: 1; pointer-events: auto; }
-  .prog-card.is-open .pc-content { width: 58% !important; }
-  .prog-card.is-open .pc-cta { flex-wrap: wrap; }
+  .pc-benefits { gap: 12px 14px; }
 }
 @media (max-width: 620px) {
   /* ===== «Чем будем заниматься?» — mobile carousel ===== */
@@ -343,7 +337,7 @@ a { text-decoration: none; color: inherit; }
     -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 6px 2px;
     transform: none !important; transition: none; }
   .prog-track::-webkit-scrollbar { display: none; }
-  .prog-track > .prog-card { flex: 0 0 86%; width: 86%; height: clamp(430px, 118vw, 500px);
+  .prog-track > .prog-card { flex: 0 0 86%; width: 86%; height: clamp(470px, 128vw, 560px);
     scroll-snap-align: center; border-width: 3px; padding: 24px 22px 22px;
     box-shadow: 0 14px 32px rgba(20,40,30,.10); opacity: 1 !important; }
   /* neutralise the desktop hover-expand / dim behaviour on touch */
@@ -363,11 +357,14 @@ a { text-decoration: none; color: inherit; }
   .pc-primary .t-short { display: inline; }
   .pc-primary .t-long { display: none; }
 
-  /* image on the right, blended into the white card (transparent PNG cutout) */
+  /* image fills the lower-right of the card, flush to the corner, wrapping
+     around the text/button like on desktop — minimal blank space */
   .pc-photo, .pc-navy .pc-photo, .pc-yellow .pc-photo, .pc-blue .pc-photo,
   .prog-card.is-open .pc-photo {
-    position: absolute; left: auto; right: -2%; bottom: 0; top: auto;
-    width: 60%; height: 72%; opacity: 1; z-index: 1; }
+    position: absolute; left: auto; right: -3%; bottom: -1%; top: auto;
+    width: 86%; height: 62%; opacity: 1; z-index: 1; }
+  /* tall portrait cutouts (rings boy, handstand) hug the right edge instead */
+  .pc-yellow .pc-photo, .pc-navy .pc-photo { width: 58%; height: 84%; right: -2%; bottom: 0; }
   .pc-photo img, .pc-yellow .pc-photo img, .pc-navy .pc-photo img,
   .prog-card.is-open .pc-photo img { object-fit: contain; object-position: right bottom; }
 }
