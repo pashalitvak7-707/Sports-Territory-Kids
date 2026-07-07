@@ -764,14 +764,32 @@ a { text-decoration: none; color: inherit; }
   .hero-buttons { order: 4; align-items: center; width: 100%; }
   .hero-buttons .btn { min-width: 0; width: 100%; max-width: 440px; font-size: 16px; padding: 16px 30px; }
   .features-band { grid-template-columns: 1fr; gap: 36px; padding: 44px 28px; }
-  .method-stage { position: static; aspect-ratio: auto; max-width: 440px; display: flex; flex-direction: column; gap: 22px; }
+  /* «Наша методика»: stacked, tilted, slightly overlapping cards that keep
+     the desktop decorations (red top-right curve, yellow & green sparks) */
+  .method-stage { --mw: min(440px, 100vw - 32px);
+    position: relative; aspect-ratio: auto; max-width: 440px;
+    display: flex; flex-direction: column; gap: 0; margin: 30px auto 0; }
   .method-wave { display: none; }
-  .mcard-wrap { position: static; width: 100%; transform: none; }
-  .method-card { aspect-ratio: auto; }
-  .mcard-body { transform: none; padding: 30px 26px; }
+  .mcard-wrap { position: relative; width: 100%; }
+  .mw-red    { left: auto; top: auto; transform: rotate(-4deg); z-index: 1; }
+  .mw-yellow { left: auto; top: auto; transform: rotate(3deg);  z-index: 2; margin-top: -7%; }
+  .mw-green  { left: auto; top: auto; transform: rotate(-4deg); z-index: 3; margin-top: -7%; }
+  .method-card { aspect-ratio: 1.1 / 1; }
+  .mcard-body { padding: 30px 26px; }
+  .mw-red    .mcard-body { transform: rotate(4deg); }
+  .mw-yellow .mcard-body { transform: rotate(-3deg); }
+  .mw-green  .mcard-body { transform: translateX(0) rotate(4deg); }
   .method-card h3 { font-size: 27px; }
   .method-card p { font-size: 17px; }
-  .corner-curve, .spark { display: none; }
+  /* red curve: keep only the top-right one */
+  .corner-curve.cc-bl { display: none; }
+  .corner-curve.cc-tr { width: 82px; top: -26px; right: -4px; }
+  /* yellow spark at the yellow card's top-left, overlapping the red card;
+     top ≈ red card height (--mw / 1.1) minus the overlap */
+  .spark-yellow { width: 46px; left: -8px;
+    top: calc(var(--mw) / 1.1 - var(--mw) * 0.07 - 52px); z-index: 4; transform: rotate(208deg); }
+  /* green spark out of the green card's bottom-left corner */
+  .spark-green { width: 46px; left: -12px; right: auto; bottom: -18px; transform: scaleX(-1); }
   .space-card, .equip-inner, .reviews-inner, .faq-inner, .sched-card { grid-template-columns: 1fr; }
   .reviews-grid { grid-template-columns: 1fr; }
   .space-photo { aspect-ratio: 4 / 3; }
