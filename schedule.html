@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Расписание занятий — Территория Спорта КИДС</title>
-  <meta name="description" content="Актуальное расписание детских занятий: гимнастика, акробатика, батут и ОФП. Фильтр по возрасту, дню и направлению. Онлайн-запись через WhatsApp." />
-  <link rel="preload" href="assets/fonts/ag-regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/ag-bold.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/ag-medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="styles.css?v=20260707-11" />
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Расписание занятий — Территория Спорта КИДС</title>
+<meta content="Актуальное расписание детских занятий: гимнастика, акробатика, батут и ОФП. Фильтр по возрасту, дню и направлению. Онлайн-запись через WhatsApp." name="description"/>
+<link as="font" crossorigin="" href="assets/fonts/ag-regular.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
+<link href="assets/img/logo.png" rel="icon" type="image/png"/>
+<link href="styles.css?v=20260707-11" rel="stylesheet"/>
+<script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
        after load, force every section visible so nothing stays blank. */
@@ -24,328 +25,300 @@
   </script>
 </head>
 <body>
-
-  <!-- ================= HEADER ================= -->
-  <header class="header" id="top">
-    <div class="topbar">
-      <div class="container topbar-inner">
-        <nav class="topnav">
-          <a href="index.html#about">О направлении</a>
-          <a href="index.html#how">Как проходят занятия</a>
-          <a href="index.html#coaches">Тренеры</a>
-          <a href="schedule.html" class="is-active">Расписание</a>
-          <a href="index.html#reviews">Отзывы</a>
-          <a href="index.html#faq">FAQ</a>
-          <a href="index.html#contacts">Контакты</a>
-        </nav>
-        <a class="topbar-phone" href="tel:+77054290000">8 705 429 0000</a>
-      </div>
-    </div>
-    <div class="brandbar">
-      <div class="container brandbar-inner">
-        <a href="index.html" class="logo-link"><img src="assets/img/logo.png" alt="Территория Спорта КИДС" class="logo" /></a>
-        <div class="brandbar-actions">
-          <a href="#book" class="btn btn-orange">Пробное занятие</a>
-          <a href="index.html#contacts" class="circle-btn" aria-label="ВКонтакте">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.2 17.3c-5.5 0-8.9-3.8-9-10.1h2.8c.1 4.6 2.2 6.5 3.8 6.9V7.2h2.6v3.9c1.6-.2 3.3-2 3.9-3.9h2.6c-.5 2.3-2.1 4.1-3.3 4.8 1.2.6 3 2.2 3.7 5.3h-2.9c-.5-1.8-2-3.2-3.9-3.4v3.4z"/></svg>
-          </a>
-          <a href="tel:+77054290000" class="circle-btn" aria-label="Позвонить">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2z"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= PAGE HERO ================= -->
-  <section class="sched-hero">
-    <div class="container sched-hero-inner reveal">
-      <span class="sched-hero-eyebrow" data-cms="sched.eyebrow">● Всегда актуально</span>
-      <h1 data-cms="sched.title">Расписание занятий</h1>
-      <p data-cms="sched.sub">Выберите направление, возраст и удобное время — и запишитесь на занятие за пару минут.<br />Мы свяжемся с вами в WhatsApp и подтвердим место в группе.</p>
-    </div>
-  </section>
-
-  <!-- ================= SCHEDULE + BOOKING ================= -->
-  <section class="sched-page">
-    <div class="container sched-layout">
-
-      <!-- LEFT: filters + table -->
-      <div class="sched-content reveal">
-
-        <div class="sched-filters">
-          <div class="filter-field">
-            <label for="fAge">Возраст</label>
-            <select id="fAge" class="filter-select">
-              <option value="all">Все возрасты</option>
-              <option value="1.5-3">1,5–3 года</option>
-              <option value="3-5">3–5 лет</option>
-              <option value="5-7">5–7 лет</option>
-              <option value="7-10">7–10 лет</option>
-              <option value="10-14">10–14 лет</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label for="fDir">Направление</label>
-            <select id="fDir" class="filter-select">
-              <option value="all">Все направления</option>
-              <option value="gym">Гимнастика</option>
-              <option value="acro">Акробатика</option>
-              <option value="rhythmic">Художественная гимнастика</option>
-              <option value="tramp">Батут</option>
-              <option value="ofp">ОФП</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label for="fDay">День недели</label>
-            <select id="fDay" class="filter-select">
-              <option value="all">Все дни</option>
-              <option value="mon">Понедельник</option>
-              <option value="tue">Вторник</option>
-              <option value="wed">Среда</option>
-              <option value="thu">Четверг</option>
-              <option value="fri">Пятница</option>
-              <option value="sat">Суббота</option>
-              <option value="sun">Воскресенье</option>
-            </select>
-          </div>
-          <label class="filter-check">
-            <input type="checkbox" id="fFree" />
-            <span>Только со свободными местами</span>
-          </label>
-          <button type="button" id="fReset" class="filter-reset">Сбросить фильтры</button>
-        </div>
-
-        <p class="sched-count"><span id="schCount">14</span> занятий в расписании</p>
-
-        <div class="sched-table">
-          <div class="sch-row sch-head" aria-hidden="true">
-            <div>Направление</div><div>Возраст</div><div>День</div><div>Время</div><div>Тренер</div><div>Места</div><div></div>
-          </div>
-
-          <div class="sch-row" data-age="1.5-3" data-dir="gym" data-day="mon" data-free="4">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">1,5–3 года</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:00–10:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Гимнастика" data-age="1,5–3 года" data-day="Понедельник" data-time="10:00–10:45" data-coach="Анна Соколова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="3-5" data-dir="gym" data-day="mon" data-free="3">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">11:00–11:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Гимнастика" data-age="3–5 лет" data-day="Понедельник" data-time="11:00–11:45" data-coach="Анна Соколова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="5-7" data-dir="acro" data-day="mon" data-free="5">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Акробатика" data-age="5–7 лет" data-day="Понедельник" data-time="17:00–17:45" data-coach="Дмитрий Орлов">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="7-10" data-dir="ofp" data-day="tue" data-free="6">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">ОФП</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Вторник</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">16:00–16:50</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">6 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="ОФП" data-age="7–10 лет" data-day="Вторник" data-time="16:00–16:50" data-coach="Дмитрий Орлов">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="5-7" data-dir="rhythmic" data-day="tue" data-free="2">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Вторник</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:30–18:15</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots sch-few">2 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Художественная гимнастика" data-age="5–7 лет" data-day="Вторник" data-time="17:30–18:15" data-coach="Ольга Кузнецова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="3-5" data-dir="tramp" data-day="wed" data-free="4">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Батут</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:30–11:15</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Батут" data-age="3–5 лет" data-day="Среда" data-time="10:30–11:15" data-coach="Екатерина Морозова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="5-7" data-dir="gym" data-day="wed" data-free="3">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Гимнастика" data-age="5–7 лет" data-day="Среда" data-time="17:00–17:45" data-coach="Анна Соколова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="7-10" data-dir="acro" data-day="wed" data-free="5">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">18:00–18:50</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Акробатика" data-age="7–10 лет" data-day="Среда" data-time="18:00–18:50" data-coach="Дмитрий Орлов">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="10-14" data-dir="ofp" data-day="thu" data-free="7">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">ОФП</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">10–14 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Четверг</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">18:00–18:55</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">7 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="ОФП" data-age="10–14 лет" data-day="Четверг" data-time="18:00–18:55" data-coach="Дмитрий Орлов">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="3-5" data-dir="rhythmic" data-day="thu" data-free="4">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Четверг</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">16:00–16:40</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Художественная гимнастика" data-age="3–5 лет" data-day="Четверг" data-time="16:00–16:40" data-coach="Ольга Кузнецова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="5-7" data-dir="tramp" data-day="fri" data-free="6">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Батут</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Пятница</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">6 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Батут" data-age="5–7 лет" data-day="Пятница" data-time="17:00–17:45" data-coach="Екатерина Морозова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="1.5-3" data-dir="gym" data-day="sat" data-free="3">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">1,5–3 года</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:00–10:40</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Гимнастика" data-age="1,5–3 года" data-day="Суббота" data-time="10:00–10:40" data-coach="Анна Соколова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="3-5" data-dir="acro" data-day="sat" data-free="5">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">11:00–11:45</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Акробатика" data-age="3–5 лет" data-day="Суббота" data-time="11:00–11:45" data-coach="Екатерина Морозова">Записаться</button></div>
-          </div>
-
-          <div class="sch-row" data-age="7-10" data-dir="rhythmic" data-day="sat" data-free="4">
-            <div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
-            <div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
-            <div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
-            <div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">12:00–12:50</span></div>
-            <div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
-            <div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
-            <div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="Художественная гимнастика" data-age="7–10 лет" data-day="Суббота" data-time="12:00–12:50" data-coach="Ольга Кузнецова">Записаться</button></div>
-          </div>
-
-        </div>
-
-        <p class="sched-empty" id="schEmpty" hidden>По выбранным фильтрам занятий не найдено. Попробуйте изменить параметры или сбросьте фильтры.</p>
-      </div>
-
-      <!-- RIGHT: booking form -->
-      <aside class="book-card reveal" id="book">
-        <h2 class="book-title" data-cms="book.title">Запись на занятие</h2>
-        <p class="book-sub" data-cms="book.sub">Выберите занятие в расписании или заполните заявку — мы свяжемся с вами в WhatsApp и подтвердим место в группе.</p>
-        <form class="book-form" data-whatsapp-form data-context="Запись на занятие">
-          <label class="book-field">
-            <span>Выбранное занятие</span>
-            <input type="text" name="lesson" id="bookLesson" placeholder="Нажмите «Записаться» в расписании" readonly />
-          </label>
-          <label class="book-field">
-            <span>Имя родителя</span>
-            <input type="text" name="parent" placeholder="Например, Мария" required />
-          </label>
-          <label class="book-field">
-            <span>Имя ребёнка</span>
-            <input type="text" name="child" placeholder="Например, София" required />
-          </label>
-          <label class="book-field">
-            <span>Возраст ребёнка</span>
-            <input type="text" name="childage" placeholder="Например, 5 лет" />
-          </label>
-          <label class="book-field">
-            <span>Телефон для связи</span>
-            <input type="tel" name="phone" placeholder="+7 705 000 00 00" required />
-          </label>
-          <button type="submit" class="btn btn-orange btn-lg book-submit">
+<span data-cms="t.s.1"><!-- ================= HEADER ================= --></span>
+<header class="header" id="top">
+<div class="topbar">
+<div class="container topbar-inner">
+<nav class="topnav">
+<a data-cms="t.s.6" href="index.html#about">О направлении</a>
+<a data-cms="t.s.7" href="index.html#how">Как проходят занятия</a>
+<a data-cms="t.s.8" href="index.html#coaches">Тренеры</a>
+<a class="is-active" data-cms="t.s.9" href="schedule.html">Расписание</a>
+<a data-cms="t.s.10" href="index.html#reviews">Отзывы</a>
+<a data-cms="t.s.11" href="index.html#faq">FAQ</a>
+<a data-cms="t.s.12" href="index.html#contacts">Контакты</a>
+</nav>
+<a class="topbar-phone" data-cms="t.s.13" href="tel:+77054290000">8 705 429 0000</a>
+</div>
+</div>
+<div class="brandbar">
+<div class="container brandbar-inner">
+<a class="logo-link" href="index.html"><img alt="Территория Спорта КИДС" class="logo" data-cms-img="image.logo" src="assets/img/logo.png"/></a>
+<div class="brandbar-actions">
+<a class="btn btn-orange" data-cms="t.s.14" href="#book">Пробное занятие</a>
+<a aria-label="ВКонтакте" class="circle-btn" href="index.html#contacts">
+<svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16"><path d="M13.2 17.3c-5.5 0-8.9-3.8-9-10.1h2.8c.1 4.6 2.2 6.5 3.8 6.9V7.2h2.6v3.9c1.6-.2 3.3-2 3.9-3.9h2.6c-.5 2.3-2.1 4.1-3.3 4.8 1.2.6 3 2.2 3.7 5.3h-2.9c-.5-1.8-2-3.2-3.9-3.4v3.4z"></path></svg>
+</a>
+<a aria-label="Позвонить" class="circle-btn" href="tel:+77054290000">
+<svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</header>
+<span data-cms="t.s.2"><!-- ================= PAGE HERO ================= --></span>
+<section class="sched-hero">
+<div class="container sched-hero-inner reveal">
+<span class="sched-hero-eyebrow" data-cms="sched.eyebrow">● Всегда актуально</span>
+<h1 data-cms="sched.title">Расписание занятий</h1>
+<p data-cms="sched.sub">Выберите направление, возраст и удобное время — и запишитесь на занятие за пару минут.<br/>Мы свяжемся с вами в WhatsApp и подтвердим место в группе.</p>
+</div>
+</section>
+<span data-cms="t.s.3"><!-- ================= SCHEDULE + BOOKING ================= --></span>
+<section class="sched-page">
+<div class="container sched-layout">
+<span data-cms="t.s.15"><!-- LEFT: filters + table --></span>
+<div class="sched-content reveal">
+<div class="sched-filters">
+<div class="filter-field">
+<label data-cms="t.s.17" for="fAge">Возраст</label>
+<select class="filter-select" id="fAge">
+<option data-cms="t.s.18" value="all">Все возрасты</option>
+<option data-cms="t.s.19" value="1.5-3">1,5–3 года</option>
+<option data-cms="t.s.20" value="3-5">3–5 лет</option>
+<option data-cms="t.s.21" value="5-7">5–7 лет</option>
+<option data-cms="t.s.22" value="7-10">7–10 лет</option>
+<option data-cms="t.s.23" value="10-14">10–14 лет</option>
+</select>
+</div>
+<div class="filter-field">
+<label data-cms="t.s.24" for="fDir">Направление</label>
+<select class="filter-select" id="fDir">
+<option data-cms="t.s.25" value="all">Все направления</option>
+<option data-cms="t.s.26" value="gym">Гимнастика</option>
+<option data-cms="t.s.27" value="acro">Акробатика</option>
+<option data-cms="t.s.28" value="rhythmic">Художественная гимнастика</option>
+<option data-cms="t.s.29" value="tramp">Батут</option>
+<option data-cms="t.s.30" value="ofp">ОФП</option>
+</select>
+</div>
+<div class="filter-field">
+<label data-cms="t.s.31" for="fDay">День недели</label>
+<select class="filter-select" id="fDay">
+<option data-cms="t.s.32" value="all">Все дни</option>
+<option data-cms="t.s.33" value="mon">Понедельник</option>
+<option data-cms="t.s.34" value="tue">Вторник</option>
+<option data-cms="t.s.35" value="wed">Среда</option>
+<option data-cms="t.s.36" value="thu">Четверг</option>
+<option data-cms="t.s.37" value="fri">Пятница</option>
+<option data-cms="t.s.38" value="sat">Суббота</option>
+<option data-cms="t.s.39" value="sun">Воскресенье</option>
+</select>
+</div>
+<label class="filter-check">
+<input id="fFree" type="checkbox"/>
+<span data-cms="t.s.40">Только со свободными местами</span>
+</label>
+<button class="filter-reset" data-cms="t.s.41" id="fReset" type="button">Сбросить фильтры</button>
+</div>
+<p class="sched-count"><span id="schCount">14</span><span data-cms="t.s.42"> занятий в расписании</span></p>
+<div class="sched-table">
+<div aria-hidden="true" class="sch-row sch-head">
+<div data-cms="t.s.43">Направление</div><div data-cms="t.s.44">Возраст</div><div data-cms="t.s.45">День</div><div data-cms="t.s.46">Время</div><div data-cms="t.s.47">Тренер</div><div data-cms="t.s.48">Места</div><div></div>
+</div>
+<div class="sch-row" data-age="1.5-3" data-day="mon" data-dir="gym" data-free="4">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">1,5–3 года</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:00–10:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="1,5–3 года" data-coach="Анна Соколова" data-day="Понедельник" data-dir="Гимнастика" data-time="10:00–10:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="3-5" data-day="mon" data-dir="gym" data-free="3">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">11:00–11:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="3–5 лет" data-coach="Анна Соколова" data-day="Понедельник" data-dir="Гимнастика" data-time="11:00–11:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="5-7" data-day="mon" data-dir="acro" data-free="5">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Понедельник</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="5–7 лет" data-coach="Дмитрий Орлов" data-day="Понедельник" data-dir="Акробатика" data-time="17:00–17:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="7-10" data-day="tue" data-dir="ofp" data-free="6">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">ОФП</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Вторник</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">16:00–16:50</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">6 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="7–10 лет" data-coach="Дмитрий Орлов" data-day="Вторник" data-dir="ОФП" data-time="16:00–16:50" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="5-7" data-day="tue" data-dir="rhythmic" data-free="2">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Вторник</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:30–18:15</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots sch-few">2 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="5–7 лет" data-coach="Ольга Кузнецова" data-day="Вторник" data-dir="Художественная гимнастика" data-time="17:30–18:15" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="3-5" data-day="wed" data-dir="tramp" data-free="4">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Батут</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:30–11:15</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="3–5 лет" data-coach="Екатерина Морозова" data-day="Среда" data-dir="Батут" data-time="10:30–11:15" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="5-7" data-day="wed" data-dir="gym" data-free="3">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="5–7 лет" data-coach="Анна Соколова" data-day="Среда" data-dir="Гимнастика" data-time="17:00–17:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="7-10" data-day="wed" data-dir="acro" data-free="5">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Среда</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">18:00–18:50</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="7–10 лет" data-coach="Дмитрий Орлов" data-day="Среда" data-dir="Акробатика" data-time="18:00–18:50" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="10-14" data-day="thu" data-dir="ofp" data-free="7">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">ОФП</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">10–14 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Четверг</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">18:00–18:55</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Дмитрий Орлов</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">7 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="10–14 лет" data-coach="Дмитрий Орлов" data-day="Четверг" data-dir="ОФП" data-time="18:00–18:55" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="3-5" data-day="thu" data-dir="rhythmic" data-free="4">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Четверг</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">16:00–16:40</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="3–5 лет" data-coach="Ольга Кузнецова" data-day="Четверг" data-dir="Художественная гимнастика" data-time="16:00–16:40" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="5-7" data-day="fri" data-dir="tramp" data-free="6">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Батут</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">5–7 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Пятница</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">17:00–17:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">6 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="5–7 лет" data-coach="Екатерина Морозова" data-day="Пятница" data-dir="Батут" data-time="17:00–17:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="1.5-3" data-day="sat" data-dir="gym" data-free="3">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">1,5–3 года</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">10:00–10:40</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Анна Соколова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">3 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="1,5–3 года" data-coach="Анна Соколова" data-day="Суббота" data-dir="Гимнастика" data-time="10:00–10:40" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="3-5" data-day="sat" data-dir="acro" data-free="5">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Акробатика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">3–5 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">11:00–11:45</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Екатерина Морозова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">5 мест</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="3–5 лет" data-coach="Екатерина Морозова" data-day="Суббота" data-dir="Акробатика" data-time="11:00–11:45" type="button">Записаться</button></div>
+</div>
+<div class="sch-row" data-age="7-10" data-day="sat" data-dir="rhythmic" data-free="4">
+<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">Художественная гимнастика</span></div>
+<div class="sch-cell"><span class="sch-k">Возраст</span><span class="sch-v"><span class="sch-badge">7–10 лет</span></span></div>
+<div class="sch-cell"><span class="sch-k">День</span><span class="sch-v">Суббота</span></div>
+<div class="sch-cell"><span class="sch-k">Время</span><span class="sch-v">12:00–12:50</span></div>
+<div class="sch-cell"><span class="sch-k">Тренер</span><span class="sch-v">Ольга Кузнецова</span></div>
+<div class="sch-cell"><span class="sch-k">Места</span><span class="sch-v sch-spots">4 места</span></div>
+<div class="sch-cell sch-act"><button class="sch-book" data-age="7–10 лет" data-coach="Ольга Кузнецова" data-day="Суббота" data-dir="Художественная гимнастика" data-time="12:00–12:50" type="button">Записаться</button></div>
+</div>
+</div>
+<p class="sched-empty" data-cms="t.s.49" hidden="" id="schEmpty">По выбранным фильтрам занятий не найдено. Попробуйте изменить параметры или сбросьте фильтры.</p>
+</div>
+<span data-cms="t.s.16"><!-- RIGHT: booking form --></span>
+<aside class="book-card reveal" id="book">
+<h2 class="book-title" data-cms="book.title">Запись на занятие</h2>
+<p class="book-sub" data-cms="book.sub">Выберите занятие в расписании или заполните заявку — мы свяжемся с вами в WhatsApp и подтвердим место в группе.</p>
+<form class="book-form" data-context="Запись на занятие" data-whatsapp-form="">
+<label class="book-field">
+<span data-cms="t.s.50">Выбранное занятие</span>
+<input data-cms-ph="ph.s.1" id="bookLesson" name="lesson" placeholder="Нажмите «Записаться» в расписании" readonly="" type="text"/>
+</label>
+<label class="book-field">
+<span data-cms="t.s.51">Имя родителя</span>
+<input data-cms-ph="ph.s.2" name="parent" placeholder="Например, Мария" required="" type="text"/>
+</label>
+<label class="book-field">
+<span data-cms="t.s.52">Имя ребёнка</span>
+<input data-cms-ph="ph.s.3" name="child" placeholder="Например, София" required="" type="text"/>
+</label>
+<label class="book-field">
+<span data-cms="t.s.53">Возраст ребёнка</span>
+<input data-cms-ph="ph.s.4" name="childage" placeholder="Например, 5 лет" type="text"/>
+</label>
+<label class="book-field">
+<span data-cms="t.s.54">Телефон для связи</span>
+<input data-cms-ph="ph.s.5" name="phone" placeholder="+7 705 000 00 00" required="" type="tel"/>
+</label>
+<button class="btn btn-orange btn-lg book-submit" type="submit"><span data-cms="t.s.55">
             Записаться через WhatsApp
-            <svg viewBox="0 0 32 32" width="20" height="20" fill="#fff" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.7 1.9 6.7L3 29l7-1.8c1.9 1 4 1.6 6 1.6 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.2 1.1 1.1-4-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.7 4.7-10.3 10.4-10.3s10.4 4.6 10.4 10.3-4.7 10.6-10.5 10.6zm5.7-7.8c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.5 3.8 6 5.3 2.2 1 3.1 1 4.2.9.7-.1 1.8-.7 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
-          </button>
-          <small class="book-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</small>
-        </form>
-      </aside>
-
-    </div>
-  </section>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="footer" id="contacts">
-    <div class="container footer-inner">
-      <a href="tel:+77054290000" class="footer-phone">8 705 429 0000</a>
-      <div class="footer-main">
-        <span class="footer-spacer" aria-hidden="true"></span>
-        <div class="footer-center">
-          <nav class="footer-nav">
-            <a href="index.html#how">Как проходят занятия</a>
-            <a href="index.html#coaches">Тренеры</a>
-            <a href="index.html#reviews">Отзывы</a>
-            <a href="index.html#faq">FAQ</a>
-            <a href="index.html#contacts">Контакты</a>
-          </nav>
-          <div class="footer-socials">
-            <a href="#" class="circle-btn square-btn" aria-label="ВКонтакте"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.2 17.3c-5.5 0-8.9-3.8-9-10.1h2.8c.1 4.6 2.2 6.5 3.8 6.9V7.2h2.6v3.9c1.6-.2 3.3-2 3.9-3.9h2.6c-.5 2.3-2.1 4.1-3.3 4.8 1.2.6 3 2.2 3.7 5.3h-2.9c-.5-1.8-2-3.2-3.9-3.4v3.4z"/></svg></a>
-            <a href="tel:+77054290000" class="circle-btn square-btn" aria-label="Позвонить"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2z"/></svg></a>
-          </div>
-        </div>
-        <img class="footer-logo" src="assets/img/logo.png" alt="Территория Спорта КИДС" />
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <div class="footer-links">
-          <a href="#">Политика конфиденциальности</a>
-          <a href="#">Публичная оферта</a>
-        </div>
-        <span class="copyright" data-cms="footer.copyright">©2026 Все права защищены</span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Floating WhatsApp -->
-  <a class="wa-float" href="https://wa.me/77054290000?text=Здравствуйте!%20Хочу%20записаться%20на%20занятие" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
-    <svg viewBox="0 0 32 32" width="30" height="30" fill="#fff"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.7 1.9 6.7L3 29l7-1.8c1.9 1 4 1.6 6 1.6 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.2 1.1 1.1-4-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.7 4.7-10.3 10.4-10.3s10.4 4.6 10.4 10.3-4.7 10.6-10.5 10.6zm5.7-7.8c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.5 3.8 6 5.3 2.2 1 3.1 1 4.2.9.7-.1 1.8-.7 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
-  </a>
-
-  <script src="cms-config.js?v=2"></script>
-  <script src="textsizes.js?v=1"></script>
-  <script src="cms.js?v=5"></script>
-  <script src="script.js?v=20260707-1"></script>
-  <script src="schedule.js?v=20260630-21"></script>
+            </span><svg aria-hidden="true" fill="#fff" height="20" viewbox="0 0 32 32" width="20"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.7 1.9 6.7L3 29l7-1.8c1.9 1 4 1.6 6 1.6 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.2 1.1 1.1-4-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.7 4.7-10.3 10.4-10.3s10.4 4.6 10.4 10.3-4.7 10.6-10.5 10.6zm5.7-7.8c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.5 3.8 6 5.3 2.2 1 3.1 1 4.2.9.7-.1 1.8-.7 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"></path></svg>
+</button>
+<small class="book-note" data-cms="t.s.56">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</small>
+</form>
+</aside>
+</div>
+</section>
+<span data-cms="t.s.4"><!-- ================= FOOTER ================= --></span>
+<footer class="footer" id="contacts">
+<div class="container footer-inner">
+<a class="footer-phone" data-cms="t.s.57" href="tel:+77054290000">8 705 429 0000</a>
+<div class="footer-main">
+<span aria-hidden="true" class="footer-spacer"></span>
+<div class="footer-center">
+<nav class="footer-nav">
+<a data-cms="t.s.58" href="index.html#how">Как проходят занятия</a>
+<a data-cms="t.s.59" href="index.html#coaches">Тренеры</a>
+<a data-cms="t.s.60" href="index.html#reviews">Отзывы</a>
+<a data-cms="t.s.61" href="index.html#faq">FAQ</a>
+<a data-cms="t.s.62" href="index.html#contacts">Контакты</a>
+</nav>
+<div class="footer-socials">
+<a aria-label="ВКонтакте" class="circle-btn square-btn" href="#"><svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16"><path d="M13.2 17.3c-5.5 0-8.9-3.8-9-10.1h2.8c.1 4.6 2.2 6.5 3.8 6.9V7.2h2.6v3.9c1.6-.2 3.3-2 3.9-3.9h2.6c-.5 2.3-2.1 4.1-3.3 4.8 1.2.6 3 2.2 3.7 5.3h-2.9c-.5-1.8-2-3.2-3.9-3.4v3.4z"></path></svg></a>
+<a aria-label="Позвонить" class="circle-btn square-btn" href="tel:+77054290000"><svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2z"></path></svg></a>
+</div>
+</div>
+<img alt="Территория Спорта КИДС" class="footer-logo" data-cms-img="image.logo" src="assets/img/logo.png"/>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="container footer-bottom-inner">
+<div class="footer-links">
+<a data-cms="t.s.63" href="#">Политика конфиденциальности</a>
+<a data-cms="t.s.64" href="#">Публичная оферта</a>
+</div>
+<span class="copyright" data-cms="footer.copyright">©2026 Все права защищены</span>
+</div>
+</div>
+</footer>
+<span data-cms="t.s.5"><!-- Floating WhatsApp --></span>
+<a aria-label="Написать в WhatsApp" class="wa-float" href="https://wa.me/77054290000?text=Здравствуйте!%20Хочу%20записаться%20на%20занятие" rel="noopener" target="_blank">
+<svg fill="#fff" height="30" viewbox="0 0 32 32" width="30"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.7 1.9 6.7L3 29l7-1.8c1.9 1 4 1.6 6 1.6 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.7c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-4.2 1.1 1.1-4-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.7 4.7-10.3 10.4-10.3s10.4 4.6 10.4 10.3-4.7 10.6-10.5 10.6zm5.7-7.8c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.5 3.8 6 5.3 2.2 1 3.1 1 4.2.9.7-.1 1.8-.7 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"></path></svg>
+</a>
+<script src="cms-config.js?v=2"></script>
+<script src="textsizes.js?v=1"></script>
+<script src="cms.js?v=6"></script>
+<script src="script.js?v=20260707-1"></script>
+<script src="schedule.js?v=20260630-21"></script>
 </body>
 </html>

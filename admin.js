@@ -26,86 +26,48 @@
   var FIELD_LABELS = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение',
     parent: 'Имя родителя', child: 'Имя ребёнка', childage: 'Возраст ребёнка', lesson: 'Занятие' };
 
-  var TEXT_FIELDS = [
-    { g: 'Первый экран', key: 'hero.title', label: 'Заголовок (первая строка — жирная)', def: 'Гимнастика,\nчтобы влюбиться\nв движение' },
-    { g: 'Первый экран', key: 'hero.sub', label: 'Подзаголовок', def: 'Развитие координации, гибкости и\nуверенности в безопасной среде' },
-    { g: 'Программы', key: 'programs.title', label: 'Заголовок раздела', def: 'Чем будем заниматься?' },
-    { g: 'Программы', key: 'programs.lead', label: 'Описание раздела', def: 'Наши программы отличаются по возрасту, уровню\nсамостоятельности и нагрузке — от мягкой адаптации до уверенных\nгимнастических элементов.' },
-    { g: 'Разделы', key: 'develop.title', label: '«Что будем развивать»', def: 'Что будем развивать' },
-    { g: 'Разделы', key: 'how.title', label: '«Как проходит первое занятие»', def: 'Как проходит первое занятие' },
-    { g: 'Разделы', key: 'gallery.title', label: 'Галерея', def: 'Познакомьтесь с залом!' },
-    { g: 'Разделы', key: 'equip.title', label: 'Оборудование', def: 'Что есть у нас в зале?' },
-    { g: 'Разделы', key: 'faq.title', label: 'Частые вопросы', def: 'Частые вопросы' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i1.title', label: 'Объект 1 — название', def: '1. Шведская стенка' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i1.text', label: 'Объект 1 — описание', def: 'Развивает силу, координацию и уверенность в движении.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i2.title', label: 'Объект 2 — название', def: '2. Перекладина' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i2.text', label: 'Объект 2 — описание', def: 'Укрепляет руки и спину, формирует правильный хват и осанку.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i3.title', label: 'Объект 3 — название', def: '3. Брусья' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i3.text', label: 'Объект 3 — описание', def: 'Помогают освоить опорные элементы и уверенно держать вес тела.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i4.title', label: 'Объект 4 — название', def: '4. Батутная зона' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i4.text', label: 'Объект 4 — описание', def: 'Учит группироваться, чувствовать тело в воздухе и приземляться мягко.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i5.title', label: 'Объект 5 — название', def: '5. Акробатическая дорожка' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i5.text', label: 'Объект 5 — описание', def: 'Безопасная поверхность для кувырков, перекатов и первых акробатических элементов.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i6.title', label: 'Объект 6 — название', def: '6. Кольца' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i6.text', label: 'Объект 6 — описание', def: 'Развивают силу рук, баланс и контроль над телом в висе.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i7.title', label: 'Объект 7 — название', def: '7. Полоса препятствий' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i7.text', label: 'Объект 7 — описание', def: 'Игровой формат для развития ловкости, координации и выносливости.' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i8.title', label: 'Объект 8 — название', def: '8. Бревно и малое бревно' },
-    { g: 'Раздел «Что есть у нас в зале?»', key: 'equip.i8.text', label: 'Объект 8 — описание', def: 'Развивают равновесие, координацию и уверенность в каждом шаге.' },
-    { g: 'Запись (оранжевый блок)', key: 'signup.title', label: 'Заголовок', def: 'Запишитесь на пробное занятие' },
-    { g: 'Запись (оранжевый блок)', key: 'signup.sub', label: 'Текст', def: 'Оставьте заявку — мы подберём удобное\nвремя и ответим на ваши вопросы' },
-    { g: 'Тренеры', key: 'coaches.title', label: 'Заголовок', def: 'Наши тренеры' },
-    { g: 'Тренеры', key: 'coaches.lead', label: 'Описание', def: 'Для нас важно не только образование и опыт. Тренер должен видеть ребёнка, слышать его и уметь поддержать в нужный момент.' },
-    { g: 'Блок «Расписание» на главной', key: 'home_sched.eyebrow', label: 'Надпись сверху', def: 'всегда актуально' },
-    { g: 'Блок «Расписание» на главной', key: 'home_sched.title', label: 'Заголовок', def: 'Расписание\nзанятий' },
-    { g: 'Блок «Расписание» на главной', key: 'home_sched.text', label: 'Текст', def: 'Актуальные группы, время занятий и\nсвободные места собраны в расписании.\nОткройте таблицу и выберите удобный\nвариант — мы поможем с записью.' },
-    { g: 'Отзывы', key: 'reviews.title', label: 'Заголовок', def: 'Отзывы\nродителей' },
-    { g: 'Отзывы', key: 'reviews.form_title', label: 'Заголовок формы', def: 'Оставить\nотзыв' },
-    { g: 'Страница расписания', key: 'sched.eyebrow', label: 'Надпись сверху', def: '● Всегда актуально' },
-    { g: 'Страница расписания', key: 'sched.title', label: 'Заголовок', def: 'Расписание занятий' },
-    { g: 'Страница расписания', key: 'sched.sub', label: 'Подзаголовок', def: 'Выберите направление, возраст и удобное время — и запишитесь на занятие за пару минут.\nМы свяжемся с вами в WhatsApp и подтвердим место в группе.' },
-    { g: 'Страница расписания', key: 'book.title', label: 'Заголовок формы записи', def: 'Запись на занятие' },
-    { g: 'Страница расписания', key: 'book.sub', label: 'Текст формы записи', def: 'Выберите занятие в расписании или заполните заявку — мы свяжемся с вами в WhatsApp и подтвердим место в группе.' },
-    { g: 'Подвал', key: 'footer.copyright', label: 'Копирайт', def: '©2026 Все права защищены' }
+  /* ---------- Сканер страниц сайта: находит все редактируемые тексты и картинки ---------- */
+  var PAGES = [
+    { url: 'index.html', label: 'Главная' },
+    { url: 'schedule.html', label: 'Расписание' }
   ];
-
-  /* Все заменяемые изображения сайта (селекторы применяет cms.js) */
-  var IMG_FIELDS = [
-    { g: 'Общие', key: 'image.logo', label: 'Логотип (шапка и подвал)', def: 'assets/img/logo.png' },
-    { g: 'Общие', key: 'image.hero', label: 'Главное фото (первый экран)', def: 'assets/img/hero.png' },
-    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_1', label: 'Иконка 1 — «программы от 1,5 лет»', def: 'assets/img/feat-active.png' },
-    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_2', label: 'Иконка 2 — «без давления»', def: 'assets/img/feat-heart.png' },
-    { g: 'Преимущества (иконки под первым экраном)', key: 'image.feat_3', label: 'Иконка 3 — «группы по возрасту»', def: 'assets/img/feat-group.png' },
-    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_1', label: 'Мягкий старт (1,5–3 года)', def: 'assets/img/prog-1.png' },
-    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_2', label: 'Самостоятельные шаги (3–4 года)', def: 'assets/img/prog-2.png' },
-    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_3', label: 'Координация и гибкость (5–7 лет)', def: 'assets/img/prog-3.png' },
-    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_4', label: 'Сила и техника (7–10 лет)', def: 'assets/img/prog-4.png' },
-    { g: 'Программы «Чем будем заниматься?»', key: 'image.prog_5', label: 'Навыки и цели (10+ лет)', def: 'assets/img/prog-10plus.png' },
-    { g: '«Что будем развивать» (иконки)', key: 'image.dev_1', label: 'Координация и баланс', def: 'assets/img/dev-icon-1.png' },
-    { g: '«Что будем развивать» (иконки)', key: 'image.dev_2', label: 'Гибкость и подвижность', def: 'assets/img/dev-icon-2.png' },
-    { g: '«Что будем развивать» (иконки)', key: 'image.dev_3', label: 'Сила и выносливость', def: 'assets/img/dev-icon-3.png' },
-    { g: '«Что будем развивать» (иконки)', key: 'image.dev_4', label: 'Осанка и здоровье спины', def: 'assets/img/dev-icon-4.png' },
-    { g: '«Что будем развивать» (иконки)', key: 'image.dev_5', label: 'Уверенность в себе', def: 'assets/img/dev-icon-5.png' },
-    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_1', label: 'Шаг 1 — знакомство с тренером', def: 'assets/img/step-mascot.png' },
-    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_2', label: 'Шаг 2 — разминка', def: 'assets/img/kid-stretch.png' },
-    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_3', label: 'Шаг 3 — упражнения на снарядах', def: 'assets/img/step-rings.png' },
-    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_4', label: 'Шаг 4 — игры и задания', def: 'assets/img/kid-jump.png' },
-    { g: '«Как проходит первое занятие» (шаги)', key: 'image.how_5', label: 'Шаг 5 — обратная связь', def: 'assets/img/kid-30.png' },
-    { g: '«Пространство для движения»', key: 'image.space', label: 'Фото ребёнка', def: 'assets/img/kid-hero.png' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_1', label: 'Фото 1', def: 'assets/img/gal-1.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_2', label: 'Фото 2', def: 'assets/img/gal-2.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_3', label: 'Фото 3', def: 'assets/img/gal-3.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_4', label: 'Фото 4', def: 'assets/img/gal-4.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_5', label: 'Фото 5', def: 'assets/img/gal-5.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_6', label: 'Фото 6', def: 'assets/img/gal-6.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_7', label: 'Фото 7', def: 'assets/img/gal-7.jpg' },
-    { g: 'Галерея «Познакомьтесь с залом!»', key: 'image.gal_8', label: 'Фото 8', def: 'assets/img/gal-8.jpg' },
-    { g: '«Что есть у нас в зале?»', key: 'image.plan', label: 'План зала', def: 'assets/img/floorplan.jpg' },
-    { g: 'Маскоты и декор', key: 'image.mascot_coaches', label: 'Маскот в разделе «Тренеры»', def: 'assets/img/mascot-stand.png' },
-    { g: 'Маскоты и декор', key: 'image.mascot_sched', label: 'Маскот в блоке «Расписание»', def: 'assets/img/mascot-wave.png' },
-    { g: 'Маскоты и декор', key: 'image.sched_cal', label: 'Календарь в блоке «Расписание»', def: 'assets/img/sched-calendar.png' },
-    { g: 'Маскоты и декор', key: 'image.mascot_faq', label: 'Маскот в разделе FAQ', def: 'assets/img/faq-kangaroo.png' }
+  var SECTION_LABELS = {
+    header: 'Шапка сайта', hero: 'Первый экран', features: 'Преимущества', programs: 'Программы',
+    develop: 'Что будем развивать', how: 'Первое занятие', signup: 'Блок «Запишитесь»',
+    method: 'Наша методика', space: 'Пространство для движения', coaches: 'Тренеры',
+    gallery: 'Галерея', equip: 'Что есть у нас в зале', schedule: 'Блок «Расписание»',
+    reviews: 'Отзывы', faq: 'FAQ', footer: 'Подвал',
+    'sched-hero': 'Заголовок страницы', 'sched-page': 'Таблица и запись'
+  };
+  var EXTRA_TEXTS = [
+    { key: 'ui.book_btn', label: 'Кнопка «Записаться» в таблице расписания', def: 'Записаться' },
+    { key: 'ui.no_spots', label: 'Надпись «Нет мест» в расписании', def: 'Нет мест' },
+    { key: 'ui.review_thanks', label: 'Сообщение после отправки отзыва', def: 'Спасибо! Отзыв появится на сайте после проверки.' }
   ];
+  var pageDocs = null;
+  function fetchPages() {
+    if (pageDocs) return Promise.resolve(pageDocs);
+    return Promise.all(PAGES.map(function (p) {
+      return fetch(p.url + '?cms=' + Date.now(), { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error(p.url + ': ' + r.status);
+        return r.text();
+      }).then(function (t) {
+        return { label: p.label, doc: new DOMParser().parseFromString(t, 'text/html') };
+      });
+    })).then(function (docs) { pageDocs = docs; return docs; });
+  }
+  function groupOf(el, pageLabel) {
+    var custom = el.closest('[data-cms-group]');
+    if (custom) return pageLabel + ' — ' + custom.getAttribute('data-cms-group');
+    var sec = el.closest('section, header, footer');
+    var cls = sec && sec.classList[0];
+    return pageLabel + ' — ' + (SECTION_LABELS[cls] || 'Прочее');
+  }
+  function defaultTextOf(el) {
+    var clone = el.cloneNode(true);
+    clone.querySelectorAll('br').forEach(function (b) { b.replaceWith('\n'); });
+    return clone.textContent.replace(/[ \t]+/g, ' ').replace(/ ?\n ?/g, '\n').trim();
+  }
 
   var COLOR_FIELDS = [
     { key: 'theme.green', label: 'Основной зелёный', def: '#16BF41' },
@@ -422,16 +384,35 @@
 
   /* ---------- Тексты ---------- */
   function renderTexts() {
-    var groups = {};
-    TEXT_FIELDS.forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
-    $('textsForm').innerHTML = Object.keys(groups).map(function (g, gi) {
-      return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
-        groups[g].map(function (f) {
-          var rows = f.def.split('\n').length;
-          return '<label>' + esc(f.label) +
-            '<textarea data-key="' + f.key + '" rows="' + Math.min(rows + 1, 5) + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
-        }).join('') + '</div></details>';
-    }).join('');
+    $('textsForm').innerHTML = '<p class="adm-empty">Загрузка текстов сайта…</p>';
+    fetchPages().then(function (docs) {
+      var seen = {}, order = [], byGroup = {};
+      function add(g, f) {
+        if (seen[f.key]) return;
+        seen[f.key] = 1;
+        if (!byGroup[g]) { byGroup[g] = []; order.push(g); }
+        byGroup[g].push(f);
+      }
+      docs.forEach(function (d) {
+        d.doc.querySelectorAll('[data-cms], [data-cms-ph]').forEach(function (el) {
+          var g = groupOf(el, d.label);
+          if (el.hasAttribute('data-cms')) add(g, { key: el.getAttribute('data-cms'), def: defaultTextOf(el) });
+          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true });
+        });
+      });
+      EXTRA_TEXTS.forEach(function (f) { add('Служебные тексты', f); });
+      $('textsForm').innerHTML = order.map(function (g, gi) {
+        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
+          byGroup[g].map(function (f) {
+            var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.ph ? ' — подсказка в поле' : ''));
+            var rows = Math.min(f.def.split('\n').length + 1, 5);
+            return '<label>' + esc(label) +
+              '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
+          }).join('') + '</div></details>';
+      }).join('');
+    }).catch(function (e) {
+      $('textsForm').innerHTML = '<p class="adm-empty">Не удалось загрузить страницы сайта (' + esc(e.message) + '). Обновите страницу.</p>';
+    });
   }
   $('textsSaveBtn').addEventListener('click', function () {
     var map = {};
@@ -441,24 +422,39 @@
 
   /* ---------- Изображения ---------- */
   function renderImages() {
-    var groups = {};
-    IMG_FIELDS.forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
-    $('imagesList').innerHTML = Object.keys(groups).map(function (g, gi) {
-      return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-list">' +
-        groups[g].map(function (f) {
-          var custom = !!settings[f.key];
-          return '<div class="adm-item">' +
-            '<img class="adm-thumb" src="' + esc(settings[f.key] || f.def) + '" alt="" loading="lazy" />' +
-            '<div class="adm-item-body">' +
-            '<p class="adm-item-title">' + esc(f.label) + '</p>' +
-            '<p class="adm-item-meta">' + (custom ? 'загружена своя картинка' : 'стандартная картинка') + '</p>' +
-            '</div>' +
-            '<div class="adm-item-actions">' +
-            '<label class="adm-btn adm-btn-sm adm-btn-ok adm-upload">Заменить<input type="file" accept="image/*" data-imgkey="' + f.key + '" hidden /></label>' +
-            (custom ? '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="img-reset" data-key="' + f.key + '">Вернуть стандартное</button>' : '') +
-            '</div></div>';
-        }).join('') + '</div></details>';
-    }).join('');
+    $('imagesList').innerHTML = '<p class="adm-empty">Загрузка изображений…</p>';
+    fetchPages().then(function (docs) {
+      var seen = {}, order = [], byGroup = {};
+      docs.forEach(function (d) {
+        d.doc.querySelectorAll('img[data-cms-img]').forEach(function (img) {
+          var key = img.getAttribute('data-cms-img');
+          if (seen[key]) return;
+          seen[key] = 1;
+          var g = groupOf(img, d.label);
+          if (!byGroup[g]) { byGroup[g] = []; order.push(g); }
+          var src = img.getAttribute('src') || '';
+          byGroup[g].push({ key: key, def: src, label: img.getAttribute('alt') || src.split('/').pop() });
+        });
+      });
+      $('imagesList').innerHTML = order.map(function (g, gi) {
+        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-list">' +
+          byGroup[g].map(function (f) {
+            var custom = !!settings[f.key];
+            return '<div class="adm-item">' +
+              '<img class="adm-thumb" src="' + esc(settings[f.key] || f.def) + '" alt="" loading="lazy" />' +
+              '<div class="adm-item-body">' +
+              '<p class="adm-item-title">' + esc(f.label) + '</p>' +
+              '<p class="adm-item-meta">' + (custom ? 'загружена своя картинка' : 'стандартная картинка') + '</p>' +
+              '</div>' +
+              '<div class="adm-item-actions">' +
+              '<label class="adm-btn adm-btn-sm adm-btn-ok adm-upload">Заменить<input type="file" accept="image/*" data-imgkey="' + esc(f.key) + '" hidden /></label>' +
+              (custom ? '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="img-reset" data-key="' + esc(f.key) + '">Вернуть стандартное</button>' : '') +
+              '</div></div>';
+          }).join('') + '</div></details>';
+      }).join('');
+    }).catch(function (e) {
+      $('imagesList').innerHTML = '<p class="adm-empty">Не удалось загрузить страницы сайта (' + esc(e.message) + '). Обновите страницу.</p>';
+    });
   }
 
   document.addEventListener('change', function (e) {

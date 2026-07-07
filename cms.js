@@ -29,44 +29,6 @@
     mon: 'Понедельник', tue: 'Вторник', wed: 'Среда', thu: 'Четверг',
     fri: 'Пятница', sat: 'Суббота', sun: 'Воскресенье'
   };
-  /* Ключи изображений и куда они подставляются (совпадают с admin.js) */
-  var IMAGE_SELECTORS = {
-    'image.logo': 'img.logo, img.footer-logo',
-    'image.hero': '.hero-media img',
-    'image.feat_1': '.features-band .feat:nth-child(1) .feat-icon',
-    'image.feat_2': '.features-band .feat:nth-child(2) .feat-icon',
-    'image.feat_3': '.features-band .feat:nth-child(3) .feat-icon',
-    'image.prog_1': '.prog-track .prog-card:nth-child(1) .pc-photo img',
-    'image.prog_2': '.prog-track .prog-card:nth-child(2) .pc-photo img',
-    'image.prog_3': '.prog-track .prog-card:nth-child(3) .pc-photo img',
-    'image.prog_4': '.prog-track .prog-card:nth-child(4) .pc-photo img',
-    'image.prog_5': '.prog-track .prog-card:nth-child(5) .pc-photo img',
-    'image.dev_1': '.develop-band .dev-item:nth-child(1) .dev-ic',
-    'image.dev_2': '.develop-band .dev-item:nth-child(2) .dev-ic',
-    'image.dev_3': '.develop-band .dev-item:nth-child(3) .dev-ic',
-    'image.dev_4': '.develop-band .dev-item:nth-child(4) .dev-ic',
-    'image.dev_5': '.develop-band .dev-item:nth-child(5) .dev-ic',
-    'image.how_1': '.how-step.st1 .how-photo img',
-    'image.how_2': '.how-step.st2 .how-photo img',
-    'image.how_3': '.how-step.st3 .how-photo img',
-    'image.how_4': '.how-step.st4 .how-photo img',
-    'image.how_5': '.how-step.st5 .how-photo img',
-    'image.space': '.space-photo img',
-    'image.gal_1': '.gallery-grid .gal-item:nth-child(1) img',
-    'image.gal_2': '.gallery-grid .gal-item:nth-child(2) img',
-    'image.gal_3': '.gallery-grid .gal-item:nth-child(3) img',
-    'image.gal_4': '.gallery-grid .gal-item:nth-child(4) img',
-    'image.gal_5': '.gallery-grid .gal-item:nth-child(5) img',
-    'image.gal_6': '.gallery-grid .gal-item:nth-child(6) img',
-    'image.gal_7': '.gallery-grid .gal-item:nth-child(7) img',
-    'image.gal_8': '.gallery-grid .gal-item:nth-child(8) img',
-    'image.plan': 'img.equip-plan',
-    'image.sched_cal': '.sched-cal',
-    'image.mascot_coaches': '.coaches-mascot .mascot-roo',
-    'image.mascot_sched': '.sched-mascot',
-    'image.mascot_faq': '.faq-mascot'
-  };
-
   var THEME_VARS = {
     'theme.green': '--green', 'theme.green_d': '--green-d', 'theme.orange': '--orange',
     'theme.coral': '--coral', 'theme.blue': '--blue', 'theme.yellow': '--yellow',
@@ -130,7 +92,7 @@
           note.className = 'review-thanks';
           form.parentElement.appendChild(note);
         }
-        note.textContent = 'Спасибо! Отзыв появится на сайте после проверки.';
+        note.textContent = api.settings['ui.review_thanks'] || 'Спасибо! Отзыв появится на сайте после проверки.';
       }).catch(function (e) {
         console.warn(e);
         alert('Не удалось отправить отзыв. Попробуйте позже.');
@@ -182,10 +144,16 @@
       });
     }
 
-    // Изображения
-    Object.keys(IMAGE_SELECTORS).forEach(function (key) {
-      if (!s[key]) return;
-      document.querySelectorAll(IMAGE_SELECTORS[key]).forEach(function (img) { img.src = s[key]; });
+    // Изображения: каждый <img> несёт свой ключ в data-cms-img
+    document.querySelectorAll('[data-cms-img]').forEach(function (img) {
+      var val = s[img.getAttribute('data-cms-img')];
+      if (val) img.src = val;
+    });
+
+    // Подсказки в полях форм
+    document.querySelectorAll('[data-cms-ph]').forEach(function (inp) {
+      var val = s[inp.getAttribute('data-cms-ph')];
+      if (val !== undefined) inp.placeholder = val;
     });
 
     applyTextSizes();
@@ -265,7 +233,7 @@
   /* ---------- Расписание ---------- */
   function spotsText(n) {
     n = parseInt(n, 10) || 0;
-    if (n === 0) return 'Нет мест';
+    if (n === 0) return api.settings['ui.no_spots'] || 'Нет мест';
     var d10 = n % 10, d100 = n % 100;
     var word = (d10 === 1 && d100 !== 11) ? 'место'
       : (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) ? 'места' : 'мест';
@@ -277,23 +245,31 @@
     var table = document.querySelector('.sched-table');
     if (!table) return;
     var head = table.querySelector('.sch-head');
+    // подписи колонок и значения фильтров берём из DOM — так работают правки текстов из админки
+    var hc = head ? head.children : [];
+    function colLabel(i, def) { return hc[i] ? hc[i].textContent.trim() || def : def; }
+    function optLabel(selId, value, def) {
+      var o = document.querySelector('#' + selId + ' option[value="' + value + '"]');
+      return o ? o.textContent.trim() : def;
+    }
+    var bookText = api.settings['ui.book_btn'] || 'Записаться';
     var html = rows.map(function (r) {
-      var dir = DIR_LABELS[r.dir] || r.dir;
-      var age = AGE_LABELS[r.age] || r.age;
-      var day = DAY_LABELS[r.day] || r.day;
+      var dir = optLabel('fDir', r.dir, DIR_LABELS[r.dir] || r.dir);
+      var age = optLabel('fAge', r.age, AGE_LABELS[r.age] || r.age);
+      var day = optLabel('fDay', r.day, DAY_LABELS[r.day] || r.day);
       var n = parseInt(r.spots, 10) || 0;
       var spotCls = 'sch-v sch-spots' + (n === 0 ? ' sch-none' : (n <= 2 ? ' sch-few' : ''));
       function cell(k, v) {
         return '<div class="sch-cell"><span class="sch-k">' + k + '</span><span class="sch-v">' + v + '</span></div>';
       }
       return '<div class="sch-row" data-age="' + esc(r.age) + '" data-dir="' + esc(r.dir) + '" data-day="' + esc(r.day) + '" data-free="' + n + '">' +
-        '<div class="sch-cell sch-dir"><span class="sch-k">Направление</span><span class="sch-v">' + esc(dir) + '</span></div>' +
-        cell('Возраст', '<span class="sch-badge">' + esc(age) + '</span>') +
-        cell('День', esc(day)) +
-        cell('Время', esc(r.time)) +
-        cell('Тренер', esc(r.coach || '')) +
-        '<div class="sch-cell"><span class="sch-k">Места</span><span class="' + spotCls + '">' + spotsText(n) + '</span></div>' +
-        '<div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="' + esc(dir) + '" data-age="' + esc(age) + '" data-day="' + esc(day) + '" data-time="' + esc(r.time) + '" data-coach="' + esc(r.coach || '') + '">Записаться</button></div>' +
+        '<div class="sch-cell sch-dir"><span class="sch-k">' + esc(colLabel(0, 'Направление')) + '</span><span class="sch-v">' + esc(dir) + '</span></div>' +
+        cell(esc(colLabel(1, 'Возраст')), '<span class="sch-badge">' + esc(age) + '</span>') +
+        cell(esc(colLabel(2, 'День')), esc(day)) +
+        cell(esc(colLabel(3, 'Время')), esc(r.time)) +
+        cell(esc(colLabel(4, 'Тренер')), esc(r.coach || '')) +
+        '<div class="sch-cell"><span class="sch-k">' + esc(colLabel(5, 'Места')) + '</span><span class="' + spotCls + '">' + spotsText(n) + '</span></div>' +
+        '<div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="' + esc(dir) + '" data-age="' + esc(age) + '" data-day="' + esc(day) + '" data-time="' + esc(r.time) + '" data-coach="' + esc(r.coach || '') + '">' + esc(bookText) + '</button></div>' +
         '</div>';
     }).join('');
     table.innerHTML = '';
@@ -304,17 +280,18 @@
 
   /* ---------- Загрузка ---------- */
   document.addEventListener('DOMContentLoaded', function () {
-    quiet(rest('settings?select=key,value')).then(applySettings);
-    // после каждой перерисовки заново применяем настроенные размеры текста,
-    // т.к. рендер заменяет узлы новыми
-    if (document.querySelector('.coaches-stage')) {
-      quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
-    }
-    if (document.querySelector('.reviews-grid')) {
-      quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
-    }
-    if (document.querySelector('.sched-table')) {
-      quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });
-    }
+    // Сначала настройки (тексты/цвета/подписи), затем зависящие от них блоки.
+    // После каждой перерисовки заново применяем размеры текста — рендер заменяет узлы.
+    quiet(rest('settings?select=key,value')).then(applySettings).then(function () {
+      if (document.querySelector('.coaches-stage')) {
+        quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
+      }
+      if (document.querySelector('.reviews-grid')) {
+        quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
+      }
+      if (document.querySelector('.sched-table')) {
+        quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });
+      }
+    });
   });
 })();
