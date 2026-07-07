@@ -771,13 +771,15 @@ a { text-decoration: none; color: inherit; }
   .method-wave { display: none; }
   .mcard-wrap { position: relative; width: 100%; }
   .mw-red    { left: auto; top: auto; transform: rotate(-6deg); z-index: 1; }
-  .mw-yellow { left: auto; top: auto; transform: rotate(5deg);  z-index: 2; margin-top: -16px; }
-  .mw-green  { left: auto; top: auto; transform: rotate(-6deg); z-index: 3; margin-top: -16px; }
+  .mw-yellow { left: auto; top: auto; transform: rotate(5deg);  z-index: 2; margin-top: -8px; }
+  .mw-green  { left: auto; top: auto; transform: rotate(-6deg); z-index: 3; margin-top: -8px; }
   /* preferred square-ish shape, but let the card grow if the text needs more */
   .method-card { aspect-ratio: auto; min-height: calc(min(400px, 100vw - 64px) / 1.15); }
   .mcard-body { padding: 30px 26px; }
-  /* text tilts together with the card, matching the mock */
-  .mw-red .mcard-body, .mw-yellow .mcard-body, .mw-green .mcard-body { transform: none; }
+  /* text stays level (counter-rotated against the card tilt), like desktop */
+  .mw-red    .mcard-body { transform: rotate(6deg); }
+  .mw-yellow .mcard-body { transform: rotate(-5deg); }
+  .mw-green  .mcard-body { transform: rotate(6deg); }
   .method-card h3 { font-size: 27px; }
   .method-card p { font-size: 17px; }
   /* narrower cards: let the paragraphs wrap naturally like the mock */
