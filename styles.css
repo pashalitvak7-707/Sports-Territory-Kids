@@ -830,7 +830,7 @@ a { text-decoration: none; color: inherit; }
   /* «Что есть у нас в зале?»: the gallery card's bottom border above already
      separates the sections, so this section's own green line is hidden and
      the heading moves up close to it */
-  .equip { padding: 6px 0 56px; }
+  .equip { padding: 6px 0 34px; }
   .equip-head { flex-direction: column-reverse; align-items: stretch; gap: 0; margin-bottom: 16px; }
   .equip-head .section-title { white-space: normal; text-align: center; }
   .equip-line { display: none; }
@@ -838,14 +838,15 @@ a { text-decoration: none; color: inherit; }
   /* «Расписание занятий» teaser: near-square vertical card — calendar on the
      left, text (eyebrow / title / black paragraph) on the right, then the dark
      button and the underlined link stacked beneath. No mascot. */
-  .schedule { padding: 12px 0 56px; }
+  .schedule { padding: 7px 0 34px; }
   .sched-card {
     grid-template-columns: auto 1fr; grid-template-areas: "cal text" "actions actions";
     padding: 26px 18px 28px; column-gap: 16px; row-gap: 20px;
     justify-items: stretch; text-align: left; align-items: center; border-radius: 30px;
   }
   .sched-mascot { display: none; }
-  .sched-cal { width: clamp(104px, 32vw, 132px); margin: 0; transform: rotate(-9deg); }
+  /* calendar centred between the card's top edge and the dark button below */
+  .sched-cal { width: clamp(88px, 27vw, 112px); margin: 0; transform: rotate(-9deg); align-self: center; }
   .sched-eyebrow { font-size: 11px; padding: 6px 13px; margin-bottom: 10px; }
   .sched-text h2 { font-size: clamp(23px, 7vw, 28px); margin-bottom: 8px; }
   .sched-text p { color: #111; font-size: clamp(13px, 3.9vw, 15px); line-height: 1.45; margin-bottom: 0; }
@@ -911,11 +912,15 @@ a { text-decoration: none; color: inherit; }
   /* Gallery «Познакомьтесь с залом!»: drop the boxed outline — separate the
      slide with a green line on top and bottom. Photos scroll in one row.
      «БОЛЬШЕ ФОТО» centred at the bottom, above the lower line. */
-  .gallery { padding: 8px 0 40px; }
+  .gallery { padding: 8px 0 16px; }
+  /* the coaches section above keeps only enough bottom padding for the
+     gallery's top line to sit midway between the two sections */
+  .coaches { padding-bottom: 16px; }
   .gallery-card {
     background: none; border: none; border-radius: 0; box-shadow: none;
     border-top: 3px solid #46B54A; border-bottom: 3px solid #46B54A;
-    padding: clamp(20px, 6vw, 30px) 0;
+    padding: clamp(20px, 6vw, 30px) 16px;
+    margin-left: -16px; margin-right: -16px;   /* lines run edge-to-edge */
   }
   .gallery-card .section-title { font-weight: 600; margin-bottom: clamp(16px, 5vw, 24px); }
   .gallery-grid {
@@ -939,6 +944,10 @@ a { text-decoration: none; color: inherit; }
   .gallery-more .all-arrow { color: var(--dev-green); }   /* light green, points right */
   .car-track > * { flex-basis: 100%; }
   .car-prev { left: -6px; } .car-next { right: -6px; }
+  /* FAQ separator line: edge-to-edge and midway between reviews and FAQ */
+  .reviews { padding-bottom: 10px; }
+  .faq { padding-top: 20px; }
+  .faq-line { margin: 0 -16px 30px; }
   .footer-phone { font-size: 26px; }
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-main { grid-template-columns: 1fr; gap: 22px; }
@@ -989,8 +998,8 @@ a { text-decoration: none; color: inherit; }
   /* badge 5 centred ON the outline like the others (badge centre on the ring) */
   .st5 .how-num { left: auto; right: -15%; top: 20%; }
   /* red arc: shorter, rotated 90° clockwise (curving downwards) and centred
-     above the middle of circle 2 */
-  .st2 .deco-arc { left: -105%; top: -104%; height: 110%; transform: rotate(90deg); }
+     above the small number badge on the red circle's edge */
+  .st2 .deco-arc { left: 25%; top: -90%; height: 110%; transform: rotate(90deg); }
   .how-step h4 { font-size: 15px; margin-top: 10px; line-height: 1.2; }
   /* (number 5's big arc stays hidden — inherited from the ≤820 rules) */
   /* orange CTA: smaller circle to the right of circle 5, raised and nudged left */
@@ -1019,7 +1028,8 @@ a { text-decoration: none; color: inherit; }
             mask-image: linear-gradient(to right, transparent 0, rgba(0,0,0,.3) 35%, #000 75%, #000 100%); }
   /* 3 · faint: a sliver to the left of circle 5, ending behind it —
      nothing shows to the circle's right */
-  .hw-3 { top: 78%; left: calc(50% - 50vw); width: calc(2% + 50vw); height: 56px; opacity: .45;
+  .hw-3 { top: 78%; left: calc(50% - 50vw); width: calc(2% + 50vw); height: 56px; opacity: .6;
+    background-position: right center; background-size: 230% 100%;  /* use the artwork's bolder half */
     -webkit-mask-image: linear-gradient(to right, #000 0, #000 60%, transparent 92%);
             mask-image: linear-gradient(to right, #000 0, #000 60%, transparent 92%); }
 
