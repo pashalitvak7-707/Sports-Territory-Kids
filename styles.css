@@ -967,7 +967,10 @@ a { text-decoration: none; color: inherit; }
   .how-num b { font-size: 20px; }
   /* badges 2 and 5 sit on the top-RIGHT of their circles */
   .st2 .how-num { left: auto; right: -4%; }
-  .st5 .how-num { left: auto; right: -5%; top: 20%; }
+  /* badge 5 centred ON the outline like the others (badge centre on the ring) */
+  .st5 .how-num { left: auto; right: -15%; top: 20%; }
+  /* red arc: above badge 2, rotated 90° clockwise so it curves downwards */
+  .st2 .deco-arc { left: 4%; top: -104%; transform: rotate(90deg); }
   .how-step h4 { font-size: 15px; margin-top: 10px; line-height: 1.2; }
   /* (number 5's big arc stays hidden — inherited from the ≤820 rules) */
   /* orange CTA: smaller circle to the right of circle 5, raised and nudged left */
@@ -985,18 +988,18 @@ a { text-decoration: none; color: inherit; }
      slightly cropped so the wave stays visible at the page's left edge, then a
      mask keeps it dimmer on the left and bolder toward the right. */
   .hw-1 { top: 10%; left: -18px; right: -18px; width: auto; height: 100px;
-    background: url("assets/img/how-curve.png") right center / 106% 100% no-repeat,
-                url("assets/img/how-curve.png") right center / 106% 100% no-repeat;
+    background: url("assets/img/how-curve.png") right center / 212% 100% no-repeat,
+                url("assets/img/how-curve.png") right center / 212% 100% no-repeat;
     -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,.5) 0, #000 55%, #000 100%);
             mask-image: linear-gradient(to right, rgba(0,0,0,.5) 0, #000 55%, #000 100%); }
-  /* 2 · invisible at the left, fades in and runs to the very end of the page,
-     just above circle 4 */
+  /* 2 · fades in gradually from the very left edge, runs to the very end of the
+     page, just above circle 4 */
   .hw-2 { top: 44%; left: -18px; right: -18px; width: auto; height: 74px; opacity: .95;
-    -webkit-mask-image: linear-gradient(to right, transparent 0, transparent 12%, #000 58%, #000 100%);
-            mask-image: linear-gradient(to right, transparent 0, transparent 12%, #000 58%, #000 100%); }
+    -webkit-mask-image: linear-gradient(to right, transparent 0, rgba(0,0,0,.3) 35%, #000 75%, #000 100%);
+            mask-image: linear-gradient(to right, transparent 0, rgba(0,0,0,.3) 35%, #000 75%, #000 100%); }
   /* 3 · faint: a sliver to the left of circle 5, ending behind it —
      nothing shows to the circle's right */
-  .hw-3 { top: 72%; left: -18px; width: 52%; height: 56px; opacity: .45;
+  .hw-3 { top: 78%; left: -18px; width: 52%; height: 56px; opacity: .45;
     -webkit-mask-image: linear-gradient(to right, #000 0, #000 60%, transparent 92%);
             mask-image: linear-gradient(to right, #000 0, #000 60%, transparent 92%); }
 
@@ -1013,6 +1016,9 @@ a { text-decoration: none; color: inherit; }
   }
   .signup-inner h2 { font-size: clamp(25px, 7.6vw, 33px); line-height: 1.12; margin-bottom: clamp(9px, 3vw, 14px); }
   .signup-inner > p { font-size: clamp(14px, 4.2vw, 18px); line-height: 1.4; margin-bottom: clamp(16px, 4.5vw, 24px); }
+  /* white wave raised so it flows behind the «Оставьте заявку…» subtitle
+     (applies to both copies of this section) */
+  .signup-wave { top: 14%; transform: none; width: 120%; }
   .signup-form { gap: 11px; margin-bottom: clamp(11px, 3vw, 16px); }
   .signup-form input {
     min-width: 100%; width: 100%; text-align: left;
