@@ -327,46 +327,27 @@ a { text-decoration: none; color: inherit; }
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
     mask-image: linear-gradient(to right, transparent 0%, #000 55%); }
 
-  /* one card ~full width, next peeking; side arrows scroll the strip */
+  /* swipeable strip: no arrows, auto-advance handled in script.js.
+     Cards keep the desktop size, image placement and edge fades — the only
+     changes are the always-visible «Пробное занятие» button and no expand-on-tap. */
   .prog-carousel { padding: 0; }
-  .prog-carousel .car-arrow { display: flex; }
-  .prog-carousel .car-prev { left: -6px; }
-  .prog-carousel .car-next { right: -6px; }
+  .prog-carousel .car-arrow { display: none; }
   .car-viewport { overflow: visible; }
   .prog-track { flex-direction: row; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 6px 2px;
     transform: none !important; transition: none; }
   .prog-track::-webkit-scrollbar { display: none; }
-  .prog-track > .prog-card { flex: 0 0 86%; width: 86%; height: clamp(470px, 128vw, 560px);
-    scroll-snap-align: center; border-width: 3px; padding: 24px 22px 22px;
-    box-shadow: 0 14px 32px rgba(20,40,30,.10); opacity: 1 !important; }
+  .prog-track > .prog-card { flex: 0 0 86%; width: 86%; scroll-snap-align: center; opacity: 1 !important; }
   /* neutralise the desktop hover-expand / dim behaviour on touch */
-  .prog-track .prog-card:hover { flex-basis: 86%; box-shadow: 0 14px 32px rgba(20,40,30,.10); }
+  .prog-track .prog-card:hover { flex-basis: 86%; box-shadow: 0 14px 34px rgba(20,40,30,.06); }
   .prog-track:hover .prog-card:not(:hover) { opacity: 1; }
-
-  /* content on the left: age + time, title, short desc, dark-green button */
-  .prog-card .pc-content, .prog-card.is-open .pc-content { width: 60% !important; }
-  .pc-head { margin-bottom: 12px; }
-  .pc-age { font-size: clamp(26px, 8vw, 34px); }
-  .pc-title, .pc-navy .pc-title, .pc-yellow .pc-title { font-size: clamp(16px, 4.6vw, 20px); margin-bottom: 10px; max-width: 100%; }
-  .pc-desc, .pc-navy .pc-desc, .pc-yellow .pc-desc { font-size: clamp(13px, 3.7vw, 15px); max-width: 100%; line-height: 1.45; }
+  .prog-card .pc-content { width: 100% !important; }
+  /* no expansion UI on mobile */
   .pc-desc-long, .pc-benefits, .pc-secondary, .pc-toggle { display: none !important; }
-  .pc-cta { flex-direction: row; align-items: stretch; margin-top: 18px; padding-top: 0;
-    opacity: 1; transform: none; pointer-events: auto; }
-  .pc-primary { width: 100%; background: var(--green-d); }
+  /* the button sits right under the text, sized to its label like the mock */
+  .pc-cta { margin-top: 16px; padding-top: 0; opacity: 1; transform: none; pointer-events: auto; }
   .pc-primary .t-short { display: inline; }
   .pc-primary .t-long { display: none; }
-
-  /* image fills the lower-right of the card, flush to the corner, wrapping
-     around the text/button like on desktop — minimal blank space */
-  .pc-photo, .pc-navy .pc-photo, .pc-yellow .pc-photo, .pc-blue .pc-photo,
-  .prog-card.is-open .pc-photo {
-    position: absolute; left: auto; right: -3%; bottom: -1%; top: auto;
-    width: 86%; height: 62%; opacity: 1; z-index: 1; }
-  /* tall portrait cutouts (rings boy, handstand) hug the right edge instead */
-  .pc-yellow .pc-photo, .pc-navy .pc-photo { width: 58%; height: 84%; right: -2%; bottom: 0; }
-  .pc-photo img, .pc-yellow .pc-photo img, .pc-navy .pc-photo img,
-  .prog-card.is-open .pc-photo img { object-fit: contain; object-position: right bottom; }
 }
 
 /* ===================== DEVELOP ===================== */

@@ -264,6 +264,22 @@
       if (mqMobile.matches) { track.style.transform = ''; mUpdate(); } else { update(); }
     });
 
+    /* mobile: auto-advance the strip every 5 seconds; wraps to the first card.
+       Skips ticks while the user is (or just was) swiping, when the tab is
+       hidden, or when the carousel is out of the viewport. */
+    var lastTouch = 0;
+    track.addEventListener('touchstart', function () { lastTouch = Date.now(); }, { passive: true });
+    track.addEventListener('touchmove', function () { lastTouch = Date.now(); }, { passive: true });
+    setInterval(function () {
+      if (!mqMobile.matches || document.hidden) return;
+      if (Date.now() - lastTouch < 6000) return;
+      var r = root.getBoundingClientRect();
+      if (r.bottom < 80 || r.top > window.innerHeight - 80) return;
+      var max = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else track.scrollBy({ left: step(), behavior: 'smooth' });
+    }, 5000);
+
     cards.forEach(function (card, i) {
       var toggle = card.querySelector('[data-prog-toggle]');
       if (!toggle) return;
