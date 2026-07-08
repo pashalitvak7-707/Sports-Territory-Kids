@@ -830,7 +830,7 @@ a { text-decoration: none; color: inherit; }
   /* «Что есть у нас в зале?»: the gallery card's bottom border above already
      separates the sections, so this section's own green line is hidden and
      the heading moves up close to it */
-  .equip { padding: 6px 0 34px; }
+  .equip { padding: 8px 0 34px; }
   .equip-head { flex-direction: column-reverse; align-items: stretch; gap: 0; margin-bottom: 16px; }
   .equip-head .section-title { white-space: normal; text-align: center; }
   .equip-line { display: none; }
@@ -912,14 +912,42 @@ a { text-decoration: none; color: inherit; }
   /* Gallery «Познакомьтесь с залом!»: drop the boxed outline — separate the
      slide with a green line on top and bottom. Photos scroll in one row.
      «БОЛЬШЕ ФОТО» centred at the bottom, above the lower line. */
-  .gallery { padding: 8px 0 16px; }
-  /* the coaches section above keeps only enough bottom padding for the
-     gallery's top line to sit midway between the two sections */
-  .coaches { padding-bottom: 16px; }
+  /* «Наши тренеры»: big title, 3-line lead, white outlined cards, then the
+     round prev/next arrows on the left with СМОТРЕТЬ ВСЕХ on the same line */
+  .coaches { padding: 18px 0 26px; }
+  .coaches-grid { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .coaches-intro { display: contents; }        /* lets СМОТРЕТЬ ВСЕХ move below the cards */
+  .coaches-title { order: 1; white-space: normal; font-size: 34px; font-weight: 700; }
+  .coaches-lead { order: 2; font-size: 15px; max-width: none; margin: 14px 0 20px; }
+  .coaches-lead br { display: none; }
+  .coaches-lead .br-m, .coaches-lead br.br-m { display: inline; }
+  .coaches-mascot { display: none; }
+  .coaches-stage { order: 3; padding-bottom: 72px; }
+  .coaches-all { order: 4; align-self: flex-end; margin: -38px 2px 0 0; position: relative; z-index: 5; }
+  .cstage-viewport { padding: 8px 0 12px; }
+  .cstage-track { gap: 12px; }                 /* lets the neighbours peek at the edges */
+  .coach-card { flex: 0 0 80%; background: #fff; border: 2px solid #BFE49E; opacity: 1;
+    border-radius: 24px; padding: 16px 16px 20px; }
+  .coach-card.is-active { border-color: #5FC24A; box-shadow: none; }
+  .coach-tags { gap: 8px; margin-bottom: 14px; }
+  .tag-pos, .tag-exp { font-weight: 400; font-size: 11px; padding: 8px 13px; border-radius: 12px; }
+  .coach-photo { aspect-ratio: 1; border-radius: 16px; }
+  .coach-card h3 { font-size: 27px; margin: 14px 2px 10px; }
+  .coach-card p { font-size: 13px; margin: 0 2px; }
+  .coach-card p br { display: none; }
+  .coach-card p br.br-m { display: inline; }
+  /* round arrows: bottom-left, side by side */
+  .cstage-arrow { top: auto; bottom: 0; width: 52px; height: 52px; border-width: 2px; box-shadow: none; }
+  .cstage-prev { left: 2px; transform: none; }
+  .cstage-next { left: 68px; right: auto; transform: none; }
+  .cstage-prev:hover, .cstage-next:hover { transform: none; }
+  .cstage-arrow:disabled { opacity: .35; pointer-events: none; }
+
+  .gallery { padding: 8px 0 24px; }
   .gallery-card {
     background: none; border: none; border-radius: 0; box-shadow: none;
-    border-top: 3px solid #46B54A; border-bottom: 3px solid #46B54A;
-    padding: clamp(20px, 6vw, 30px) 16px;
+    border-top: 2px solid #5FC24A; border-bottom: 2px solid #5FC24A;
+    padding: clamp(28px, 8.4vw, 42px) 16px;
     margin-left: -16px; margin-right: -16px;   /* lines run edge-to-edge */
   }
   .gallery-card .section-title { font-weight: 600; margin-bottom: clamp(16px, 5vw, 24px); }
@@ -931,11 +959,9 @@ a { text-decoration: none; color: inherit; }
   }
   .gallery-grid::-webkit-scrollbar { display: none; }
   .gal-item { flex: 0 0 auto; width: clamp(150px, 58vw, 210px); scroll-snap-align: center; border-radius: 18px; }
-  /* prev/next arrows identical to the desktop «Чем будем заниматься?» carousel */
+  /* no arrows on mobile — the strip auto-scrolls until the visitor swipes */
   .gallery-strip { position: relative; }
-  .gal-arrow { display: flex; }
-  .gal-prev { left: -8px; }
-  .gal-next { right: -8px; }
+  .gal-arrow { display: none; }
   .gallery-more {
     display: flex; justify-content: center; align-items: center;
     margin-top: clamp(18px, 5vw, 26px);
@@ -944,10 +970,10 @@ a { text-decoration: none; color: inherit; }
   .gallery-more .all-arrow { color: var(--dev-green); }   /* light green, points right */
   .car-track > * { flex-basis: 100%; }
   .car-prev { left: -6px; } .car-next { right: -6px; }
-  /* FAQ separator line: edge-to-edge and midway between reviews and FAQ */
-  .reviews { padding-bottom: 10px; }
+  /* FAQ separator line: edge-to-edge, thin neon green, midway between sections */
+  .reviews { padding-bottom: 22px; }
   .faq { padding-top: 20px; }
-  .faq-line { margin: 0 -16px 30px; }
+  .faq-line { margin: 0 -16px 42px; height: 2px; background: #5FC24A; }
   .footer-phone { font-size: 26px; }
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-main { grid-template-columns: 1fr; gap: 22px; }

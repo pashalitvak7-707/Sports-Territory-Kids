@@ -351,6 +351,34 @@
     scroller.addEventListener('scroll', function () { update(); }, { passive: true });
     window.addEventListener('resize', function () { update(); });
     update();
+
+    /* mobile: the strip drifts through the photos on its own; the first
+       touch/scroll by the visitor stops the auto-scroll for good.
+       Scroll-snap would yank each fractional step back, so it is off while
+       the drift runs and restored once the visitor takes over. */
+    var mqM = window.matchMedia('(max-width: 620px)');
+    var autoStopped = false;
+    if (mqM.matches) scroller.style.scrollSnapType = 'none';
+    ['touchstart', 'wheel', 'pointerdown'].forEach(function (ev) {
+      scroller.addEventListener(ev, function () {
+        autoStopped = true;
+        scroller.style.scrollSnapType = '';
+      }, { passive: true });
+    });
+    var driftPos = 0;   // fractional position — scrollLeft itself is rounded to whole pixels
+    function drift() {
+      if (!autoStopped && mqM.matches && !document.hidden) {
+        var r = strip.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight) {
+          var max = scroller.scrollWidth - scroller.clientWidth;
+          if (driftPos >= max - 1) driftPos = 0;   // loop back to the start
+          else driftPos += 0.4;
+          scroller.scrollLeft = driftPos;
+        }
+      }
+      requestAnimationFrame(drift);
+    }
+    requestAnimationFrame(drift);
   }
 
   function initNavToggle() {
