@@ -326,13 +326,17 @@ a { text-decoration: none; color: inherit; }
   /* heading + lead: left-aligned, mobile-specific wording */
   .lead-d { display: none; }
   .lead-m { display: inline; }
-  .programs { padding: 30px 0 54px; }
-  .section-title-prog { text-align: left; font-size: clamp(30px, 8.8vw, 38px); line-height: 1.1; }
+  /* less air above the title (was 30px → halved), 20 % bigger heading.
+     The extra specificity beats the generic `.section-title { 27px }` below. */
+  .programs { padding: 15px 0 54px; }
+  .programs .section-title-prog { text-align: left; font-size: clamp(30px, 8.6vw, 33px); line-height: 1.1; }
   .programs .section-lead { text-align: left; max-width: none; margin: 0 0 26px;
-    font-size: clamp(12.5px, 3.6vw, 15px); line-height: 1.5; color: #6f7378; }
+    font-size: clamp(12.5px, 3.6vw, 15px); line-height: 1.5; color: #111; }
 
-  /* wavy line to the right of the heading, fading in from the left */
-  .prog-curve { top: clamp(6px, 3vw, 22px); right: -4%; left: auto; width: 68%; height: auto; opacity: .95;
+  /* wavy line to the right of the heading, fading in from the left,
+     70 % thicker (vertical scale) than before */
+  .prog-curve { top: clamp(4px, 2.4vw, 18px); right: -4%; left: auto; width: 68%; height: auto; opacity: .95;
+    transform: scaleY(1.7); transform-origin: center;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
     mask-image: linear-gradient(to right, transparent 0%, #000 55%); }
 
@@ -1031,9 +1035,10 @@ a { text-decoration: none; color: inherit; }
   .st2 .how-num { left: auto; right: -4%; }
   /* badge 5 centred ON the outline like the others (badge centre on the ring) */
   .st5 .how-num { left: auto; right: -15%; top: 20%; }
-  /* red arc: shorter, rotated 90° clockwise (curving downwards) and centred
-     above the small number badge on the red circle's edge */
-  .st2 .deco-arc { left: 25%; top: -90%; height: 110%; transform: rotate(90deg); }
+  /* red arc: above the small number badge — a bit lower, shorter, thicker
+     and tilted 5° further clockwise */
+  .st2 .deco-arc { left: 25%; top: -78%; height: 98%; transform: rotate(95deg); }
+  .st2 .deco-arc path { stroke-width: 8; }
   .how-step h4 { font-size: 15px; margin-top: 10px; line-height: 1.2; }
   /* (number 5's big arc stays hidden — inherited from the ≤820 rules) */
   /* orange CTA: smaller circle to the right of circle 5, raised and nudged left */
@@ -1050,7 +1055,7 @@ a { text-decoration: none; color: inherit; }
      The artwork is stacked twice (its own left tail is nearly transparent) and
      slightly cropped so the wave stays visible at the page's left edge, then a
      mask keeps it dimmer on the left and bolder toward the right. */
-  .hw-1 { top: 10%; left: calc(50% - 50vw); right: calc(50% - 50vw); width: auto; height: 100px;
+  .hw-1 { top: 4%; left: calc(50% - 50vw); right: calc(50% - 50vw); width: auto; height: 100px;
     background: url("assets/img/how-curve.png") right center / 212% 100% no-repeat,
                 url("assets/img/how-curve.png") right center / 212% 100% no-repeat;
     -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,.5) 0, #000 55%, #000 100%);
@@ -1107,7 +1112,7 @@ a { text-decoration: none; color: inherit; }
   /* larger icons, a wider gap before the (much lighter) text */
   .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(20px, 7vw, 38px); width: 100%; }
   .feat-icon { width: clamp(74px, 23vw, 104px); height: auto; flex: 0 0 auto; }
-  .feat p { font-size: clamp(18px, 5.9vw, 26px); font-weight: 400; }
+  .feat p { font-size: clamp(16px, 5.2vw, 23px); font-weight: 500; }
   .feat p .ft-d { display: none; }
   .feat p .ft-m { display: inline; }
 }
