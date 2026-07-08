@@ -1100,13 +1100,14 @@ a { text-decoration: none; color: inherit; }
     align-content: space-between;
     justify-items: start;
     gap: clamp(10px, 3vw, 18px);
-    /* extra left padding pushes the icons + text to the right, like the screenshot */
-    padding: clamp(22px, 6vw, 34px) clamp(8px, 2.5vw, 16px) clamp(22px, 6vw, 34px) clamp(16px, 5vw, 40px);
+    /* extra left padding pushes the icons + text further to the right, like the screenshot */
+    padding: clamp(22px, 6vw, 34px) clamp(8px, 2.5vw, 16px) clamp(22px, 6vw, 34px) clamp(24px, 7.5vw, 52px);
     border-radius: 40px;
   }
-  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(14px, 4.5vw, 24px); width: 100%; }
-  .feat-icon { width: clamp(64px, 20vw, 92px); height: auto; flex: 0 0 auto; }
-  .feat p { font-size: clamp(18px, 5.9vw, 26px); }
+  /* larger icons, a wider gap before the (much lighter) text */
+  .feat { flex-direction: row; align-items: center; text-align: left; gap: clamp(20px, 7vw, 38px); width: 100%; }
+  .feat-icon { width: clamp(74px, 23vw, 104px); height: auto; flex: 0 0 auto; }
+  .feat p { font-size: clamp(18px, 5.9vw, 26px); font-weight: 400; }
   .feat p .ft-d { display: none; }
   .feat p .ft-m { display: inline; }
 }
