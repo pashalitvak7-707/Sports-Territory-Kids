@@ -574,13 +574,25 @@
       return '<option value="' + esc(o.value) + '"' + ((settings['theme.font_body'] || '') === o.value ? ' selected' : '') + '>' + esc(o.label) + '</option>';
     }).join('');
     renderTextSizes();
+    renderSpacing();
   }
 
   /* Размер текста: поле на каждый текстовый блок сайта (реестр в textsizes.js) */
-  function sizeInput(key, label) {
+  function sizeInput(key, label, min, max, step) {
+    min = min == null ? 50 : min; max = max == null ? 250 : max; step = step == null ? 5 : step;
+    var lim = ' min="' + min + '" max="' + max + '" step="' + step + '"';
     return '<div class="adm-sizerow"><span class="adm-sizelabel">' + esc(label) + '</span>' +
-      '<label class="adm-sizefield">Компьютер, %<input type="number" min="50" max="250" step="5" data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>' +
-      '<label class="adm-sizefield">Телефон, %<input type="number" min="50" max="250" step="5" data-key="' + key + '.mob" placeholder="как на комп." value="' + esc(settings[key + '.mob'] || '') + '" /></label></div>';
+      '<label class="adm-sizefield">Компьютер, %<input type="number"' + lim + ' data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>' +
+      '<label class="adm-sizefield">Телефон, %<input type="number"' + lim + ' data-key="' + key + '.mob" placeholder="как на комп." value="' + esc(settings[key + '.mob'] || '') + '" /></label></div>';
+  }
+  function renderSpacing() {
+    var box = $('spacingForm');
+    if (!box) return;
+    box.innerHTML =
+      sizeInput('sspace.global', 'Все блоки сразу', 0, 300, 10) +
+      (window.TSK_SECTION_SPACING || []).map(function (e) {
+        return sizeInput('sspace.' + e.key, e.label, 0, 300, 10);
+      }).join('');
   }
   function renderTextSizes() {
     var box = $('sizesForm');
@@ -604,7 +616,7 @@
       map[inp.dataset.key] = inp.value.toUpperCase() === inp.dataset.def.toUpperCase() ? '' : inp.value;
     });
     map['theme.font_body'] = $('fontSelect').value;
-    document.querySelectorAll('#sizesForm input[data-key]').forEach(function (inp) {
+    document.querySelectorAll('#sizesForm input[data-key], #spacingForm input[data-key]').forEach(function (inp) {
       var v = inp.value.trim();
       var mob = inp.dataset.key.slice(-4) === '.mob';
       // 100% на компьютере = стандарт (не храним); на телефоне пустое поле = «как на компьютере»
@@ -623,6 +635,9 @@
     map['tsize.global'] = '';
     map['tsize.global.mob'] = '';
     (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; map['tsize.' + f.key + '.mob'] = ''; });
+    map['sspace.global'] = '';
+    map['sspace.global.mob'] = '';
+    (window.TSK_SECTION_SPACING || []).forEach(function (f) { map['sspace.' + f.key] = ''; map['sspace.' + f.key + '.mob'] = ''; });
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 

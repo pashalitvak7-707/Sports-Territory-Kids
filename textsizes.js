@@ -101,3 +101,23 @@ window.TSK_TEXT_SIZES = [
   { g: 'Страница расписания', key: 'book_text', label: 'Текст формы записи', sel: '.book-sub, .book-note' },
   { g: 'Страница расписания', key: 'book_form', label: 'Поля и кнопка формы', sel: '.book-form input, .book-form select, .book-form textarea, .book-form button, .book-field label' }
 ];
+
+/* ===== Реестр блоков для настройки отступов (sspace.<key> в процентах) ===== */
+window.TSK_SECTION_SPACING = [
+  { key: 'hero', label: 'Первый экран', sel: '.hero .hero-inner' },
+  { key: 'features', label: 'Преимущества (зелёная плашка)', sel: 'section.features' },
+  { key: 'programs', label: 'Программы', sel: 'section.programs' },
+  { key: 'develop', label: '«Что будем развивать»', sel: 'section.develop' },
+  { key: 'how', label: '«Как проходит первое занятие»', sel: 'section.how' },
+  { key: 'signup', label: 'Блоки «Запишитесь» (оба)', sel: 'section.signup' },
+  { key: 'method', label: '«Наша методика»', sel: 'section.method' },
+  { key: 'space', label: '«Пространство для движения»', sel: 'section.space' },
+  { key: 'coaches', label: 'Тренеры', sel: 'section.coaches' },
+  { key: 'gallery', label: 'Галерея', sel: 'section.gallery' },
+  { key: 'equip', label: '«Что есть у нас в зале»', sel: 'section.equip' },
+  { key: 'schedule', label: 'Блок «Расписание» (главная)', sel: 'section.schedule' },
+  { key: 'reviews', label: 'Отзывы', sel: 'section.reviews' },
+  { key: 'faq', label: 'FAQ', sel: 'section.faq' },
+  { key: 'sched_hero', label: 'Страница расписания: заголовок', sel: 'section.sched-hero' },
+  { key: 'sched_page', label: 'Страница расписания: таблица', sel: 'section.sched-page' }
+];
