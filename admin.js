@@ -44,6 +44,7 @@
     { key: 'ui.no_spots', label: 'Надпись «Нет мест» в расписании', def: 'Нет мест' },
     { key: 'ui.review_thanks', label: 'Сообщение после отправки отзыва', def: 'Спасибо! Отзыв появится на сайте после проверки.' }
   ];
+  var textsSubtab = 'desktop';
   var pageDocs = null;
   function fetchPages() {
     if (pageDocs) return Promise.resolve(pageDocs);
@@ -396,31 +397,56 @@
       docs.forEach(function (d) {
         d.doc.querySelectorAll('[data-cms], [data-cms-ph]').forEach(function (el) {
           var g = groupOf(el, d.label);
-          // тексты, у которых есть отдельная версия для телефона/компьютера
-          if (el.closest('.ft-m, .lead-m, .cta-m')) g += ' · версия для телефона';
-          else if (el.closest('.ft-d, .lead-d, .cta-d')) g += ' · версия для компьютера';
-          var suffix = el.closest('.t-short') ? ' (короткая надпись)' : (el.closest('.t-long') ? ' (полная надпись)' : '');
+          // отдельная версия для телефона -> подвкладка «Телефон»;
+          // версия для компьютера помечается в общей подвкладке
+          var device = el.closest('.ft-m, .lead-m, .cta-m') ? 'm' : 's';
+          var suffix = el.closest('.ft-d, .lead-d, .cta-d') ? ' — только на компьютере'
+            : el.closest('.t-short') ? ' (короткая надпись)'
+            : el.closest('.t-long') ? ' (полная надпись)' : '';
           if (el.hasAttribute('data-cms')) {
             var def = defaultTextOf(el);
-            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix });
+            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix, device: device });
           }
-          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true });
+          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true, device: device });
         });
       });
       EXTRA_TEXTS.forEach(function (f) { add('Служебные тексты', f); });
-      $('textsForm').innerHTML = order.map(function (g, gi) {
-        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
-          byGroup[g].map(function (f) {
-            var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
-            var rows = Math.min(f.def.split('\n').length + 1, 5);
-            return '<label>' + esc(label) +
-              '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
-          }).join('') + '</div></details>';
-      }).join('');
+      function groupsHtml(device) {
+        var html = '', first = true;
+        order.forEach(function (g) {
+          var fields = byGroup[g].filter(function (f) { return (f.device || 's') === device; });
+          if (!fields.length) return;
+          html += '<details class="adm-textgroup"' + (first ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
+            fields.map(function (f) {
+              var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
+              var rows = Math.min(f.def.split('\n').length + 1, 5);
+              return '<label>' + esc(label) +
+                '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
+            }).join('') + '</div></details>';
+          first = false;
+        });
+        return html;
+      }
+      $('textsForm').innerHTML =
+        '<div id="textsDesktop"' + (textsSubtab === 'desktop' ? '' : ' hidden') + '>' +
+        '<p class="adm-hint">Эти тексты показываются на всех устройствах. Тексты, у которых на телефоне свой вариант, — во вкладке «Телефон».</p>' +
+        groupsHtml('s') + '</div>' +
+        '<div id="textsMobile"' + (textsSubtab === 'mobile' ? '' : ' hidden') + '>' +
+        '<p class="adm-hint">Здесь — тексты, которые на телефоне отличаются от компьютерной версии. Остальные тексты общие: меняйте их во вкладке «Компьютер», они применяются и на телефоне.</p>' +
+        groupsHtml('m') + '</div>';
     }).catch(function (e) {
       $('textsForm').innerHTML = '<p class="adm-empty">Не удалось загрузить страницы сайта (' + esc(e.message) + '). Обновите страницу.</p>';
     });
   }
+  $('textsSubtabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-subtab]');
+    if (!b) return;
+    textsSubtab = b.dataset.subtab;
+    document.querySelectorAll('#textsSubtabs button').forEach(function (x) { x.classList.toggle('active', x === b); });
+    if ($('textsDesktop')) $('textsDesktop').hidden = textsSubtab !== 'desktop';
+    if ($('textsMobile')) $('textsMobile').hidden = textsSubtab !== 'mobile';
+  });
+
   $('textsSaveBtn').addEventListener('click', function () {
     var map = {};
     document.querySelectorAll('#textsForm textarea[data-key]').forEach(function (t) { map[t.dataset.key] = t.value; });

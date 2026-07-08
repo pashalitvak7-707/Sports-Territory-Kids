@@ -6,7 +6,7 @@
   <title>Админ-панель — Территория Спорта КИДС</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="admin.css?v=2" />
+  <link rel="stylesheet" href="admin.css?v=3" />
 </head>
 <body>
 
@@ -140,6 +140,10 @@
 
       <section id="tab-texts" class="adm-tabpane" hidden>
         <h2>Тексты сайта</h2>
+        <div class="adm-subtabs" id="textsSubtabs">
+          <button type="button" data-subtab="desktop" class="active">💻 Компьютер</button>
+          <button type="button" data-subtab="mobile">📱 Телефон</button>
+        </div>
         <p class="adm-hint">Пустое поле = используется стандартный текст (показан серым). Перенос строки в поле = перенос строки на сайте.</p>
         <form id="textsForm"></form>
         <div class="adm-savebar">
@@ -212,6 +216,6 @@
     };
   </script>
   <script src="textsizes.js?v=1"></script>
-  <script src="admin.js?v=6"></script>
+  <script src="admin.js?v=7"></script>
 </body>
 </html>
