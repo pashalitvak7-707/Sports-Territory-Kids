@@ -348,6 +348,10 @@ a { text-decoration: none; color: inherit; }
   .pc-cta { margin-top: 16px; padding-top: 0; opacity: 1; transform: none; pointer-events: auto; }
   .pc-primary .t-short { display: inline; }
   .pc-primary .t-long { display: none; }
+
+  /* «3–4 года» card only: push the photo to the right edge and up, per the mock */
+  .pc-green .pc-photo { left: auto; right: 0; bottom: 7%; width: 84%; height: 66%; }
+  .pc-green .pc-photo img { object-position: right bottom; }
 }
 
 /* ===================== DEVELOP ===================== */
