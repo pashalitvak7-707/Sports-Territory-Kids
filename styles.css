@@ -349,9 +349,11 @@ a { text-decoration: none; color: inherit; }
   .pc-primary .t-short { display: inline; }
   .pc-primary .t-long { display: none; }
 
-  /* «3–4 года» card only: push the photo to the right edge and up, per the mock */
-  .pc-green .pc-photo { left: auto; right: 0; bottom: 7%; width: 84%; height: 66%; }
-  .pc-green .pc-photo img { object-position: right bottom; }
+  /* «3–4 года» card only: push the photo to the right edge and down, per the mock.
+     bottom:0 drops the girl's plank onto the card's bottom edge; object-position 118%
+     slides the image right so the tip of the kangaroo's tail crops off. */
+  .pc-green .pc-photo { left: auto; right: 0; bottom: -5%; width: 84%; height: 66%; overflow: hidden; }
+  .pc-green .pc-photo img { object-position: 122% bottom; }
 }
 
 /* ===================== DEVELOP ===================== */
