@@ -421,6 +421,10 @@ a { text-decoration: none; color: inherit; }
 .how-cta:hover { transform: translateY(-3px); }
 .how-cta .cta-arrow { width: 26%; height: auto; }
 .how-cta span { font-weight: 800; font-size: clamp(12px, 1.15vw, 18px); line-height: 1.2; }
+.cta-m { display: none; }                       /* mobile-only CTA label */
+/* three background waves — mobile only (see media query) */
+.how-wave-m { display: none; position: absolute; z-index: 0; pointer-events: none;
+  background: url("assets/img/how-curve.png") left center / 100% 100% no-repeat; }
 
 /* ===================== METHOD ===================== */
 .method { padding: 20px 0 70px; position: relative; overflow: hidden; }
@@ -943,6 +947,45 @@ a { text-decoration: none; color: inherit; }
   .brandbar { border-bottom-width: 2px; }
   /* more breathing room before the hero heading */
   .hero-inner { padding-top: 34px; }
+
+  /* ---- «Как проходит первое занятие»: diagonal zig-zag of circles ---- */
+  .how { padding: 26px 0 52px; }
+  .how .section-title { font-weight: 700; }      /* a touch lighter, still bold + dark greenish-blue */
+  .how-stage {
+    display: flex; flex-direction: column; align-items: stretch;
+    grid-template-columns: none;                 /* cancel the ≤820 grid */
+    aspect-ratio: auto; max-width: 340px; gap: 0;
+    margin: 20px auto 0; position: relative;
+  }
+  /* circles alternate left / right, each pulled up so it sits diagonally
+     below (and offset from) the one before — a clean staircase */
+  .how-step { position: static; width: 47%; margin-top: -13%; z-index: 2; }
+  .how-step.st1 { margin-top: 0; }
+  .st1, .st3, .st5 { align-self: flex-start; }
+  .st2, .st4 { align-self: flex-end; }
+  .how-num b { font-size: 20px; }
+  .how-step h4 { font-size: 15px; margin-top: 10px; line-height: 1.2; }
+  .deco-bigarc { display: block; }               /* restore number 5's arc */
+  /* orange CTA: smaller circle, tucked to the right below circle 5 */
+  .how-cta {
+    position: static; align-self: flex-end; width: 33%; max-width: none;
+    margin: -13% 0 0; aspect-ratio: 1; gap: 4%; z-index: 2;
+  }
+  .how-cta .cta-arrow { width: 32%; }
+  .how-cta .cta-d { display: none; }
+  .how-cta .cta-m { display: block; font-size: 13px; }
+  /* three faint green waves behind the staircase */
+  .how-wave-m { display: block; }
+  /* 1 · full width at the level of circles 1–2, dim→dark left-to-right, behind them */
+  .hw-1 { top: 12%; left: -16px; right: -16px; width: auto; height: 62px; }
+  /* 2 · fades in from the left, runs to the right edge, at the bottom of circle 3 */
+  .hw-2 { top: 45%; left: 0; right: -16px; width: auto; height: 60px; opacity: .9;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22%, #000 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 22%, #000 100%); }
+  /* 3 · faint, on the left, ending behind circle 5 (nothing to its right) */
+  .hw-3 { top: 76%; left: -16px; width: 62%; height: 56px; opacity: .5;
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 72%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 0, #000 72%, transparent 100%); }
 
   /* mobile line-break toggles */
   .br-d { display: none; }
