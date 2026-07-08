@@ -91,6 +91,19 @@
     { value: '"Comic Sans MS", "Comic Sans", cursive', label: 'Comic Sans (игровой)' }
   ];
 
+  // Часто используемые цвета сайта — быстрые образцы под палитрой
+  var TEXT_COLORS = [
+    { c: '#0C5C46', label: 'Тёмно-зелёный' },
+    { c: '#16BF41', label: 'Зелёный' },
+    { c: '#FF6A2B', label: 'Оранжевый' },
+    { c: '#FF6F61', label: 'Коралловый' },
+    { c: '#3FA9F5', label: 'Голубой' },
+    { c: '#FFC23C', label: 'Жёлтый' },
+    { c: '#2C2F33', label: 'Тёмный текст' },
+    { c: '#7C8088', label: 'Серый' },
+    { c: '#FFFFFF', label: 'Белый' }
+  ];
+
   var settings = {};   // key -> value (текущие из базы)
   var coachesCache = [];
 
@@ -397,43 +410,63 @@
       docs.forEach(function (d) {
         d.doc.querySelectorAll('[data-cms], [data-cms-ph]').forEach(function (el) {
           var g = groupOf(el, d.label);
-          // отдельная версия для телефона -> подвкладка «Телефон»;
-          // версия для компьютера помечается в общей подвкладке
-          var device = el.closest('.ft-m, .lead-m, .cta-m') ? 'm' : 's';
-          var suffix = el.closest('.ft-d, .lead-d, .cta-d') ? ' — только на компьютере'
-            : el.closest('.t-short') ? ' (короткая надпись)'
+          // variant: 'd' только на компьютере, 'm' только на телефоне, '' общий
+          var variant = el.closest('.ft-m, .lead-m, .cta-m') ? 'm'
+            : el.closest('.ft-d, .lead-d, .cta-d') ? 'd' : '';
+          var suffix = el.closest('.t-short') ? ' (короткая надпись)'
             : el.closest('.t-long') ? ' (полная надпись)' : '';
           if (el.hasAttribute('data-cms')) {
             var def = defaultTextOf(el);
-            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix, device: device });
+            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix, variant: variant });
           }
-          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true, device: device });
+          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true, variant: variant });
         });
       });
       EXTRA_TEXTS.forEach(function (f) { add('Служебные тексты', f); });
-      function groupsHtml(device) {
+
+      function colorHtml(key) {
+        var ckey = 'tcolor.' + key;
+        var cur = settings[ckey] || '';
+        var swatches = TEXT_COLORS.map(function (c) {
+          var on = cur.toUpperCase() === c.c.toUpperCase();
+          return '<button type="button" class="adm-swatch' + (on ? ' active' : '') + '" data-c="' + c.c + '" title="' + esc(c.label) + '" style="background:' + c.c + '"></button>';
+        }).join('');
+        return '<div class="adm-color" data-key="' + esc(ckey) + '" data-value="' + esc(cur) + '">' +
+          '<span class="adm-color-label">Цвет:</span>' +
+          '<button type="button" class="adm-swatch adm-swatch-def' + (cur ? '' : ' active') + '" data-c="" title="По умолчанию">A</button>' +
+          swatches +
+          '<label class="adm-swatch-custom" title="Выбрать любой цвет"><input type="color" value="' + esc(cur || '#000000') + '" /><span>+</span></label>' +
+          '</div>';
+      }
+      function fieldHtml(f) {
+        var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
+        var rows = Math.min(f.def.split('\n').length + 1, 5);
+        var ta = '<label>' + esc(label) +
+          '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
+        // цвет только для реальных текстов (не для подсказок в полях форм)
+        return '<div class="adm-field">' + ta + (f.ph ? '' : colorHtml(f.key)) + '</div>';
+      }
+      function groupsHtml(tab) {
         var html = '', first = true;
         order.forEach(function (g) {
-          var fields = byGroup[g].filter(function (f) { return (f.device || 's') === device; });
+          var fields = byGroup[g].filter(function (f) {
+            var v = f.variant || '';
+            return tab === 'desktop' ? v !== 'm' : v !== 'd';
+          });
           if (!fields.length) return;
           html += '<details class="adm-textgroup"' + (first ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
-            fields.map(function (f) {
-              var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
-              var rows = Math.min(f.def.split('\n').length + 1, 5);
-              return '<label>' + esc(label) +
-                '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
-            }).join('') + '</div></details>';
+            fields.map(fieldHtml).join('') + '</div></details>';
           first = false;
         });
         return html;
       }
       $('textsForm').innerHTML =
         '<div id="textsDesktop"' + (textsSubtab === 'desktop' ? '' : ' hidden') + '>' +
-        '<p class="adm-hint">Эти тексты показываются на всех устройствах. Тексты, у которых на телефоне свой вариант, — во вкладке «Телефон».</p>' +
-        groupsHtml('s') + '</div>' +
+        '<p class="adm-hint">Все тексты сайта в компьютерной версии. Общие тексты применяются и на телефоне.</p>' +
+        groupsHtml('desktop') + '</div>' +
         '<div id="textsMobile"' + (textsSubtab === 'mobile' ? '' : ' hidden') + '>' +
-        '<p class="adm-hint">Здесь — тексты, которые на телефоне отличаются от компьютерной версии. Остальные тексты общие: меняйте их во вкладке «Компьютер», они применяются и на телефоне.</p>' +
-        groupsHtml('m') + '</div>';
+        '<p class="adm-hint">Все тексты сайта в версии для телефона. Общие тексты меняются вместе с компьютерной версией; у некоторых блоков на телефоне свой отдельный текст.</p>' +
+        groupsHtml('mobile') + '</div>';
     }).catch(function (e) {
       $('textsForm').innerHTML = '<p class="adm-empty">Не удалось загрузить страницы сайта (' + esc(e.message) + '). Обновите страницу.</p>';
     });
@@ -447,9 +480,39 @@
     if ($('textsMobile')) $('textsMobile').hidden = textsSubtab !== 'mobile';
   });
 
+  // Общие тексты показаны в обеих подвкладках — держим их значения синхронными
+  $('textsForm').addEventListener('input', function (e) {
+    var ta = e.target.closest('textarea[data-key]');
+    if (ta) {
+      document.querySelectorAll('#textsForm textarea[data-key="' + (window.CSS && CSS.escape ? CSS.escape(ta.dataset.key) : ta.dataset.key) + '"]').forEach(function (o) {
+        if (o !== ta) o.value = ta.value;
+      });
+      return;
+    }
+    var ci = e.target.closest('.adm-swatch-custom input[type="color"]');
+    if (ci) setColor(ci.closest('.adm-color').dataset.key, ci.value);
+  });
+  // Клик по образцу цвета
+  $('textsForm').addEventListener('click', function (e) {
+    var sw = e.target.closest('.adm-swatch[data-c]');
+    if (!sw) return;
+    setColor(sw.closest('.adm-color').dataset.key, sw.dataset.c);
+  });
+  function setColor(ckey, val) {
+    document.querySelectorAll('.adm-color[data-key="' + (window.CSS && CSS.escape ? CSS.escape(ckey) : ckey) + '"]').forEach(function (box) {
+      box.dataset.value = val || '';
+      box.querySelectorAll('.adm-swatch').forEach(function (s) {
+        s.classList.toggle('active', (s.dataset.c || '').toUpperCase() === (val || '').toUpperCase());
+      });
+      var custom = box.querySelector('.adm-swatch-custom input');
+      if (val) custom.value = val;
+    });
+  }
+
   $('textsSaveBtn').addEventListener('click', function () {
     var map = {};
     document.querySelectorAll('#textsForm textarea[data-key]').forEach(function (t) { map[t.dataset.key] = t.value; });
+    document.querySelectorAll('#textsForm .adm-color[data-key]').forEach(function (b) { map[b.dataset.key] = b.dataset.value || ''; });
     saveSettings(map).then(function () { flash('textsSaved'); }).catch(fail);
   });
 

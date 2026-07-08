@@ -156,6 +156,12 @@
       if (val !== undefined) inp.placeholder = val;
     });
 
+    // Цвет отдельного текста (tcolor.<ключ>)
+    document.querySelectorAll('[data-cms]').forEach(function (el) {
+      var c = s['tcolor.' + el.getAttribute('data-cms')];
+      if (c) el.style.color = c;
+    });
+
     applyTextSizes();
   }
 
