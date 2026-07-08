@@ -163,7 +163,13 @@
   function applyTextSizes() {
     var reg = window.TSK_TEXT_SIZES || [];
     var s = api.settings;
-    var global = parseFloat(s['tsize.global']) || 100;
+    // телефон = экраны до 620px; пустая настройка телефона наследует компьютерную
+    var mob = window.matchMedia('(max-width: 620px)').matches;
+    function pctOf(key) {
+      var v = mob ? (parseFloat(s['tsize.' + key + '.mob']) || parseFloat(s['tsize.' + key])) : parseFloat(s['tsize.' + key]);
+      return v || 100;
+    }
+    var global = pctOf('global');
     // 1) сбрасываем прежние инлайновые размеры, чтобы измерить «родные» —
     //    так настройка остаётся отзывчивой (проценты от текущего адаптивного размера)
     reg.forEach(function (e) {
@@ -173,7 +179,7 @@
     //    элементы не масштабировались дважды
     var jobs = [];
     reg.forEach(function (e) {
-      var pct = (parseFloat(s['tsize.' + e.key]) || 100) * global / 100;
+      var pct = pctOf(e.key) * global / 100;
       if (Math.abs(pct - 100) < 0.5) return;
       document.querySelectorAll(e.sel).forEach(function (el) {
         jobs.push([el, parseFloat(getComputedStyle(el).fontSize) * pct / 100]);

@@ -396,7 +396,14 @@
       docs.forEach(function (d) {
         d.doc.querySelectorAll('[data-cms], [data-cms-ph]').forEach(function (el) {
           var g = groupOf(el, d.label);
-          if (el.hasAttribute('data-cms')) add(g, { key: el.getAttribute('data-cms'), def: defaultTextOf(el) });
+          // тексты, у которых есть отдельная версия для телефона/компьютера
+          if (el.closest('.ft-m, .lead-m, .cta-m')) g += ' · версия для телефона';
+          else if (el.closest('.ft-d, .lead-d, .cta-d')) g += ' · версия для компьютера';
+          var suffix = el.closest('.t-short') ? ' (короткая надпись)' : (el.closest('.t-long') ? ' (полная надпись)' : '');
+          if (el.hasAttribute('data-cms')) {
+            var def = defaultTextOf(el);
+            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix });
+          }
           if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true });
         });
       });
@@ -404,7 +411,7 @@
       $('textsForm').innerHTML = order.map(function (g, gi) {
         return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
           byGroup[g].map(function (f) {
-            var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.ph ? ' — подсказка в поле' : ''));
+            var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
             var rows = Math.min(f.def.split('\n').length + 1, 5);
             return '<label>' + esc(label) +
               '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
@@ -482,8 +489,9 @@
 
   /* Размер текста: поле на каждый текстовый блок сайта (реестр в textsizes.js) */
   function sizeInput(key, label) {
-    return '<label>' + esc(label) +
-      '<input type="number" min="50" max="250" step="5" data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>';
+    return '<div class="adm-sizerow"><span class="adm-sizelabel">' + esc(label) + '</span>' +
+      '<label class="adm-sizefield">Компьютер, %<input type="number" min="50" max="250" step="5" data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>' +
+      '<label class="adm-sizefield">Телефон, %<input type="number" min="50" max="250" step="5" data-key="' + key + '.mob" placeholder="как на комп." value="' + esc(settings[key + '.mob'] || '') + '" /></label></div>';
   }
   function renderTextSizes() {
     var box = $('sizesForm');
@@ -491,11 +499,11 @@
     var groups = {};
     (window.TSK_TEXT_SIZES || []).forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
     box.innerHTML =
-      '<div class="adm-grid">' + sizeInput('tsize.global', 'Весь сайт сразу (%)') + '</div>' +
+      sizeInput('tsize.global', 'Весь сайт сразу') +
       Object.keys(groups).map(function (g) {
-        return '<details class="adm-textgroup"><summary>' + esc(g) + '</summary><div class="adm-card"><div class="adm-grid">' +
-          groups[g].map(function (f) { return sizeInput('tsize.' + f.key, f.label + ' (%)'); }).join('') +
-          '</div></div></details>';
+        return '<details class="adm-textgroup"><summary>' + esc(g) + '</summary><div class="adm-card">' +
+          groups[g].map(function (f) { return sizeInput('tsize.' + f.key, f.label); }).join('') +
+          '</div></details>';
       }).join('');
   }
   $('designSaveBtn').addEventListener('click', function () {
@@ -509,8 +517,9 @@
     map['theme.font_body'] = $('fontSelect').value;
     document.querySelectorAll('#sizesForm input[data-key]').forEach(function (inp) {
       var v = inp.value.trim();
-      // 100% = стандартный размер, хранить не нужно
-      map[inp.dataset.key] = (v === '' || v === '100') ? '' : v;
+      var mob = inp.dataset.key.slice(-4) === '.mob';
+      // 100% на компьютере = стандарт (не храним); на телефоне пустое поле = «как на компьютере»
+      map[inp.dataset.key] = (v === '' || (v === '100' && !mob)) ? '' : v;
     });
     saveSettings(map).then(function () {
       renderDesign();
@@ -523,7 +532,8 @@
     COLOR_FIELDS.forEach(function (f) { map[f.key] = ''; });
     map['theme.font_body'] = '';
     map['tsize.global'] = '';
-    (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; });
+    map['tsize.global.mob'] = '';
+    (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; map['tsize.' + f.key + '.mob'] = ''; });
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
