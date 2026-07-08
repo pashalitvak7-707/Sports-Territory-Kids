@@ -333,10 +333,10 @@ a { text-decoration: none; color: inherit; }
   .programs .section-lead { text-align: left; max-width: none; margin: 0 0 26px;
     font-size: clamp(12.5px, 3.6vw, 15px); line-height: 1.5; color: #111; }
 
-  /* wavy line to the right of the heading, fading in from the left,
-     70 % thicker (vertical scale) than before */
-  .prog-curve { top: clamp(4px, 2.4vw, 18px); right: -4%; left: auto; width: 68%; height: auto; opacity: .95;
-    transform: scaleY(1.7); transform-origin: center;
+  /* wavy line to the right of the heading, fading in from the left —
+     back to its original (un-squashed) proportions, and nudged down a little
+     so its top can't be clipped by the section's overflow */
+  .prog-curve { top: clamp(12px, 4.5vw, 30px); right: -4%; left: auto; width: 68%; height: auto; opacity: .95;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
     mask-image: linear-gradient(to right, transparent 0%, #000 55%); }
 
@@ -984,12 +984,27 @@ a { text-decoration: none; color: inherit; }
   .faq-left .section-title { order: 1; text-align: center; margin-bottom: 18px; }
   .faq-mascot { order: 2; width: 100%; max-width: 100%; margin: 0 0 24px; border-radius: 28px; }
   .faq-list { order: 3; }
-  .footer-phone { font-size: 26px; }
-  .footer-inner { flex-direction: column; text-align: center; }
-  .footer-main { grid-template-columns: 1fr; gap: 22px; }
-  .footer-center { grid-column: 1; }
-  .footer-logo { grid-column: 1; justify-self: center; }
+  /* ---- footer (mobile) ---- : phone + socials on top row, nav list on the
+     left with the logo to its lower-right, then the divider + centred legal.
+     display:contents flattens the wrappers so every leaf can be placed on one
+     grid. */
+  .footer { padding-top: 16px; }        /* far less gap under the signup card */
+  .footer-inner {
+    display: grid; grid-template-columns: 1fr auto;
+    grid-template-areas: "phone socials" "nav logo";
+    column-gap: 14px; row-gap: 22px; padding-bottom: 26px; text-align: left; align-items: center;
+  }
+  .footer-main, .footer-center { display: contents; }
   .footer-spacer { display: none; }
+  .footer-phone { grid-area: phone; justify-self: start; white-space: nowrap; font-size: clamp(21px, 6.4vw, 27px); }
+  .footer-socials { grid-area: socials; justify-self: end; gap: 12px; }
+  .footer-nav { grid-area: nav; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-nav a { font-size: 16px; font-weight: 600; }
+  .footer-logo { grid-area: logo; justify-self: end; align-self: end; height: auto; width: clamp(120px, 38vw, 150px); }
+  /* legal block: stacked + centred, policy links black, copyright dark blue */
+  .footer-links { flex-direction: column; gap: 10px; align-items: center; }
+  .footer-links a { color: #111; }
+  .copyright { color: var(--green-d); }
   .topbar-phone { font-size: 15px; }
 
   /* ---- top header (mobile) ---- */
@@ -1037,7 +1052,7 @@ a { text-decoration: none; color: inherit; }
   .st5 .how-num { left: auto; right: -15%; top: 20%; }
   /* red arc: above the small number badge — a bit lower, shorter, thicker
      and tilted 5° further clockwise */
-  .st2 .deco-arc { left: 25%; top: -78%; height: 98%; transform: rotate(95deg); }
+  .st2 .deco-arc { left: 33%; top: -78%; height: 98%; transform: rotate(95deg); }
   .st2 .deco-arc path { stroke-width: 8; }
   .how-step h4 { font-size: 15px; margin-top: 10px; line-height: 1.2; }
   /* (number 5's big arc stays hidden — inherited from the ≤820 rules) */
@@ -1078,7 +1093,7 @@ a { text-decoration: none; color: inherit; }
 
   /* Signup CTA: near-square card; title 2 lines, sub 3 lines, inputs stacked,
      button, then fine print 2 lines. Rectangle gradient/rounding unchanged. */
-  .signup { padding: 16px 14px 60px; }
+  .signup { padding: 16px 14px 22px; }   /* ~65% less blank space before the footer */
   .signup-inner {
     padding: clamp(24px, 6.5vw, 34px) clamp(20px, 5.5vw, 28px) clamp(24px, 6.5vw, 34px);
     display: flex; flex-direction: column; align-items: stretch; justify-content: center;
