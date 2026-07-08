@@ -353,6 +353,32 @@
     update();
   }
 
+  function initNavToggle() {
+    var header = document.querySelector('.header');
+    var toggle = header && header.querySelector('.nav-toggle');
+    var nav = header && header.querySelector('.topnav');
+    if (!header || !toggle || !nav) return;
+    function setOpen(open) {
+      header.classList.toggle('nav-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!header.classList.contains('nav-open'));
+    });
+    // close when a menu link is chosen
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { setOpen(false); });
+    });
+    // close when tapping outside the menu, or on Escape
+    document.addEventListener('click', function (e) {
+      if (header.classList.contains('nav-open') && !header.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  }
+
   window.TSK = { initCarousel: initCarousel, initCoachStage: initCoachStage };
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -363,5 +389,6 @@
     initForms();
     initProgramCards();
     initGalleryStrip();
+    initNavToggle();
   });
 })();

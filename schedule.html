@@ -10,7 +10,7 @@
 <link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
 <link href="assets/img/logo.png" rel="icon" type="image/png"/>
-<link href="styles.css?v=20260708-2" rel="stylesheet"/>
+<link href="styles.css?v=20260708-4" rel="stylesheet"/>
 <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -29,7 +29,7 @@
 <header class="header" id="top">
 <div class="topbar">
 <div class="container topbar-inner">
-<nav class="topnav">
+<nav class="topnav" id="topnav">
 <a data-cms="t.s.6" href="index.html#about">О направлении</a>
 <a data-cms="t.s.7" href="index.html#how">Как проходят занятия</a>
 <a data-cms="t.s.8" href="index.html#coaches">Тренеры</a>
@@ -39,6 +39,9 @@
 <a data-cms="t.s.12" href="index.html#contacts">Контакты</a>
 </nav>
 <a class="topbar-phone" data-cms="t.s.13" href="tel:+77054290000">8 705 429 0000</a>
+<button aria-controls="topnav" aria-expanded="false" aria-label="Меню" class="nav-toggle" type="button">
+<span></span><span></span><span></span>
+</button>
 </div>
 </div>
 <div class="brandbar">
@@ -318,7 +321,7 @@
 <script src="cms-config.js?v=2"></script>
 <script src="textsizes.js?v=1"></script>
 <script src="cms.js?v=6"></script>
-<script src="script.js?v=20260708-1"></script>
+<script src="script.js?v=20260708-2"></script>
 <script src="schedule.js?v=20260630-21"></script>
 </body>
 </html>

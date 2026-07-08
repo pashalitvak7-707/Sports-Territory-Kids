@@ -100,6 +100,15 @@ a { text-decoration: none; color: inherit; }
 .logo { height: 46px; width: auto; }
 .brandbar-actions { display: flex; align-items: center; gap: 12px; }
 
+/* hamburger — hidden on desktop, shown on mobile (see media queries) */
+.nav-toggle { display: none; width: 34px; height: 30px; padding: 5px 4px; background: none;
+  border: none; cursor: pointer; flex-direction: column; justify-content: space-between; }
+.nav-toggle span { display: block; height: 3px; width: 100%; border-radius: 3px; background: #fff;
+  transition: transform .25s var(--ease), opacity .2s var(--ease); }
+.header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+.header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
 /* ===================== HERO ===================== */
 .hero { background: #FFFFFF; position: relative; overflow: hidden; }
 .hero-inner { position: relative; display: flex; align-items: center; min-height: clamp(480px, 41vw, 840px); }
@@ -738,7 +747,18 @@ a { text-decoration: none; color: inherit; }
   .deco-bigarc { display: none; }
 }
 @media (max-width: 900px) {
+  .nav-toggle { display: flex; }
+  /* the nav becomes a full-width dropdown under the green bar when the burger is tapped */
   .topnav { display: none; }
+  .header.nav-open .topnav {
+    display: flex; flex-direction: column; gap: 0;
+    position: absolute; top: 56px; left: 0; right: 0; z-index: 90;
+    background: var(--green); padding: 4px 20px 14px;
+    box-shadow: 0 16px 26px rgba(0, 0, 0, .16); flex-wrap: nowrap;
+  }
+  .header.nav-open .topnav a { font-size: 16px; font-weight: 600; padding: 13px 2px;
+    border-top: 1px solid rgba(255, 255, 255, .22); }
+  .header.nav-open .topnav a:first-child { border-top: none; }
   .hero-inner { flex-direction: column; min-height: 0; padding-top: 22px; padding-bottom: 44px; text-align: center; }
   /* mobile hero stacking order: title, subtitle, image, then the two buttons.
      display:contents lets the buttons (inside .hero-text) be ordered between
@@ -903,6 +923,26 @@ a { text-decoration: none; color: inherit; }
   .footer-logo { grid-column: 1; justify-self: center; }
   .footer-spacer { display: none; }
   .topbar-phone { font-size: 15px; }
+
+  /* ---- top header (mobile) ---- */
+  /* logo returns to its natural, un-squished proportions on the left */
+  .brandbar-inner { height: 66px; gap: 10px; }
+  .logo-link { flex: 0 0 auto; }
+  .logo { height: 40px; max-width: none; }
+  /* actions grouped tight on the right, leaving a wide gap after the logo */
+  .brandbar-actions { flex: 0 0 auto; gap: clamp(5px, 2vw, 8px); }
+  /* «Пробное занятие»: smaller, rectangular with lightly rounded corners.
+     Sizes scale with the viewport so even 320px phones fit without overflow. */
+  .brandbar-actions .btn-orange {
+    padding: 10px clamp(9px, 3.2vw, 13px); font-size: clamp(11px, 3.3vw, 12px); border-radius: 11px;
+    box-shadow: 0 6px 14px rgba(255, 106, 43, .26);
+  }
+  /* VK + phone: square-ish, rounded corners (no longer circles), matched to the button height */
+  .brandbar-actions .circle-btn { width: clamp(34px, 10.5vw, 38px); height: clamp(34px, 10.5vw, 38px); border-radius: 11px; }
+  /* thinner green underline than before */
+  .brandbar { border-bottom-width: 2px; }
+  /* more breathing room before the hero heading */
+  .hero-inner { padding-top: 34px; }
 
   /* mobile line-break toggles */
   .br-d { display: none; }
