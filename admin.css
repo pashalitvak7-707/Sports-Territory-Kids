@@ -157,3 +157,6 @@ textarea { resize: vertical; }
   align-items: center; justify-content: center; }
 .adm-swatch-custom span { font-size: 14px; color: var(--a-muted); font-weight: 700; pointer-events: none; }
 .adm-swatch-custom input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; padding: 0; border: none; }
+
+/* Оценка в отзывах */
+.adm-stars { color: #F5B400; font-size: 15px; letter-spacing: 1px; font-weight: 400; }

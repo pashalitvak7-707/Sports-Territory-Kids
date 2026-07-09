@@ -78,13 +78,19 @@
     },
     submitReview: function (form) {
       var data = new FormData(form);
+      var rating = parseInt(data.get('rating'), 10);
       var body = {
         name: (data.get('name') || '').toString().trim(),
         contact: (data.get('contact') || '').toString().trim(),
-        text: (data.get('text') || '').toString().trim()
+        text: (data.get('text') || '').toString().trim(),
+        rating: (rating >= 1 && rating <= 5) ? rating : 5
       };
       if (!body.name || !body.text) return;
-      rest('reviews', 'POST', body).then(function () {
+      rest('reviews', 'POST', body).catch(function () {
+        // если колонки rating в базе ещё нет — отправляем отзыв без неё
+        var noRating = { name: body.name, contact: body.contact, text: body.text };
+        return rest('reviews', 'POST', noRating);
+      }).then(function () {
         form.reset();
         var note = form.parentElement.querySelector('.review-thanks');
         if (!note) {
@@ -295,8 +301,10 @@
     var grid = document.querySelector('.reviews-grid');
     if (!grid) return;
     grid.innerHTML = reviews.map(function (r) {
+      var n = parseInt(r.rating, 10);
+      if (!(n >= 1 && n <= 5)) n = 5;
       return '<article class="review-card">' +
-        '<div class="stars">★★★★★</div>' +
+        '<div class="stars">' + '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n) + '</div>' +
         '<p>' + toHtml(r.text) + '</p>' +
         '<span class="review-author">' + esc(r.name) + '</span>' +
         '</article>';
@@ -360,7 +368,7 @@
         quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
       }
       if (document.querySelector('.reviews-grid')) {
-        quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
+        quiet(rest('reviews?select=*&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
       }
       if (document.querySelector('.sched-table')) {
         quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });

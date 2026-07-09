@@ -46,8 +46,12 @@ create table if not exists public.reviews (
   name       text not null,
   contact    text not null default '',
   text       text not null,
+  rating     int not null default 5,
   approved   boolean not null default false
 );
+
+-- миграция для уже созданных баз (безопасно запускать повторно)
+alter table public.reviews add column if not exists rating int not null default 5;
 
 -- ---------- Права доступа ----------
 -- Администратор — пользователь, вошедший с этим email.

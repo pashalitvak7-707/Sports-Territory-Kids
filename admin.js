@@ -248,10 +248,12 @@
       var approved = r.data.filter(function (x) { return x.approved; });
       updateBadge('badgeReviews', pending.length);
       function card(x) {
+        var n = parseInt(x.rating, 10);
+        if (!(n >= 1 && n <= 5)) n = 5;
         return '<div class="adm-item' + (x.approved ? '' : ' unread') + '">' +
           '<div class="adm-item-body">' +
           '<p class="adm-item-meta">' + fmtDate(x.created_at) + (x.contact ? ' · ' + esc(x.contact) : '') + '</p>' +
-          '<p class="adm-item-title">' + esc(x.name) + '</p>' +
+          '<p class="adm-item-title">' + esc(x.name) + ' <span class="adm-stars">' + '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n) + '</span></p>' +
           '<p>' + esc(x.text) + '</p></div>' +
           '<div class="adm-item-actions">' +
           (x.approved
