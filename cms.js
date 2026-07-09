@@ -202,23 +202,29 @@
     var s = api.settings;
     var mob = window.matchMedia('(max-width: 620px)').matches;
     function num(x) { var v = parseFloat(x); return isNaN(v) ? null : v; }
-    function pctOf(key) {
-      // 0% — допустимое значение (блоки вплотную), поэтому нельзя использовать «|| 100»
-      var v = mob ? (num(s['sspace.' + key + '.mob']) !== null ? num(s['sspace.' + key + '.mob']) : num(s['sspace.' + key]))
-                  : num(s['sspace.' + key]);
+    // 0% — допустимое значение (блоки вплотную), поэтому нельзя использовать «|| 100»
+    function pick(k) {
+      return mob ? (num(s[k + '.mob']) !== null ? num(s[k + '.mob']) : num(s[k])) : num(s[k]);
+    }
+    // отступ сверху/снизу настраиваются отдельно; старый общий ключ — запасной вариант
+    function sidePct(key, side) {
+      var v = pick('sspace.' + key + '.' + side);
+      if (v === null) v = pick('sspace.' + key);
       return v === null ? 100 : v;
     }
     reg.forEach(function (e) {
       document.querySelectorAll(e.sel).forEach(function (el) { el.style.paddingTop = ''; el.style.paddingBottom = ''; });
     });
-    var g = pctOf('global');
+    var g = pick('sspace.global');
+    if (g === null) g = 100;
     var jobs = [];
     reg.forEach(function (e) {
-      var pct = pctOf(e.key) * g / 100;
-      if (Math.abs(pct - 100) < 0.5) return;
+      var top = sidePct(e.key, 'top') * g / 100;
+      var bot = sidePct(e.key, 'bot') * g / 100;
+      if (Math.abs(top - 100) < 0.5 && Math.abs(bot - 100) < 0.5) return;
       document.querySelectorAll(e.sel).forEach(function (el) {
         var cs = getComputedStyle(el);
-        jobs.push([el, parseFloat(cs.paddingTop) * pct / 100, parseFloat(cs.paddingBottom) * pct / 100]);
+        jobs.push([el, parseFloat(cs.paddingTop) * top / 100, parseFloat(cs.paddingBottom) * bot / 100]);
       });
     });
     jobs.forEach(function (j) {

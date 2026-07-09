@@ -591,7 +591,8 @@
     box.innerHTML =
       sizeInput('sspace.global', 'Все блоки сразу', 0, 300, 10) +
       (window.TSK_SECTION_SPACING || []).map(function (e) {
-        return sizeInput('sspace.' + e.key, e.label, 0, 300, 10);
+        return sizeInput('sspace.' + e.key + '.top', e.label + ' — отступ сверху', 0, 300, 10) +
+          sizeInput('sspace.' + e.key + '.bot', e.label + ' — отступ снизу', 0, 300, 10);
       }).join('');
   }
   function renderTextSizes() {
@@ -637,7 +638,9 @@
     (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; map['tsize.' + f.key + '.mob'] = ''; });
     map['sspace.global'] = '';
     map['sspace.global.mob'] = '';
-    (window.TSK_SECTION_SPACING || []).forEach(function (f) { map['sspace.' + f.key] = ''; map['sspace.' + f.key + '.mob'] = ''; });
+    (window.TSK_SECTION_SPACING || []).forEach(function (f) {
+      ['', '.mob', '.top', '.top.mob', '.bot', '.bot.mob'].forEach(function (sfx) { map['sspace.' + f.key + sfx] = ''; });
+    });
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
