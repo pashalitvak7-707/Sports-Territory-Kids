@@ -129,6 +129,10 @@
     if (next) next.addEventListener('click', function () { go(index + 1); });
     cards.forEach(function (c, i) { c.addEventListener('click', function () { if (i !== index) go(i); }); });
 
+    /* expose "advance to next coach (wrapping)" so the «СМОТРЕТЬ ВСЕХ» button
+       can drive whichever stage is live (the CMS may swap this element out). */
+    root.__coachNext = function () { go(index >= cards.length - 1 ? 0 : index + 1); };
+
     var startX = 0, dragging = false;
     root.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; dragging = true; }, { passive: true });
     root.addEventListener('touchend', function (e) {
@@ -396,6 +400,17 @@
     requestAnimationFrame(drift);
   }
 
+  /* ---------- «СМОТРЕТЬ ВСЕХ» → next coach (wrapping); bound once, drives the live stage ---------- */
+  function initCoachesSeeAll() {
+    var btn = document.querySelector('.coaches-all');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var stage = document.querySelector('.coaches-stage');
+      if (stage && stage.__coachNext) stage.__coachNext();
+    });
+  }
+
   /* ---------- Reviews carousel: «БОЛЬШЕ ОТЗЫВОВ» pages by two, free-scroll too.
        Each page holds two stacked (mobile) / side-by-side (desktop) reviews. ---------- */
   function initReviewsCarousel() {
@@ -482,5 +497,6 @@
     initGalleryStrip();
     initNavToggle();
     initReviewsCarousel();
+    initCoachesSeeAll();
   });
 })();
