@@ -1,0 +1,16 @@
+name: db-check
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check whether reviews.rating column exists
+        run: |
+          URL="https://zuntxqtceskpcdwwwrnh.supabase.co"
+          KEY="sb_publishable_z1f4A_NisVriQ3hDSlNIUg_w4szVbuN"
+          echo "--- select rating (200 = column exists, 400 = missing):"
+          curl -s -o resp.json -w "HTTP %{http_code}\n" "$URL/rest/v1/reviews?select=rating&limit=1" -H "apikey: $KEY"
+          cat resp.json
+          echo ""
+          echo "--- published reviews (anon can only see approved):"
+          curl -s "$URL/rest/v1/reviews?select=created_at,name,rating,approved&order=created_at.desc&limit=5" -H "apikey: $KEY"
