@@ -1,5 +1,8 @@
 name: db-check
-on: workflow_dispatch
+on:
+  push:
+    paths: ['.github/workflows/db-check.yml']
+# run 1
 jobs:
   check:
     runs-on: ubuntu-latest
