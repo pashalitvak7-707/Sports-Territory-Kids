@@ -381,19 +381,50 @@
     requestAnimationFrame(drift);
   }
 
-  /* ---------- Reviews carousel: «БОЛЬШЕ ОТЗЫВОВ» pages by two, free-scroll too ---------- */
+  /* ---------- Reviews carousel: «БОЛЬШЕ ОТЗЫВОВ» pages by two, free-scroll too.
+       Each page holds two stacked (mobile) / side-by-side (desktop) reviews. ---------- */
   function initReviewsCarousel() {
     var scroller = document.querySelector('.reviews-grid');
     var btn = document.querySelector('.reviews-more');
-    if (!scroller || !btn) return;
-    btn.addEventListener('click', function (e) {
+    if (!scroller) return;
+
+    // Group any bare .review-card children (e.g. rendered by the CMS) into
+    // pages of two, so the layout is the same whether cards come from the
+    // static markup or from the database.
+    function ensurePages() {
+      var bare = [];
+      for (var i = 0; i < scroller.children.length; i++) {
+        var ch = scroller.children[i];
+        if (ch.classList && ch.classList.contains('review-card')) bare.push(ch);
+      }
+      if (!bare.length) return;
+      var page = null;
+      bare.forEach(function (card, idx) {
+        if (idx % 2 === 0) {
+          page = document.createElement('div');
+          page.className = 'review-page';
+          scroller.insertBefore(page, card);
+        }
+        page.appendChild(card);
+      });
+    }
+
+    var mo = new MutationObserver(function () {
+      mo.disconnect();
+      ensurePages();
+      mo.observe(scroller, { childList: true });
+    });
+    ensurePages();
+    mo.observe(scroller, { childList: true });
+
+    if (btn) btn.addEventListener('click', function (e) {
       e.preventDefault();
       var max = scroller.scrollWidth - scroller.clientWidth;
       if (max <= 1) return;                         // nothing to page through
       if (scroller.scrollLeft >= max - 4) {
         scroller.scrollTo({ left: 0, behavior: 'smooth' });          // wrap back to the start
       } else {
-        scroller.scrollBy({ left: scroller.clientWidth, behavior: 'smooth' }); // next page = 2 cards
+        scroller.scrollBy({ left: scroller.clientWidth, behavior: 'smooth' }); // next page
       }
     });
   }
