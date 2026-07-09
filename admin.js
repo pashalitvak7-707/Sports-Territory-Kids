@@ -155,6 +155,15 @@
     });
   }
 
+  /* Дополнительные фото галереи: JSON-массив ссылок в настройке gallery.extra */
+  function galExtra() {
+    try { var arr = JSON.parse(settings['gallery.extra'] || '[]'); return Array.isArray(arr) ? arr : []; }
+    catch (e) { return []; }
+  }
+  function saveGalExtra(arr) {
+    return saveSettings({ 'gallery.extra': arr.length ? JSON.stringify(arr) : '' });
+  }
+
   /* ---------- Авторизация ---------- */
   function showLogin() { $('viewLogin').hidden = false; $('viewPanel').hidden = true; }
   function showPanel() {
@@ -532,8 +541,22 @@
           byGroup[g].push({ key: key, def: src, label: img.getAttribute('alt') || src.split('/').pop() });
         });
       });
+      function galleryExtraHtml() {
+        var arr = galExtra();
+        return '<div class="adm-item"><div class="adm-item-body">' +
+          '<p class="adm-item-title">Дополнительные фото</p>' +
+          '<p class="adm-item-meta">Добавляются после восьми стандартных и листаются вместе с ними. Сейчас добавлено: ' + arr.length + '</p></div>' +
+          '<div class="adm-item-actions"><label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">+ Добавить фото<input type="file" accept="image/*" data-galadd hidden /></label></div></div>' +
+          arr.map(function (u, i) {
+            return '<div class="adm-item"><img class="adm-thumb" src="' + esc(u) + '" loading="lazy" alt="" />' +
+              '<div class="adm-item-body"><p class="adm-item-title">Дополнительное фото ' + (i + 1) + '</p></div>' +
+              '<div class="adm-item-actions"><button class="adm-btn adm-btn-sm adm-btn-danger" data-act="gal-del" data-i="' + i + '">Удалить</button></div></div>';
+          }).join('');
+      }
       $('imagesList').innerHTML = order.map(function (g, gi) {
-        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-list">' +
+        var isGallery = byGroup[g].some(function (f) { return f.key === 'image.gal_1'; });
+        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + (isGallery ? ' ➕' : '') + '</summary><div class="adm-list">' +
+          (isGallery ? galleryExtraHtml() : '') +
           byGroup[g].map(function (f) {
             var custom = !!settings[f.key];
             return '<div class="adm-item">' +
@@ -554,6 +577,15 @@
   }
 
   document.addEventListener('change', function (e) {
+    var add = e.target.closest('input[data-galadd]');
+    if (add && add.files[0]) {
+      add.disabled = true;
+      uploadImage(add.files[0], 'gallery')
+        .then(function (url) { return saveGalExtra(galExtra().concat([url])); })
+        .then(renderImages)
+        .catch(fail);
+      return;
+    }
     var inp = e.target.closest('input[data-imgkey]');
     if (!inp || !inp.files[0]) return;
     var key = inp.dataset.imgkey;
@@ -698,6 +730,11 @@
     if (act === 'img-reset') {
       var m = {}; m[btn.dataset.key] = '';
       saveSettings(m).then(renderImages).catch(fail);
+    }
+    if (act === 'gal-del' && confirm('Удалить это фото из галереи?')) {
+      var arr = galExtra();
+      arr.splice(parseInt(btn.dataset.i, 10), 1);
+      saveGalExtra(arr).then(renderImages).catch(fail);
     }
   });
 })();

@@ -156,6 +156,28 @@
       if (val !== undefined) inp.placeholder = val;
     });
 
+    // Дополнительные фото галереи (gallery.extra — JSON-массив ссылок)
+    var galGrid = document.querySelector('.gallery-grid');
+    if (galGrid && s['gallery.extra']) {
+      try {
+        var extra = JSON.parse(s['gallery.extra']);
+        galGrid.querySelectorAll('.gal-extra').forEach(function (n) { n.remove(); });
+        (Array.isArray(extra) ? extra : []).forEach(function (url) {
+          if (!url) return;
+          var d = document.createElement('div');
+          d.className = 'gal-item gal-extra';
+          var img = document.createElement('img');
+          img.loading = 'lazy';
+          img.alt = 'Фото зала';
+          img.src = url;
+          d.appendChild(img);
+          galGrid.appendChild(d);
+        });
+        // лента галереи пересчитывает стрелки по событию resize
+        window.dispatchEvent(new Event('resize'));
+      } catch (e) { console.warn('gallery.extra:', e); }
+    }
+
     // Цвет отдельного текста (tcolor.<ключ>)
     document.querySelectorAll('[data-cms]').forEach(function (el) {
       var c = s['tcolor.' + el.getAttribute('data-cms')];
