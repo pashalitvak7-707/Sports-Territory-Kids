@@ -287,7 +287,7 @@
         quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
       }
       if (document.querySelector('.reviews-grid')) {
-        quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc&limit=4')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
+        quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
       }
       if (document.querySelector('.sched-table')) {
         quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });
