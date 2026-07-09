@@ -647,14 +647,16 @@ a { text-decoration: none; color: inherit; }
 .reviews-heading { position: relative; z-index: 2; color: #fff; font-size: clamp(30px, 3.2vw, 46px); font-weight: 800; line-height: 1.05; }
 .reviews-rule { position: relative; z-index: 2; display: block; height: 3px; border-radius: 3px; background: rgba(255,255,255,.92);
   margin: clamp(22px, 2.6vw, 36px) 6px clamp(22px, 2.6vw, 34px); }
-/* horizontal carousel: two reviews per view, free-scroll + snap by page.
-   overflow-y room (the 16px bottom padding) keeps the cards' drop shadow. */
+/* horizontal carousel of "pages"; each page = two reviews, free-scroll + snap.
+   the bottom padding leaves room for the cards' drop shadow. */
 .reviews-grid { position: relative; z-index: 2; display: flex; gap: 18px;
   overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; }
 .reviews-grid::-webkit-scrollbar { display: none; }
-.review-card { flex: 0 0 calc((100% - 18px) / 2); min-width: 0; scroll-snap-align: start;
-  background: #fff; border-radius: 22px; padding: clamp(22px, 2.3vw, 32px); box-shadow: 0 16px 32px rgba(40,80,90,.12); }
+/* a page fills the view; its two cards sit side by side (desktop) */
+.review-page { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; display: flex; gap: 18px; align-items: stretch; }
+.review-page > .review-card { flex: 1 1 0; min-width: 0; }
+.review-card { background: #fff; border-radius: 22px; padding: clamp(22px, 2.3vw, 32px); box-shadow: 0 16px 32px rgba(40,80,90,.12); }
 .stars { color: var(--green-d); font-size: 19px; letter-spacing: 3px; margin-bottom: clamp(16px, 1.9vw, 26px); }
 .review-card p { font-size: clamp(15px, 1.18vw, 17px); color: #1b1b1b; font-weight: 400; line-height: 1.5; margin-bottom: clamp(20px, 2.4vw, 34px); }
 .review-author { color: var(--green-d); font-weight: 400; font-size: clamp(14px, 1vw, 16px); }
@@ -979,11 +981,10 @@ a { text-decoration: none; color: inherit; }
   .gallery-more .all-arrow { color: var(--dev-green); }   /* light green, points right */
   .car-track > * { flex-basis: 100%; }
   .car-prev { left: -6px; } .car-next { right: -6px; }
-  /* reviews carousel: tighter cards so two fit comfortably in the narrow box */
-  .review-card { padding: 16px 14px; border-radius: 18px; }
-  .review-card .stars { font-size: 16px; letter-spacing: 2px; margin-bottom: 12px; }
-  .review-card p { font-size: 13px; line-height: 1.45; margin-bottom: 14px; }
-  .review-author { font-size: 12.5px; }
+  /* reviews carousel: each page stacks its two full-width cards vertically,
+     just like the original mobile layout — the arrow/scroll pages by two */
+  .review-page { flex-direction: column; gap: 22px; }
+  .reviews-grid { padding-bottom: 22px; }
   /* FAQ separator line: edge-to-edge, thin neon green, midway between sections */
   .reviews { padding-bottom: 22px; }
   .faq { padding-top: 20px; }
