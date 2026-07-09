@@ -187,7 +187,7 @@
         }
         if (cms && cms.configured) cms.saveMessage(ctx, data); // копия заявки в админку
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
-        var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение',
+        var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение', rating: 'Оценка',
           parent: 'Имя родителя', child: 'Имя ребёнка', childage: 'Возраст ребёнка', lesson: 'Занятие' };
         data.forEach(function (val, key) {
           val = (val || '').toString().trim();
@@ -400,6 +400,36 @@
     requestAnimationFrame(drift);
   }
 
+  /* ---------- Star rating input in the review form ---------- */
+  function initReviewRating() {
+    document.querySelectorAll('[data-rating-input]').forEach(function (group) {
+      var stars = Array.prototype.slice.call(group.querySelectorAll('.rating-star'));
+      var field = group.querySelector('input[name="rating"]');
+      if (!stars.length) return;
+      var value = 0;
+      function paint(n) { stars.forEach(function (s, i) { s.classList.toggle('on', i < n); }); }
+      function set(n) { value = n; if (field) field.value = n ? String(n) : ''; paint(n); }
+      stars.forEach(function (s, i) {
+        s.addEventListener('mouseenter', function () { paint(i + 1); });
+        s.addEventListener('focus', function () { paint(i + 1); });
+        s.addEventListener('click', function () {
+          set(i + 1);
+          s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop');
+        });
+      });
+      group.addEventListener('mouseleave', function () { paint(value); });
+      group.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') set(Math.min(5, value + 1));
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') set(Math.max(1, value - 1));
+        else return;
+        e.preventDefault(); stars[value - 1].focus();
+      });
+      // reset the stars when the form is cleared after a successful submit
+      var form = group.closest('form');
+      if (form) form.addEventListener('reset', function () { set(0); });
+    });
+  }
+
   /* ---------- «СМОТРЕТЬ ВСЕХ» → next coach (wrapping); bound once, drives the live stage ---------- */
   function initCoachesSeeAll() {
     var btn = document.querySelector('.coaches-all');
@@ -498,5 +528,6 @@
     initNavToggle();
     initReviewsCarousel();
     initCoachesSeeAll();
+    initReviewRating();
   });
 })();
