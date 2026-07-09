@@ -365,6 +365,21 @@
         scroller.style.scrollSnapType = '';
       }, { passive: true });
     });
+
+    /* «БОЛЬШЕ ФОТО» pages to the next screen of photos (wrapping at the end),
+       just like the reviews button. With the current photos there is only one
+       page, so it stays put until more are added. */
+    var moreBtn = document.querySelector('.gallery-more');
+    if (moreBtn) moreBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      autoStopped = true;                    // stop the drift so it doesn't fight the paging
+      scroller.style.scrollSnapType = '';
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      if (max <= 1) return;                  // only one page for now
+      if (scroller.scrollLeft >= max - 4) scroller.scrollTo({ left: 0, behavior: 'smooth' });
+      else scroller.scrollBy({ left: scroller.clientWidth, behavior: 'smooth' });
+    });
+
     var driftPos = 0;   // fractional position — scrollLeft itself is rounded to whole pixels
     function drift() {
       if (!autoStopped && mqM.matches && !document.hidden) {
