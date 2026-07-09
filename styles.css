@@ -568,15 +568,15 @@ a { text-decoration: none; color: inherit; }
   grid-auto-columns: calc((100% - 3 * clamp(14px, 1.4vw, 22px)) / 4);
   gap: clamp(14px, 1.4vw, 22px);
   overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
-  scrollbar-width: none; padding-bottom: 2px; }
+  scrollbar-width: none;
+  /* a small gutter on every side so the green hover frame around a photo is
+     never clipped by the scroll container (top / left were getting cut) */
+  padding: 7px; scroll-padding: 7px; }
 .gallery-grid::-webkit-scrollbar { display: none; }
-.gal-item { position: relative; aspect-ratio: 1 / 1; border-radius: 22px; overflow: hidden; background: #eef4ef;
-  scroll-snap-align: start; cursor: pointer; }
+.gal-item { aspect-ratio: 1 / 1; border-radius: 22px; overflow: hidden; background: #eef4ef;
+  scroll-snap-align: start; cursor: pointer; transition: box-shadow .2s var(--ease); }
 .gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* hover highlight drawn just INSIDE the photo, so the scroller never clips it */
-.gal-item::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  box-shadow: inset 0 0 0 3px #5FC24A; opacity: 0; transition: opacity .25s var(--ease); }
-.gal-item:hover::after { opacity: 1; }
+.gal-item:hover { box-shadow: 0 0 0 3px #5FC24A; }
 .gallery-more { margin-top: clamp(24px, 2.6vw, 38px); }
 .gallery-more .all-arrow { width: 86px; height: 14px; color: var(--green); flex: none; }
 /* gallery nav arrows: hidden on desktop (grid), shown on mobile over the strip */
@@ -977,7 +977,7 @@ a { text-decoration: none; color: inherit; }
     display: flex; grid-template-columns: none;
     gap: 12px; overflow-x: auto;
     scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
-    padding: 6px 2px; scrollbar-width: none;
+    padding: 7px; scroll-padding: 7px; scrollbar-width: none;  /* gutter for the hover frame */
   }
   .gallery-grid::-webkit-scrollbar { display: none; }
   .gal-item { flex: 0 0 auto; width: clamp(150px, 58vw, 210px); scroll-snap-align: center; border-radius: 18px; }
