@@ -381,6 +381,23 @@
     requestAnimationFrame(drift);
   }
 
+  /* ---------- Reviews carousel: «БОЛЬШЕ ОТЗЫВОВ» pages by two, free-scroll too ---------- */
+  function initReviewsCarousel() {
+    var scroller = document.querySelector('.reviews-grid');
+    var btn = document.querySelector('.reviews-more');
+    if (!scroller || !btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      if (max <= 1) return;                         // nothing to page through
+      if (scroller.scrollLeft >= max - 4) {
+        scroller.scrollTo({ left: 0, behavior: 'smooth' });          // wrap back to the start
+      } else {
+        scroller.scrollBy({ left: scroller.clientWidth, behavior: 'smooth' }); // next page = 2 cards
+      }
+    });
+  }
+
   function initNavToggle() {
     var header = document.querySelector('.header');
     var toggle = header && header.querySelector('.nav-toggle');
@@ -418,5 +435,6 @@
     initProgramCards();
     initGalleryStrip();
     initNavToggle();
+    initReviewsCarousel();
   });
 })();
