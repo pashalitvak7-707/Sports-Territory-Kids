@@ -172,9 +172,14 @@
     });
   }
 
-  /* ---------- 4. WhatsApp form submission ---------- */
+  /* ---------- 4. Form submission → messenger ---------- */
+  var MSG_NUMBER = '79313443000'; // +7 931 344 3 000 — единый номер для сообщений
   function initForms() {
     document.querySelectorAll('[data-whatsapp-form]').forEach(function (form) {
+      // формы с выбором мессенджера: запоминаем, какую кнопку нажали
+      form.querySelectorAll('.book-msgr').forEach(function (b) {
+        b.addEventListener('click', function () { form.__msgr = b.getAttribute('data-msgr'); });
+      });
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var cms = window.TSKCMS;
@@ -193,9 +198,36 @@
           val = (val || '').toString().trim();
           if (val) lines.push((labels[key] || key) + ': ' + val);
         });
+        var text = lines.join('\n');
+
+        if (form.hasAttribute('data-msgr-form')) {
+          var choice = form.__msgr || 'wa';
+          if (choice === 'wa') {
+            window.open('https://wa.me/' + MSG_NUMBER + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+          } else {
+            // Telegram/MAX/VK не принимают текст в ссылке — кладём заявку в буфер,
+            // чтобы её можно было просто вставить в открывшийся чат
+            var url = choice === 'tg' ? 'https://t.me/+' + MSG_NUMBER
+              : choice === 'max' ? 'https://max.ru/u/+' + MSG_NUMBER
+              : (cms && cms.settings['contact.vk']) || 'https://vk.com/im';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).catch(function () {});
+            }
+            var note = form.querySelector('.book-copied');
+            if (!note) {
+              note = document.createElement('p');
+              note.className = 'book-copied';
+              form.appendChild(note);
+            }
+            note.textContent = 'Текст заявки скопирован — просто вставьте его в чат.';
+            window.open(url, '_blank', 'noopener');
+          }
+          form.reset();
+          return;
+        }
+
         var wa = (cms && cms.settings['contact.whatsapp']) || WHATSAPP_NUMBER;
-        var url = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(lines.join('\n'));
-        window.open(url, '_blank', 'noopener');
+        window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
         form.reset();
       });
     });

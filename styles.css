@@ -1233,7 +1233,9 @@ a { text-decoration: none; color: inherit; }
 
 /* Table */
 .sched-table { background: #fff; border: 1px solid #e7ece8; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-sm); }
-.sch-row { display: grid; grid-template-columns: 1.5fr 1fr 1.05fr 1.05fr 1.25fr 0.8fr auto; align-items: center;
+/* the last track is fixed: with `auto`, the button-less header row resolved
+   different column widths than the body rows and the labels drifted */
+.sch-row { display: grid; grid-template-columns: 1.5fr 1fr 1.05fr 1.05fr 1.25fr 0.8fr 136px; align-items: center;
   gap: 14px; padding: 16px clamp(18px, 1.8vw, 26px); border-bottom: 1px solid #eef2ef; }
 .sch-row:last-child { border-bottom: none; }
 .sch-head { background: #F1F7F1; font-size: 12.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-d); padding-top: 15px; padding-bottom: 15px; }
@@ -1244,7 +1246,7 @@ a { text-decoration: none; color: inherit; }
 .sch-dir .sch-v { font-weight: 700; color: var(--green-d); }
 .sch-badge { display: inline-block; background: #EAF6E9; color: #2E8B3E; font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
 .sch-spots { font-weight: 600; color: #2E8B3E; }
-.sch-spots.sch-few { color: var(--orange-d); }
+.sch-spots.sch-few { color: #2E8B3E; }   /* места всегда зелёные */
 .sch-act { justify-self: end; }
 .sch-book { font-family: inherit; font-size: 14px; font-weight: 700; color: #fff; background: var(--orange);
   border: none; border-radius: 12px; padding: 11px 20px; cursor: pointer; white-space: nowrap;
@@ -1270,6 +1272,20 @@ a { text-decoration: none; color: inherit; }
 .book-field input[readonly] { background: #F1F7F1; color: var(--green-d); font-weight: 600; cursor: default; }
 .book-submit { width: 100%; margin-top: 6px; border-radius: 14px; }
 .book-note { display: block; text-align: center; color: var(--muted); font-size: 12px; margin-top: 2px; }
+/* «Отправить заявку через:» — четыре мессенджера */
+.book-send-label { font-size: 13px; font-weight: 700; color: var(--green-d); margin-top: 4px; }
+.book-msgrs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.book-msgr { display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  font-family: inherit; font-weight: 700; font-size: 14px; color: #fff; padding: 13px 8px; border-radius: 12px;
+  transition: filter .15s var(--ease), transform .15s var(--ease); }
+.book-msgr:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.book-msgr:focus-visible { outline: 3px solid var(--green-d); outline-offset: 2px; }
+.bm-wa { background: #25D366; }
+.bm-tg { background: #229ED9; }
+.bm-max { background: linear-gradient(135deg, #7B4DFF 0%, #2E9BFF 100%); }
+.bm-vk { background: #0077FF; }
+.bm-m { font-weight: 800; font-size: 15px; }
+.book-copied { margin: 2px 0 0; text-align: center; font-size: 13px; font-weight: 600; color: var(--green-d); }
 
 @media (max-width: 1080px) {
   /* minmax(0,1fr) lets the single column shrink below its content's
@@ -1295,5 +1311,5 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ===================== CMS ADDITIONS ===================== */
-.sch-spots.sch-none { color: #D14836; font-weight: 700; }
+.sch-spots.sch-none { color: #2E8B3E; font-weight: 700; }
 .review-thanks { margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--green-d); }
