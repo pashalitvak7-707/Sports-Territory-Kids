@@ -517,6 +517,51 @@
 
   window.TSK = { initCarousel: initCarousel, initCoachStage: initCoachStage };
 
+
+  /* ---------- Floating messenger button: logo carousel + chooser ---------- */
+  function initMessengerFloat() {
+    var root = document.getElementById('msgFloat');
+    if (!root) return;
+    var btn = root.querySelector('.msg-toggle');
+    var icons = Array.prototype.slice.call(root.querySelectorAll('.mf-ic'));
+    var cur = 0;
+
+    // the button's logo rolls from WhatsApp to Telegram to MAX and back
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && icons.length > 1) {
+      setInterval(function () {
+        if (document.hidden) return;
+        var prev = icons[cur];
+        cur = (cur + 1) % icons.length;
+        var next = icons[cur];
+        prev.classList.remove('is-on');
+        prev.classList.add('is-out');
+        setTimeout(function () { prev.classList.remove('is-out'); }, 520);
+        next.classList.add('is-on');
+      }, 2600);
+    }
+
+    function setOpen(open) {
+      root.classList.toggle('open', open);
+      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    if (btn) btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!root.classList.contains('open'));
+    });
+    // the VK button in the header opens the same chooser
+    document.querySelectorAll('[data-open-messengers]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpen(true);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (root.classList.contains('open') && !root.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
@@ -529,5 +574,6 @@
     initReviewsCarousel();
     initCoachesSeeAll();
     initReviewRating();
+    initMessengerFloat();
   });
 })();

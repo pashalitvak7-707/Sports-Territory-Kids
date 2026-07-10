@@ -129,7 +129,7 @@
 
     // Телефон и WhatsApp
     if (s['contact.phone_tel']) {
-      document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
+      document.querySelectorAll('a[href^="tel:"]:not([data-keep-tel])').forEach(function (a) {
         a.href = 'tel:' + s['contact.phone_tel'];
       });
     }
@@ -139,7 +139,7 @@
       });
     }
     if (s['contact.whatsapp']) {
-      document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
+      document.querySelectorAll('a[href*="wa.me/"]:not([data-keep-link])').forEach(function (a) {
         a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + s['contact.whatsapp']);
       });
     }
