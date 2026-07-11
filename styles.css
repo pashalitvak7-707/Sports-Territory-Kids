@@ -1235,9 +1235,10 @@ a { text-decoration: none; color: inherit; }
 .sched-table { background: #fff; border: 1px solid #e7ece8; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-sm); }
 /* the last track is fixed: with `auto`, the button-less header row resolved
    different column widths than the body rows and the labels drifted */
-.sch-row { display: grid; grid-template-columns: 1.5fr 1fr 1.05fr 1.05fr 1.25fr 0.8fr 136px; align-items: center;
+.sch-row { display: grid; grid-template-columns: 1fr 1.15fr 1.15fr 1.35fr 0.85fr 136px; align-items: center;
   gap: 14px; padding: 16px clamp(18px, 1.8vw, 26px); border-bottom: 1px solid #eef2ef; }
 .sch-row:last-child { border-bottom: none; }
+.sch-row[hidden] { display: none; }   /* отфильтрованные занятия исчезают */
 .sch-head { background: #F1F7F1; font-size: 12.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-d); padding-top: 15px; padding-bottom: 15px; }
 .sch-row:not(.sch-head):hover { background: #FAFCFA; }
 .sch-cell { min-width: 0; }
