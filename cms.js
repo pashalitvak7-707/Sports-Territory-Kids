@@ -263,12 +263,11 @@
         return '<div class="sch-cell"><span class="sch-k">' + k + '</span><span class="sch-v">' + v + '</span></div>';
       }
       return '<div class="sch-row" data-age="' + esc(r.age) + '" data-dir="' + esc(r.dir) + '" data-day="' + esc(r.day) + '" data-free="' + n + '">' +
-        '<div class="sch-cell sch-dir"><span class="sch-k">' + esc(colLabel(0, 'Направление')) + '</span><span class="sch-v">' + esc(dir) + '</span></div>' +
-        cell(esc(colLabel(1, 'Возраст')), '<span class="sch-badge">' + esc(age) + '</span>') +
-        cell(esc(colLabel(2, 'День')), esc(day)) +
-        cell(esc(colLabel(3, 'Время')), esc(r.time)) +
-        cell(esc(colLabel(4, 'Тренер')), esc(r.coach || '')) +
-        '<div class="sch-cell"><span class="sch-k">' + esc(colLabel(5, 'Места')) + '</span><span class="' + spotCls + '">' + spotsText(n) + '</span></div>' +
+        cell(esc(colLabel(0, 'Возраст')), '<span class="sch-badge">' + esc(age) + '</span>') +
+        cell(esc(colLabel(1, 'День')), esc(day)) +
+        cell(esc(colLabel(2, 'Время')), esc(r.time)) +
+        cell(esc(colLabel(3, 'Тренер')), esc(r.coach || '')) +
+        '<div class="sch-cell"><span class="sch-k">' + esc(colLabel(4, 'Места')) + '</span><span class="' + spotCls + '">' + spotsText(n) + '</span></div>' +
         '<div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="' + esc(dir) + '" data-age="' + esc(age) + '" data-day="' + esc(day) + '" data-time="' + esc(r.time) + '" data-coach="' + esc(r.coach || '') + '">' + esc(bookText) + '</button></div>' +
         '</div>';
     }).join('');
