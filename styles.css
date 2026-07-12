@@ -816,7 +816,9 @@ a { text-decoration: none; color: inherit; }
   .how-cta { position: static; width: 100%; aspect-ratio: 1; max-width: 200px; margin: 0 auto; }
   .deco-bigarc { display: none; }
 }
-@media (max-width: 900px) {
+/* the inline top menu fits on one line only from 1120px up — below that
+   (tablets incl. iPad Pro portrait) the hamburger menu is used instead */
+@media (max-width: 1119px) {
   .nav-toggle { display: flex; }
   /* the nav becomes a full-width dropdown under the green bar when the burger is tapped */
   .topnav { display: none; }
@@ -829,6 +831,8 @@ a { text-decoration: none; color: inherit; }
   .header.nav-open .topnav a { font-size: 16px; font-weight: 600; padding: 13px 2px;
     border-top: 1px solid rgba(255, 255, 255, .22); }
   .header.nav-open .topnav a:first-child { border-top: none; }
+}
+@media (max-width: 900px) {
   .hero-inner { flex-direction: column; min-height: 0; padding-top: 22px; padding-bottom: 44px; text-align: center; }
   /* mobile hero stacking order: title, subtitle, image, then the two buttons.
      display:contents lets the buttons (inside .hero-text) be ordered between
