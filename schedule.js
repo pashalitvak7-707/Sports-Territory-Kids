@@ -51,6 +51,8 @@
                (time === 'all' || rowTime(row) === time) &&
                (coach === 'all' || rowCoach(row) === coach);
       row.hidden = !ok;
+      /* inline style too, so hiding works even with a stale cached stylesheet */
+      row.style.display = ok ? '' : 'none';
       if (ok) visible++;
     });
     if (countEl) countEl.textContent = visible;
