@@ -23,8 +23,6 @@
       }
     }, 3000);
   </script>
-</head>
-<body>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
@@ -36,8 +34,10 @@
 
     ym(110643212, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/110643212" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<noscript><div><img src="https://mc.yandex.ru/watch/110643212" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <span data-cms="t.s.1"><!-- ================= HEADER ================= --></span>
 <header class="header" id="top">
 <div class="topbar">
@@ -255,19 +255,19 @@
 </label>
 <label class="book-field">
 <span data-cms="t.s.51">Имя родителя</span>
-<input data-cms-ph="ph.s.2" name="parent" placeholder="Например, Мария" required="" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.s.2" name="parent" placeholder="Например, Мария" required="" type="text"/>
 </label>
 <label class="book-field">
 <span data-cms="t.s.52">Имя ребёнка</span>
-<input data-cms-ph="ph.s.3" name="child" placeholder="Например, София" required="" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.s.3" name="child" placeholder="Например, София" required="" type="text"/>
 </label>
 <label class="book-field">
 <span data-cms="t.s.53">Возраст ребёнка</span>
-<input data-cms-ph="ph.s.4" name="childage" placeholder="Например, 5 лет" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.s.4" name="childage" placeholder="Например, 5 лет" type="text"/>
 </label>
 <label class="book-field">
 <span data-cms="t.s.54">Телефон для связи</span>
-<input data-cms-ph="ph.s.5" name="phone" placeholder="+7 705 000 00 00" required="" type="tel"/>
+<input class="ym-disable-keys" data-cms-ph="ph.s.5" name="phone" placeholder="+7 705 000 00 00" required="" type="tel"/>
 </label>
 <span class="book-send-label" data-cms="sched.send_via">Отправить заявку через:</span>
 <div class="book-msgrs">
@@ -331,7 +331,8 @@
 <script src="cms-config.js?v=2"></script>
 <script src="textsizes.js?v=2"></script>
 <script src="cms.js?v=14"></script>
-<script src="script.js?v=20260714-1"></script>
+<script src="script.js?v=20260714-2"></script>
+<script src="analytics.js?v=1"></script>
 <script src="schedule.js?v=20260713-1"></script>
 </body>
 </html>

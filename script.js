@@ -185,16 +185,27 @@
         var cms = window.TSKCMS;
         var ctx = form.getAttribute('data-context') || 'Заявка';
         var data = new FormData(form);
+        var an = window.TSKAnalytics;
+        if (an) an.refreshHiddenFields(); // свежие ClientID/UTM перед чтением FormData
+        data = new FormData(form);
         // Отзывы уходят на модерацию в админку (если она подключена), а не в WhatsApp
         if (form.hasAttribute('data-review-form') && cms && cms.configured) {
           cms.submitReview(form);
+          if (an) an.goal('review_submit');
           return;
         }
-        if (cms && cms.configured) cms.saveMessage(ctx, data); // копия заявки в админку
+        // копия заявки в админку; цель формы — только после подтверждённой записи
+        var saved = (cms && cms.configured) ? cms.saveMessage(ctx, data) : null;
+        if (an) {
+          an.identify(data.get('phone'));
+          var fire = function () { an.goal('form_submit', { form: ctx }); };
+          if (saved && saved.then) saved.then(fire); else fire();
+        }
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
         var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение', rating: 'Оценка',
           parent: 'Имя родителя', child: 'Имя ребёнка', childage: 'Возраст ребёнка', lesson: 'Занятие' };
         data.forEach(function (val, key) {
+          if (key.charAt(0) === '_') return; // служебные поля аналитики — не для текста сообщения
           val = (val || '').toString().trim();
           if (val) lines.push((labels[key] || key) + ': ' + val);
         });
