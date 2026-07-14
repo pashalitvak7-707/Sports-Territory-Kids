@@ -23,8 +23,6 @@
       }
     }, 3000);
   </script>
-</head>
-<body>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
@@ -36,8 +34,10 @@
 
     ym(110643212, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/110643212" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<noscript><div><img src="https://mc.yandex.ru/watch/110643212" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <!-- ================= HEADER ================= -->
 <header class="header" id="top">
 <div class="topbar">
@@ -302,8 +302,8 @@
 <h2 data-cms="signup.title">Запишитесь на <br class="br-m"/>пробное занятие</h2>
 <p data-cms="signup.sub">Оставьте заявку — мы подберём <br class="br-m"/>удобное<br class="br-d"/> время и ответим на <br class="br-m"/>ваши вопросы</p>
 <form class="signup-form" data-context="Запись на пробное занятие" data-whatsapp-form="">
-<input data-cms-ph="ph.i.1" name="name" placeholder="Ваше имя" required="" type="text"/>
-<input data-cms-ph="ph.i.2" name="phone" placeholder="Номер для связи" required="" type="tel"/>
+<input class="ym-disable-keys" data-cms-ph="ph.i.1" name="name" placeholder="Ваше имя" required="" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.i.2" name="phone" placeholder="Номер для связи" required="" type="tel"/>
 <button class="btn btn-orange btn-lg signup-btn" data-cms="t.i.112" type="submit">Записаться на занятие</button>
 </form>
 <small data-cms="t.i.113">Нажимая кнопку, вы соглашаетесь с политикой <br class="br-m"/>конфиденциальности</small>
@@ -567,9 +567,9 @@
 <input name="rating" type="hidden" value=""/>
 </div>
 <div class="review-fields">
-<input data-cms-ph="ph.i.3" name="name" placeholder="Имя" required="" type="text"/>
-<input data-cms-ph="ph.i.4" name="contact" placeholder="Контакты" type="text"/>
-<textarea data-cms-ph="ph.i.5" name="text" placeholder="Текст отзыва" required="" rows="3"></textarea>
+<input class="ym-disable-keys" data-cms-ph="ph.i.3" name="name" placeholder="Имя" required="" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.i.4" name="contact" placeholder="Контакты" type="text"/>
+<textarea class="ym-disable-keys" data-cms-ph="ph.i.5" name="text" placeholder="Текст отзыва" required="" rows="3"></textarea>
 </div>
 <button class="review-submit" data-cms="t.i.132" type="submit">Отправить</button>
 </form>
@@ -601,8 +601,8 @@
 <h2 data-cms="signup.title">Запишитесь на <br class="br-m"/>пробное занятие</h2>
 <p data-cms="signup.sub">Оставьте заявку — мы подберём <br class="br-m"/>удобное<br class="br-d"/> время и ответим на <br class="br-m"/>ваши вопросы</p>
 <form class="signup-form" data-context="Запись на пробное занятие" data-whatsapp-form="">
-<input data-cms-ph="ph.i.6" name="name" placeholder="Ваше имя" required="" type="text"/>
-<input data-cms-ph="ph.i.7" name="phone" placeholder="Номер для связи" required="" type="tel"/>
+<input class="ym-disable-keys" data-cms-ph="ph.i.6" name="name" placeholder="Ваше имя" required="" type="text"/>
+<input class="ym-disable-keys" data-cms-ph="ph.i.7" name="phone" placeholder="Номер для связи" required="" type="tel"/>
 <button class="btn btn-orange btn-lg signup-btn" data-cms="t.i.141" type="submit">Записаться на занятие</button>
 </form>
 <small data-cms="t.i.142">Нажимая кнопку, вы соглашаетесь с политикой <br class="br-m"/>конфиденциальности</small>
@@ -658,6 +658,7 @@
 <script src="cms-config.js?v=2"></script>
 <script src="textsizes.js?v=2"></script>
 <script src="cms.js?v=14"></script>
-<script src="script.js?v=20260714-1"></script>
+<script src="script.js?v=20260714-2"></script>
+<script src="analytics.js?v=1"></script>
 </body>
 </html>
