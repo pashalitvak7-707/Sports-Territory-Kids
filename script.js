@@ -209,7 +209,7 @@
             // чтобы её можно было просто вставить в открывшийся чат
             var url = choice === 'tg' ? 'https://t.me/+' + MSG_NUMBER
               : choice === 'max' ? 'https://max.ru/u/+' + MSG_NUMBER
-              : (cms && cms.settings['contact.vk']) || 'https://vk.com/im';
+              : (cms && cms.settings['contact.vk']) || 'https://vk.com/kidstersport';
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).catch(function () {});
             }
@@ -558,7 +558,7 @@
     var icons = Array.prototype.slice.call(root.querySelectorAll('.mf-ic'));
     var cur = 0;
 
-    // the button's logo rolls from WhatsApp to Telegram to MAX and back
+    // the button's logo rolls WhatsApp → Telegram → MAX → VK and back
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && icons.length > 1) {
       setInterval(function () {
         if (document.hidden) return;
