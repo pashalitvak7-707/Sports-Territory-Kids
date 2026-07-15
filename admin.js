@@ -164,6 +164,25 @@
     return saveSettings({ 'gallery.extra': arr.length ? JSON.stringify(arr) : '' });
   }
 
+  /* Документы для кнопок в подвале (Политика/Оферта) */
+  var DOC_FIELDS = [
+    { key: 'doc.privacy', label: 'Политика конфиденциальности' },
+    { key: 'doc.oferta', label: 'Публичная оферта' }
+  ];
+  function renderDocs() {
+    $('docsList').innerHTML = DOC_FIELDS.map(function (f) {
+      var url = settings[f.key];
+      return '<div class="adm-item"><div class="adm-item-body">' +
+        '<p class="adm-item-title">' + esc(f.label) + '</p>' +
+        '<p class="adm-item-meta">' + (url ? 'файл загружен — кнопка на сайте открывает его' : 'файл не загружен — кнопка на сайте пока ничего не открывает') + '</p></div>' +
+        '<div class="adm-item-actions">' +
+        (url ? '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener">Открыть</a>' : '') +
+        '<label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">' + (url ? 'Заменить файл' : 'Загрузить файл') + '<input type="file" data-dockey="' + f.key + '" accept=".pdf,.doc,.docx,.rtf,.txt,image/*" hidden /></label>' +
+        (url ? '<button class="adm-btn adm-btn-sm adm-btn-danger" data-act="doc-del" data-key="' + f.key + '">Удалить файл</button>' : '') +
+        '</div></div>';
+    }).join('');
+  }
+
   /* ---------- Авторизация ---------- */
   function showLogin() { $('viewLogin').hidden = false; $('viewPanel').hidden = true; }
   function showPanel() {
@@ -197,7 +216,7 @@
   });
 
   /* ---------- Вкладки ---------- */
-  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, contacts: renderContacts };
+  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, docs: renderDocs, contacts: renderContacts };
   function openTab(name) {
     document.querySelectorAll('.adm-tabpane').forEach(function (p) { p.hidden = true; });
     document.querySelectorAll('.adm-tabs button').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
@@ -579,6 +598,15 @@
   }
 
   document.addEventListener('change', function (e) {
+    var doc = e.target.closest('input[data-dockey]');
+    if (doc && doc.files[0]) {
+      doc.disabled = true;
+      uploadImage(doc.files[0], 'docs')
+        .then(function (url) { var m = {}; m[doc.dataset.dockey] = url; return saveSettings(m); })
+        .then(renderDocs)
+        .catch(fail);
+      return;
+    }
     var add = e.target.closest('input[data-galadd]');
     if (add && add.files[0]) {
       add.disabled = true;
@@ -732,6 +760,10 @@
     if (act === 'img-reset') {
       var m = {}; m[btn.dataset.key] = '';
       saveSettings(m).then(renderImages).catch(fail);
+    }
+    if (act === 'doc-del' && confirm('Удалить файл? Кнопка на сайте перестанет открывать документ.')) {
+      var dm = {}; dm[btn.dataset.key] = '';
+      saveSettings(dm).then(renderDocs).catch(fail);
     }
     if (act === 'gal-del' && confirm('Удалить это фото из галереи?')) {
       var arr = galExtra();

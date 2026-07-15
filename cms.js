@@ -184,6 +184,17 @@
       } catch (e) { console.warn('gallery.extra:', e); }
     }
 
+    // Документы («Политика конфиденциальности», «Публичная оферта»):
+    // если файл загружен в админке — кнопка открывает его в новой вкладке
+    document.querySelectorAll('[data-doc]').forEach(function (a) {
+      var url = s[a.getAttribute('data-doc')];
+      if (url) {
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+    });
+
     // Цвет отдельного текста (tcolor.<ключ>)
     document.querySelectorAll('[data-cms]').forEach(function (el) {
       var c = s['tcolor.' + el.getAttribute('data-cms')];
