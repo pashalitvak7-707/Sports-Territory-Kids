@@ -44,6 +44,7 @@
     { key: 'ui.no_spots', label: 'Надпись «Нет мест» в расписании', def: 'Нет мест' },
     { key: 'ui.review_thanks', label: 'Сообщение после отправки отзыва', def: 'Спасибо! Отзыв появится на сайте после проверки.' }
   ];
+  var textsSubtab = 'desktop';
   var pageDocs = null;
   function fetchPages() {
     if (pageDocs) return Promise.resolve(pageDocs);
@@ -88,6 +89,19 @@
     { value: 'Verdana, Geneva, sans-serif', label: 'Verdana' },
     { value: 'Georgia, "Times New Roman", serif', label: 'Georgia (с засечками)' },
     { value: '"Comic Sans MS", "Comic Sans", cursive', label: 'Comic Sans (игровой)' }
+  ];
+
+  // Часто используемые цвета сайта — быстрые образцы под палитрой
+  var TEXT_COLORS = [
+    { c: '#0C5C46', label: 'Тёмно-зелёный' },
+    { c: '#16BF41', label: 'Зелёный' },
+    { c: '#FF6A2B', label: 'Оранжевый' },
+    { c: '#FF6F61', label: 'Коралловый' },
+    { c: '#3FA9F5', label: 'Голубой' },
+    { c: '#FFC23C', label: 'Жёлтый' },
+    { c: '#2C2F33', label: 'Тёмный текст' },
+    { c: '#7C8088', label: 'Серый' },
+    { c: '#FFFFFF', label: 'Белый' }
   ];
 
   var settings = {};   // key -> value (текущие из базы)
@@ -141,6 +155,34 @@
     });
   }
 
+  /* Дополнительные фото галереи: JSON-массив ссылок в настройке gallery.extra */
+  function galExtra() {
+    try { var arr = JSON.parse(settings['gallery.extra'] || '[]'); return Array.isArray(arr) ? arr : []; }
+    catch (e) { return []; }
+  }
+  function saveGalExtra(arr) {
+    return saveSettings({ 'gallery.extra': arr.length ? JSON.stringify(arr) : '' });
+  }
+
+  /* Документы для кнопок в подвале (Политика/Оферта) */
+  var DOC_FIELDS = [
+    { key: 'doc.privacy', label: 'Политика конфиденциальности' },
+    { key: 'doc.oferta', label: 'Публичная оферта' }
+  ];
+  function renderDocs() {
+    $('docsList').innerHTML = DOC_FIELDS.map(function (f) {
+      var url = settings[f.key];
+      return '<div class="adm-item"><div class="adm-item-body">' +
+        '<p class="adm-item-title">' + esc(f.label) + '</p>' +
+        '<p class="adm-item-meta">' + (url ? 'файл загружен — кнопка на сайте открывает его' : 'файл не загружен — кнопка на сайте пока ничего не открывает') + '</p></div>' +
+        '<div class="adm-item-actions">' +
+        (url ? '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener">Открыть</a>' : '') +
+        '<label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">' + (url ? 'Заменить файл' : 'Загрузить файл') + '<input type="file" data-dockey="' + f.key + '" accept=".pdf,.doc,.docx,.rtf,.txt,image/*" hidden /></label>' +
+        (url ? '<button class="adm-btn adm-btn-sm adm-btn-danger" data-act="doc-del" data-key="' + f.key + '">Удалить файл</button>' : '') +
+        '</div></div>';
+    }).join('');
+  }
+
   /* ---------- Авторизация ---------- */
   function showLogin() { $('viewLogin').hidden = false; $('viewPanel').hidden = true; }
   function showPanel() {
@@ -174,7 +216,7 @@
   });
 
   /* ---------- Вкладки ---------- */
-  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, contacts: renderContacts };
+  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, docs: renderDocs, contacts: renderContacts };
   function openTab(name) {
     document.querySelectorAll('.adm-tabpane').forEach(function (p) { p.hidden = true; });
     document.querySelectorAll('.adm-tabs button').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
@@ -225,10 +267,12 @@
       var approved = r.data.filter(function (x) { return x.approved; });
       updateBadge('badgeReviews', pending.length);
       function card(x) {
+        var n = parseInt(x.rating, 10);
+        if (!(n >= 1 && n <= 5)) n = 5;
         return '<div class="adm-item' + (x.approved ? '' : ' unread') + '">' +
           '<div class="adm-item-body">' +
           '<p class="adm-item-meta">' + fmtDate(x.created_at) + (x.contact ? ' · ' + esc(x.contact) : '') + '</p>' +
-          '<p class="adm-item-title">' + esc(x.name) + '</p>' +
+          '<p class="adm-item-title">' + esc(x.name) + ' <span class="adm-stars">' + '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n) + '</span></p>' +
           '<p>' + esc(x.text) + '</p></div>' +
           '<div class="adm-item-actions">' +
           (x.approved
@@ -396,27 +440,109 @@
       docs.forEach(function (d) {
         d.doc.querySelectorAll('[data-cms], [data-cms-ph]').forEach(function (el) {
           var g = groupOf(el, d.label);
-          if (el.hasAttribute('data-cms')) add(g, { key: el.getAttribute('data-cms'), def: defaultTextOf(el) });
-          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true });
+          // variant: 'd' только на компьютере, 'm' только на телефоне, '' общий
+          var variant = el.closest('.ft-m, .lead-m, .cta-m') ? 'm'
+            : el.closest('.ft-d, .lead-d, .cta-d') ? 'd' : '';
+          var suffix = el.closest('.t-short') ? ' (короткая надпись)'
+            : el.closest('.t-long') ? ' (полная надпись)' : '';
+          if (el.hasAttribute('data-cms')) {
+            var def = defaultTextOf(el);
+            if (def) add(g, { key: el.getAttribute('data-cms'), def: def, suffix: suffix, variant: variant });
+          }
+          if (el.hasAttribute('data-cms-ph')) add(g, { key: el.getAttribute('data-cms-ph'), def: el.getAttribute('placeholder') || '', ph: true, variant: variant });
         });
       });
       EXTRA_TEXTS.forEach(function (f) { add('Служебные тексты', f); });
-      $('textsForm').innerHTML = order.map(function (g, gi) {
-        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
-          byGroup[g].map(function (f) {
-            var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.ph ? ' — подсказка в поле' : ''));
-            var rows = Math.min(f.def.split('\n').length + 1, 5);
-            return '<label>' + esc(label) +
-              '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
-          }).join('') + '</div></details>';
-      }).join('');
+
+      function colorHtml(key) {
+        var ckey = 'tcolor.' + key;
+        var cur = settings[ckey] || '';
+        var swatches = TEXT_COLORS.map(function (c) {
+          var on = cur.toUpperCase() === c.c.toUpperCase();
+          return '<button type="button" class="adm-swatch' + (on ? ' active' : '') + '" data-c="' + c.c + '" title="' + esc(c.label) + '" style="background:' + c.c + '"></button>';
+        }).join('');
+        return '<div class="adm-color" data-key="' + esc(ckey) + '" data-value="' + esc(cur) + '">' +
+          '<span class="adm-color-label">Цвет:</span>' +
+          '<button type="button" class="adm-swatch adm-swatch-def' + (cur ? '' : ' active') + '" data-c="" title="По умолчанию">A</button>' +
+          swatches +
+          '<label class="adm-swatch-custom" title="Выбрать любой цвет"><input type="color" value="' + esc(cur || '#000000') + '" /><span>+</span></label>' +
+          '</div>';
+      }
+      function fieldHtml(f) {
+        var label = f.label || ((f.def.split('\n')[0] || f.key).slice(0, 60) + (f.suffix || '') + (f.ph ? ' — подсказка в поле' : ''));
+        var rows = Math.min(f.def.split('\n').length + 1, 5);
+        var ta = '<label>' + esc(label) +
+          '<textarea data-key="' + esc(f.key) + '" rows="' + rows + '" placeholder="' + esc(f.def) + '">' + esc(settings[f.key] || '') + '</textarea></label>';
+        // цвет только для реальных текстов (не для подсказок в полях форм)
+        return '<div class="adm-field">' + ta + (f.ph ? '' : colorHtml(f.key)) + '</div>';
+      }
+      function groupsHtml(tab) {
+        var html = '', first = true;
+        order.forEach(function (g) {
+          var fields = byGroup[g].filter(function (f) {
+            var v = f.variant || '';
+            return tab === 'desktop' ? v !== 'm' : v !== 'd';
+          });
+          if (!fields.length) return;
+          html += '<details class="adm-textgroup"' + (first ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-card">' +
+            fields.map(fieldHtml).join('') + '</div></details>';
+          first = false;
+        });
+        return html;
+      }
+      $('textsForm').innerHTML =
+        '<div id="textsDesktop"' + (textsSubtab === 'desktop' ? '' : ' hidden') + '>' +
+        '<p class="adm-hint">Все тексты сайта в компьютерной версии. Общие тексты применяются и на телефоне.</p>' +
+        groupsHtml('desktop') + '</div>' +
+        '<div id="textsMobile"' + (textsSubtab === 'mobile' ? '' : ' hidden') + '>' +
+        '<p class="adm-hint">Все тексты сайта в версии для телефона. Общие тексты меняются вместе с компьютерной версией; у некоторых блоков на телефоне свой отдельный текст.</p>' +
+        groupsHtml('mobile') + '</div>';
     }).catch(function (e) {
       $('textsForm').innerHTML = '<p class="adm-empty">Не удалось загрузить страницы сайта (' + esc(e.message) + '). Обновите страницу.</p>';
     });
   }
+  $('textsSubtabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-subtab]');
+    if (!b) return;
+    textsSubtab = b.dataset.subtab;
+    document.querySelectorAll('#textsSubtabs button').forEach(function (x) { x.classList.toggle('active', x === b); });
+    if ($('textsDesktop')) $('textsDesktop').hidden = textsSubtab !== 'desktop';
+    if ($('textsMobile')) $('textsMobile').hidden = textsSubtab !== 'mobile';
+  });
+
+  // Общие тексты показаны в обеих подвкладках — держим их значения синхронными
+  $('textsForm').addEventListener('input', function (e) {
+    var ta = e.target.closest('textarea[data-key]');
+    if (ta) {
+      document.querySelectorAll('#textsForm textarea[data-key="' + (window.CSS && CSS.escape ? CSS.escape(ta.dataset.key) : ta.dataset.key) + '"]').forEach(function (o) {
+        if (o !== ta) o.value = ta.value;
+      });
+      return;
+    }
+    var ci = e.target.closest('.adm-swatch-custom input[type="color"]');
+    if (ci) setColor(ci.closest('.adm-color').dataset.key, ci.value);
+  });
+  // Клик по образцу цвета
+  $('textsForm').addEventListener('click', function (e) {
+    var sw = e.target.closest('.adm-swatch[data-c]');
+    if (!sw) return;
+    setColor(sw.closest('.adm-color').dataset.key, sw.dataset.c);
+  });
+  function setColor(ckey, val) {
+    document.querySelectorAll('.adm-color[data-key="' + (window.CSS && CSS.escape ? CSS.escape(ckey) : ckey) + '"]').forEach(function (box) {
+      box.dataset.value = val || '';
+      box.querySelectorAll('.adm-swatch').forEach(function (s) {
+        s.classList.toggle('active', (s.dataset.c || '').toUpperCase() === (val || '').toUpperCase());
+      });
+      var custom = box.querySelector('.adm-swatch-custom input');
+      if (val) custom.value = val;
+    });
+  }
+
   $('textsSaveBtn').addEventListener('click', function () {
     var map = {};
     document.querySelectorAll('#textsForm textarea[data-key]').forEach(function (t) { map[t.dataset.key] = t.value; });
+    document.querySelectorAll('#textsForm .adm-color[data-key]').forEach(function (b) { map[b.dataset.key] = b.dataset.value || ''; });
     saveSettings(map).then(function () { flash('textsSaved'); }).catch(fail);
   });
 
@@ -436,8 +562,22 @@
           byGroup[g].push({ key: key, def: src, label: img.getAttribute('alt') || src.split('/').pop() });
         });
       });
+      function galleryExtraHtml() {
+        var arr = galExtra();
+        return '<div class="adm-item"><div class="adm-item-body">' +
+          '<p class="adm-item-title">Дополнительные фото</p>' +
+          '<p class="adm-item-meta">Добавляются после восьми стандартных и листаются вместе с ними. Сейчас добавлено: ' + arr.length + '</p></div>' +
+          '<div class="adm-item-actions"><label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">+ Добавить фото<input type="file" accept="image/*" data-galadd hidden /></label></div></div>' +
+          arr.map(function (u, i) {
+            return '<div class="adm-item"><img class="adm-thumb" src="' + esc(u) + '" loading="lazy" alt="" />' +
+              '<div class="adm-item-body"><p class="adm-item-title">Дополнительное фото ' + (i + 1) + '</p></div>' +
+              '<div class="adm-item-actions"><button class="adm-btn adm-btn-sm adm-btn-danger" data-act="gal-del" data-i="' + i + '">Удалить</button></div></div>';
+          }).join('');
+      }
       $('imagesList').innerHTML = order.map(function (g, gi) {
-        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + '</summary><div class="adm-list">' +
+        var isGallery = byGroup[g].some(function (f) { return f.key === 'image.gal_1'; });
+        return '<details class="adm-textgroup"' + (gi === 0 ? ' open' : '') + '><summary>' + esc(g) + (isGallery ? ' ➕' : '') + '</summary><div class="adm-list">' +
+          (isGallery ? galleryExtraHtml() : '') +
           byGroup[g].map(function (f) {
             var custom = !!settings[f.key];
             return '<div class="adm-item">' +
@@ -458,6 +598,24 @@
   }
 
   document.addEventListener('change', function (e) {
+    var doc = e.target.closest('input[data-dockey]');
+    if (doc && doc.files[0]) {
+      doc.disabled = true;
+      uploadImage(doc.files[0], 'docs')
+        .then(function (url) { var m = {}; m[doc.dataset.dockey] = url; return saveSettings(m); })
+        .then(renderDocs)
+        .catch(fail);
+      return;
+    }
+    var add = e.target.closest('input[data-galadd]');
+    if (add && add.files[0]) {
+      add.disabled = true;
+      uploadImage(add.files[0], 'gallery')
+        .then(function (url) { return saveGalExtra(galExtra().concat([url])); })
+        .then(renderImages)
+        .catch(fail);
+      return;
+    }
     var inp = e.target.closest('input[data-imgkey]');
     if (!inp || !inp.files[0]) return;
     var key = inp.dataset.imgkey;
@@ -478,12 +636,26 @@
       return '<option value="' + esc(o.value) + '"' + ((settings['theme.font_body'] || '') === o.value ? ' selected' : '') + '>' + esc(o.label) + '</option>';
     }).join('');
     renderTextSizes();
+    renderSpacing();
   }
 
   /* Размер текста: поле на каждый текстовый блок сайта (реестр в textsizes.js) */
-  function sizeInput(key, label) {
-    return '<label>' + esc(label) +
-      '<input type="number" min="50" max="250" step="5" data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>';
+  function sizeInput(key, label, min, max, step) {
+    min = min == null ? 50 : min; max = max == null ? 250 : max; step = step == null ? 5 : step;
+    var lim = ' min="' + min + '" max="' + max + '" step="' + step + '"';
+    return '<div class="adm-sizerow"><span class="adm-sizelabel">' + esc(label) + '</span>' +
+      '<label class="adm-sizefield">Компьютер, %<input type="number"' + lim + ' data-key="' + key + '" placeholder="100" value="' + esc(settings[key] || '') + '" /></label>' +
+      '<label class="adm-sizefield">Телефон, %<input type="number"' + lim + ' data-key="' + key + '.mob" placeholder="как на комп." value="' + esc(settings[key + '.mob'] || '') + '" /></label></div>';
+  }
+  function renderSpacing() {
+    var box = $('spacingForm');
+    if (!box) return;
+    box.innerHTML =
+      sizeInput('sspace.global', 'Все блоки сразу', 0, 300, 10) +
+      (window.TSK_SECTION_SPACING || []).map(function (e) {
+        return sizeInput('sspace.' + e.key + '.top', e.label + ' — отступ сверху', 0, 300, 10) +
+          sizeInput('sspace.' + e.key + '.bot', e.label + ' — отступ снизу', 0, 300, 10);
+      }).join('');
   }
   function renderTextSizes() {
     var box = $('sizesForm');
@@ -491,11 +663,11 @@
     var groups = {};
     (window.TSK_TEXT_SIZES || []).forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
     box.innerHTML =
-      '<div class="adm-grid">' + sizeInput('tsize.global', 'Весь сайт сразу (%)') + '</div>' +
+      sizeInput('tsize.global', 'Весь сайт сразу') +
       Object.keys(groups).map(function (g) {
-        return '<details class="adm-textgroup"><summary>' + esc(g) + '</summary><div class="adm-card"><div class="adm-grid">' +
-          groups[g].map(function (f) { return sizeInput('tsize.' + f.key, f.label + ' (%)'); }).join('') +
-          '</div></div></details>';
+        return '<details class="adm-textgroup"><summary>' + esc(g) + '</summary><div class="adm-card">' +
+          groups[g].map(function (f) { return sizeInput('tsize.' + f.key, f.label); }).join('') +
+          '</div></details>';
       }).join('');
   }
   $('designSaveBtn').addEventListener('click', function () {
@@ -507,10 +679,11 @@
       map[inp.dataset.key] = inp.value.toUpperCase() === inp.dataset.def.toUpperCase() ? '' : inp.value;
     });
     map['theme.font_body'] = $('fontSelect').value;
-    document.querySelectorAll('#sizesForm input[data-key]').forEach(function (inp) {
+    document.querySelectorAll('#sizesForm input[data-key], #spacingForm input[data-key]').forEach(function (inp) {
       var v = inp.value.trim();
-      // 100% = стандартный размер, хранить не нужно
-      map[inp.dataset.key] = (v === '' || v === '100') ? '' : v;
+      var mob = inp.dataset.key.slice(-4) === '.mob';
+      // 100% на компьютере = стандарт (не храним); на телефоне пустое поле = «как на компьютере»
+      map[inp.dataset.key] = (v === '' || (v === '100' && !mob)) ? '' : v;
     });
     saveSettings(map).then(function () {
       renderDesign();
@@ -523,7 +696,13 @@
     COLOR_FIELDS.forEach(function (f) { map[f.key] = ''; });
     map['theme.font_body'] = '';
     map['tsize.global'] = '';
-    (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; });
+    map['tsize.global.mob'] = '';
+    (window.TSK_TEXT_SIZES || []).forEach(function (f) { map['tsize.' + f.key] = ''; map['tsize.' + f.key + '.mob'] = ''; });
+    map['sspace.global'] = '';
+    map['sspace.global.mob'] = '';
+    (window.TSK_SECTION_SPACING || []).forEach(function (f) {
+      ['', '.mob', '.top', '.top.mob', '.bot', '.bot.mob'].forEach(function (sfx) { map['sspace.' + f.key + sfx] = ''; });
+    });
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
@@ -581,6 +760,15 @@
     if (act === 'img-reset') {
       var m = {}; m[btn.dataset.key] = '';
       saveSettings(m).then(renderImages).catch(fail);
+    }
+    if (act === 'doc-del' && confirm('Удалить файл? Кнопка на сайте перестанет открывать документ.')) {
+      var dm = {}; dm[btn.dataset.key] = '';
+      saveSettings(dm).then(renderDocs).catch(fail);
+    }
+    if (act === 'gal-del' && confirm('Удалить это фото из галереи?')) {
+      var arr = galExtra();
+      arr.splice(parseInt(btn.dataset.i, 10), 1);
+      saveGalExtra(arr).then(renderImages).catch(fail);
     }
   });
 })();

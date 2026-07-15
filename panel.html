@@ -6,7 +6,7 @@
   <title>Админ-панель — Территория Спорта КИДС</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="admin.css?v=2" />
+  <link rel="stylesheet" href="admin.css?v=5" />
 </head>
 <body>
 
@@ -49,6 +49,7 @@
           <button data-tab="texts">Тексты</button>
           <button data-tab="images">Изображения</button>
           <button data-tab="design">Оформление</button>
+          <button data-tab="docs">Документы</button>
           <button data-tab="contacts">Контакты</button>
         </nav>
         <div class="adm-header-right">
@@ -140,6 +141,10 @@
 
       <section id="tab-texts" class="adm-tabpane" hidden>
         <h2>Тексты сайта</h2>
+        <div class="adm-subtabs" id="textsSubtabs">
+          <button type="button" data-subtab="desktop" class="active">💻 Компьютер</button>
+          <button type="button" data-subtab="mobile">📱 Телефон</button>
+        </div>
         <p class="adm-hint">Пустое поле = используется стандартный текст (показан серым). Перенос строки в поле = перенос строки на сайте.</p>
         <form id="textsForm"></form>
         <div class="adm-savebar">
@@ -169,14 +174,25 @@
         </div>
         <div class="adm-card adm-form">
           <h3>Размер текста</h3>
-          <p class="adm-hint">В процентах от стандартного: пусто или 100 — стандартный размер, 120 — крупнее на 20%, 80 — мельче. «Весь сайт сразу» умножается на настройки отдельных текстов. Размеры остаются адаптивными на телефонах.</p>
+          <p class="adm-hint">В процентах от стандартного: пусто или 100 — стандартный размер, 120 — крупнее на 20%, 80 — мельче. Отдельные колонки для компьютера и телефона (телефон — экраны уже 620px; пустое поле «Телефон» = как на компьютере). «Весь сайт сразу» умножается на настройки отдельных текстов.</p>
           <div id="sizesForm"></div>
+        </div>
+        <div class="adm-card adm-form">
+          <h3>Отступы между блоками</h3>
+          <p class="adm-hint">У каждого блока отдельно настраивается отступ сверху и снизу — так регулируется расстояние между любой парой соседних блоков (промежуток = «низ» верхнего блока + «верх» нижнего). В процентах от стандартного: 100 — как сейчас, 50 — вдвое плотнее, 200 — вдвое просторнее, 0 — вплотную. Колонки для компьютера и телефона (пустое поле «Телефон» = как на компьютере). «Все блоки сразу» умножается на остальные настройки.</p>
+          <div id="spacingForm"></div>
         </div>
         <div class="adm-savebar">
           <button class="adm-btn adm-btn-primary" id="designSaveBtn">Сохранить оформление</button>
           <button class="adm-btn adm-btn-ghost" id="designResetBtn">Сбросить к стандартному</button>
           <span class="adm-saved" id="designSaved" hidden>Сохранено ✓</span>
         </div>
+      </section>
+
+      <section id="tab-docs" class="adm-tabpane" hidden>
+        <h2>Документы</h2>
+        <p class="adm-hint">Файлы для кнопок «Политика конфиденциальности» и «Публичная оферта» в подвале сайта. Загрузите файл (PDF, Word или картинку) — кнопка на сайте сразу начнёт открывать его в новой вкладке. Пока файл не загружен, кнопка ничего не открывает.</p>
+        <div id="docsList" class="adm-list"></div>
       </section>
 
       <section id="tab-contacts" class="adm-tabpane" hidden>
@@ -211,7 +227,7 @@
       anonKey: 'sb_publishable_z1f4A_NisVriQ3hDSlNIUg_w4szVbuN'
     };
   </script>
-  <script src="textsizes.js?v=1"></script>
-  <script src="admin.js?v=5"></script>
+  <script src="textsizes.js?v=2"></script>
+  <script src="admin.js?v=13"></script>
 </body>
 </html>

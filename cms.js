@@ -78,13 +78,19 @@
     },
     submitReview: function (form) {
       var data = new FormData(form);
+      var rating = parseInt(data.get('rating'), 10);
       var body = {
         name: (data.get('name') || '').toString().trim(),
         contact: (data.get('contact') || '').toString().trim(),
-        text: (data.get('text') || '').toString().trim()
+        text: (data.get('text') || '').toString().trim(),
+        rating: (rating >= 1 && rating <= 5) ? rating : 5
       };
       if (!body.name || !body.text) return;
-      rest('reviews', 'POST', body).then(function () {
+      rest('reviews', 'POST', body).catch(function () {
+        // если колонки rating в базе ещё нет — отправляем отзыв без неё
+        var noRating = { name: body.name, contact: body.contact, text: body.text };
+        return rest('reviews', 'POST', noRating);
+      }).then(function () {
         form.reset();
         var note = form.parentElement.querySelector('.review-thanks');
         if (!note) {
@@ -156,14 +162,60 @@
       if (val !== undefined) inp.placeholder = val;
     });
 
+    // Дополнительные фото галереи (gallery.extra — JSON-массив ссылок)
+    var galGrid = document.querySelector('.gallery-grid');
+    if (galGrid && s['gallery.extra']) {
+      try {
+        var extra = JSON.parse(s['gallery.extra']);
+        galGrid.querySelectorAll('.gal-extra').forEach(function (n) { n.remove(); });
+        (Array.isArray(extra) ? extra : []).forEach(function (url) {
+          if (!url) return;
+          var d = document.createElement('div');
+          d.className = 'gal-item gal-extra';
+          var img = document.createElement('img');
+          img.loading = 'lazy';
+          img.alt = 'Фото зала';
+          img.src = url;
+          d.appendChild(img);
+          galGrid.appendChild(d);
+        });
+        // лента галереи пересчитывает стрелки по событию resize
+        window.dispatchEvent(new Event('resize'));
+      } catch (e) { console.warn('gallery.extra:', e); }
+    }
+
+    // Документы («Политика конфиденциальности», «Публичная оферта»):
+    // если файл загружен в админке — кнопка открывает его в новой вкладке
+    document.querySelectorAll('[data-doc]').forEach(function (a) {
+      var url = s[a.getAttribute('data-doc')];
+      if (url) {
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+    });
+
+    // Цвет отдельного текста (tcolor.<ключ>)
+    document.querySelectorAll('[data-cms]').forEach(function (el) {
+      var c = s['tcolor.' + el.getAttribute('data-cms')];
+      if (c) el.style.color = c;
+    });
+
     applyTextSizes();
+    applySectionSpacing();
   }
 
   /* ---------- Размер текста (настройки tsize.* в процентах) ---------- */
   function applyTextSizes() {
     var reg = window.TSK_TEXT_SIZES || [];
     var s = api.settings;
-    var global = parseFloat(s['tsize.global']) || 100;
+    // телефон = экраны до 620px; пустая настройка телефона наследует компьютерную
+    var mob = window.matchMedia('(max-width: 620px)').matches;
+    function pctOf(key) {
+      var v = mob ? (parseFloat(s['tsize.' + key + '.mob']) || parseFloat(s['tsize.' + key])) : parseFloat(s['tsize.' + key]);
+      return v || 100;
+    }
+    var global = pctOf('global');
     // 1) сбрасываем прежние инлайновые размеры, чтобы измерить «родные» —
     //    так настройка остаётся отзывчивой (проценты от текущего адаптивного размера)
     reg.forEach(function (e) {
@@ -173,7 +225,7 @@
     //    элементы не масштабировались дважды
     var jobs = [];
     reg.forEach(function (e) {
-      var pct = (parseFloat(s['tsize.' + e.key]) || 100) * global / 100;
+      var pct = pctOf(e.key) * global / 100;
       if (Math.abs(pct - 100) < 0.5) return;
       document.querySelectorAll(e.sel).forEach(function (el) {
         jobs.push([el, parseFloat(getComputedStyle(el).fontSize) * pct / 100]);
@@ -183,10 +235,48 @@
   }
   api.applyTextSizes = applyTextSizes;
 
+  /* ---------- Отступы между блоками (sspace.* в процентах) ---------- */
+  function applySectionSpacing() {
+    var reg = window.TSK_SECTION_SPACING || [];
+    var s = api.settings;
+    var mob = window.matchMedia('(max-width: 620px)').matches;
+    function num(x) { var v = parseFloat(x); return isNaN(v) ? null : v; }
+    // 0% — допустимое значение (блоки вплотную), поэтому нельзя использовать «|| 100»
+    function pick(k) {
+      return mob ? (num(s[k + '.mob']) !== null ? num(s[k + '.mob']) : num(s[k])) : num(s[k]);
+    }
+    // отступ сверху/снизу настраиваются отдельно; старый общий ключ — запасной вариант
+    function sidePct(key, side) {
+      var v = pick('sspace.' + key + '.' + side);
+      if (v === null) v = pick('sspace.' + key);
+      return v === null ? 100 : v;
+    }
+    reg.forEach(function (e) {
+      document.querySelectorAll(e.sel).forEach(function (el) { el.style.paddingTop = ''; el.style.paddingBottom = ''; });
+    });
+    var g = pick('sspace.global');
+    if (g === null) g = 100;
+    var jobs = [];
+    reg.forEach(function (e) {
+      var top = sidePct(e.key, 'top') * g / 100;
+      var bot = sidePct(e.key, 'bot') * g / 100;
+      if (Math.abs(top - 100) < 0.5 && Math.abs(bot - 100) < 0.5) return;
+      document.querySelectorAll(e.sel).forEach(function (el) {
+        var cs = getComputedStyle(el);
+        jobs.push([el, parseFloat(cs.paddingTop) * top / 100, parseFloat(cs.paddingBottom) * bot / 100]);
+      });
+    });
+    jobs.forEach(function (j) {
+      j[0].style.paddingTop = j[1].toFixed(1) + 'px';
+      j[0].style.paddingBottom = j[2].toFixed(1) + 'px';
+    });
+  }
+  api.applySectionSpacing = applySectionSpacing;
+
   var tsResize;
   window.addEventListener('resize', function () {
     clearTimeout(tsResize);
-    tsResize = setTimeout(applyTextSizes, 200);
+    tsResize = setTimeout(function () { applyTextSizes(); applySectionSpacing(); }, 200);
   });
 
   /* ---------- Тренеры ---------- */
@@ -222,8 +312,10 @@
     var grid = document.querySelector('.reviews-grid');
     if (!grid) return;
     grid.innerHTML = reviews.map(function (r) {
+      var n = parseInt(r.rating, 10);
+      if (!(n >= 1 && n <= 5)) n = 5;
       return '<article class="review-card">' +
-        '<div class="stars">★★★★★</div>' +
+        '<div class="stars">' + '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n) + '</div>' +
         '<p>' + toHtml(r.text) + '</p>' +
         '<span class="review-author">' + esc(r.name) + '</span>' +
         '</article>';
@@ -286,7 +378,7 @@
         quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
       }
       if (document.querySelector('.reviews-grid')) {
-        quiet(rest('reviews?select=name,text&approved=is.true&order=created_at.desc')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
+        quiet(rest('reviews?select=*&approved=is.true&order=created_at.desc')).then(function (rows) { renderReviews(rows); applyTextSizes(); });
       }
       if (document.querySelector('.sched-table')) {
         quiet(rest('schedule?select=*&order=sort.asc,id.asc')).then(function (rows) { renderSchedule(rows); applyTextSizes(); });
