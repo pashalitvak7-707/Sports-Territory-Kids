@@ -200,6 +200,7 @@
           an.identify(data.get('phone'));
           var fire = function () { an.goal('form_submit', { form: ctx }); };
           if (saved && saved.then) saved.then(fire); else fire();
+          if (an.sendLead) an.sendLead(ctx, form); // заявка → amoCRM (через amo.php на Beget)
         }
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
         var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение', rating: 'Оценка',

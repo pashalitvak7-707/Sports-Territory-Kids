@@ -128,10 +128,31 @@
     lsSet(LS_IDENT, { at: new Date().toISOString() });
   }
 
+  /* ---------- Отправка заявки в amoCRM через серверный amo.php (Beget) ----------
+     amo.php лежит на том же домене. На хостинге без PHP (например, GitHub Pages)
+     запрос вернёт 404 — ошибка гасится, сайт продолжает работать как обычно. */
+  function sendLead(context, form) {
+    try {
+      if (!form || !window.fetch) return;
+      var payload = { _context: context || '', _page: location.pathname };
+      new FormData(form).forEach(function (v, k) { payload[k] = (v == null ? '' : v.toString()); });
+      var a = hiddenValues();
+      Object.keys(a).forEach(function (k) { if (!payload[k]) payload[k] = a[k]; });
+      fetch('amo.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+        credentials: 'omit'
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   /* публичный API для script.js */
   window.TSKAnalytics = {
     goal: goal,
     identify: identify,
+    sendLead: sendLead,
     refreshHiddenFields: fillHiddenFields,
     attribution: function () { return attr; }
   };

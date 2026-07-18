@@ -145,3 +145,7 @@ vite.config.ts.timestamp-*
 # Local dev tooling (Playwright screenshots) — not part of the static site
 package.json
 package-lock.json
+
+# amoCRM — секретный конфиг остаётся только на сервере Beget, не в публичном репозитории
+amo-config.php
+amo-cache.json
