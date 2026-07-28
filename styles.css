@@ -1303,6 +1303,18 @@ a { text-decoration: none; color: inherit; }
 .bm-m { font-weight: 800; font-size: 15px; }
 .book-copied { margin: 2px 0 0; text-align: center; font-size: 13px; font-weight: 600; color: var(--green-d); }
 
+/* «Заявка отправлена» — подтверждение после отправки в amoCRM */
+.form-sent { display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #fff; color: var(--green-d); border-radius: 14px; padding: 14px 18px; margin-top: 6px;
+  font-weight: 700; font-size: 15px; line-height: 1.35; text-align: left;
+  box-shadow: 0 10px 26px rgba(12, 92, 70, .16); animation: formSentIn .3s var(--ease, ease); }
+.form-sent .form-sent-ic { flex: none; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--green); color: #fff; font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; }
+/* внутри зелёного блока «Запишитесь на пробное занятие» — на всю ширину формы */
+.signup-form .form-sent { flex-basis: 100%; justify-content: center; margin-top: 2px; }
+@keyframes formSentIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
 @media (max-width: 1080px) {
   /* minmax(0,1fr) lets the single column shrink below its content's
      min-width, preventing horizontal overflow on narrow phones */

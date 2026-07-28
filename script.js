@@ -174,6 +174,29 @@
 
   /* ---------- 4. Form submission → messenger ---------- */
   var MSG_NUMBER = '79313443000'; // +7 931 344 3 000 — единый номер для сообщений
+
+  // Подтверждение «Заявка отправлена» прямо в форме (для amoCRM-заявок без мессенджера)
+  function showSent(form) {
+    var note = form.querySelector('.form-sent');
+    if (!note) {
+      note = document.createElement('div');
+      note.className = 'form-sent';
+      note.setAttribute('role', 'status');
+      note.innerHTML = '<span class="form-sent-ic" aria-hidden="true">✓</span><span class="form-sent-tx"></span>';
+      // ставим подтверждение сразу под кнопкой отправки (перед мелким текстом-примечанием)
+      var submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn && submitBtn.nextSibling) form.insertBefore(note, submitBtn.nextSibling);
+      else form.appendChild(note);
+    }
+    var msg = form.getAttribute('data-sent-msg') ||
+      'Заявка отправлена! Мы свяжемся с вами в ближайшее время.';
+    note.querySelector('.form-sent-tx').textContent = msg;
+    note.hidden = false;
+    form.reset();
+    clearTimeout(form.__sentTimer);
+    form.__sentTimer = setTimeout(function () { note.hidden = true; }, 9000);
+  }
+
   function initForms() {
     document.querySelectorAll('[data-whatsapp-form]').forEach(function (form) {
       // формы с выбором мессенджера: запоминаем, какую кнопку нажали
@@ -201,6 +224,11 @@
           var fire = function () { an.goal('form_submit', { form: ctx }); };
           if (saved && saved.then) saved.then(fire); else fire();
           if (an.sendLead) an.sendLead(ctx, form); // заявка → amoCRM (через amo.php на Beget)
+        }
+        // Заявки только в amoCRM/админку: без мессенджера — показываем подтверждение
+        if (form.hasAttribute('data-amo-only')) {
+          showSent(form);
+          return;
         }
         var lines = ['Здравствуйте! ' + ctx + ' с сайта «Территория Спорта КИДС».'];
         var labels = { name: 'Имя', phone: 'Телефон', contact: 'Контакты', text: 'Сообщение', rating: 'Оценка',
