@@ -1,0 +1,30 @@
+<!-- ================= HEAD =================
+  Paste this ONCE into: Page Settings -> More (Ещё) -> HTML code for HEAD.
+  This is the "общие стили подключаем один раз через HEAD" part of the plan.
+
+  The paths below (assets/fonts/..., styles.css) must resolve. If your fonts and
+  styles.css stay hosted on Beget, change them to full URLs, e.g.
+  https://ts-kids.ru/styles.css  and  https://ts-kids.ru/assets/fonts/ag-regular.woff2
+
+  You do NOT need <html>, <head> or <body> tags here — just the lines below.
+============================================================================== -->
+<meta content="Детская гимнастика для развития координации, гибкости и уверенности в безопасной среде. Программы для детей от 1,5 лет." name="description"/>
+
+<link as="font" crossorigin="" href="assets/fonts/ag-regular.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
+
+<link href="styles.css?v=20260728-1" rel="stylesheet"/>
+
+<script>
+  /* Enable the scroll-reveal animation only when JS is running, and add a
+     fail-safe: if the reveal observer hasn't marked itself ready shortly
+     after load, force every section visible so nothing stays blank. */
+  document.documentElement.className += ' js-reveal';
+  setTimeout(function () {
+    if (!window.__revealReady) {
+      var e = document.querySelectorAll('.reveal');
+      for (var i = 0; i < e.length; i++) e[i].classList.add('in');
+    }
+  }, 3000);
+</script>
