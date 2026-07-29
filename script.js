@@ -616,6 +616,28 @@
       root.classList.toggle('open', open);
       if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
+
+    // Мессенджеры с deep link (Telegram, VK): открываем сразу приложение,
+    // а если оно не установлено — откатываемся на веб-версию по обычной ссылке.
+    root.querySelectorAll('.msg-opt[data-app]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var app = a.getAttribute('data-app');
+        var web = a.getAttribute('href');
+        if (!app || !web) return; // без схемы — обычный переход по ссылке
+        e.preventDefault();
+        setOpen(false);
+        // Если приложение перехватило переход, вкладка теряет фокус —
+        // тогда отменяем откат на веб-версию.
+        var timer = setTimeout(function () { window.location.href = web; }, 900);
+        var cancel = function () { clearTimeout(timer); };
+        window.addEventListener('pagehide', cancel, { once: true });
+        window.addEventListener('blur', cancel, { once: true });
+        document.addEventListener('visibilitychange', function vh() {
+          if (document.hidden) { cancel(); document.removeEventListener('visibilitychange', vh); }
+        });
+        window.location.href = app; // пробуем открыть приложение
+      });
+    });
     if (btn) btn.addEventListener('click', function (e) {
       e.stopPropagation();
       setOpen(!root.classList.contains('open'));
