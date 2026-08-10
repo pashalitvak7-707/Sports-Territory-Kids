@@ -24,7 +24,7 @@ create table if not exists public.coaches (
 create table if not exists public.schedule (
   id    bigint generated always as identity primary key,
   dir   text not null,  -- gym | acro | rhythmic | tramp | ofp
-  age   text not null,  -- 1.5-3 | 3-5 | 5-7 | 7-10 | 10-14
+  age   text not null,  -- 1.5-3 | 3-4 | 4-5 | 5-7 | 7-9 | 9+
   day   text not null,  -- mon..sun
   time  text not null,  -- например 10:00–10:45
   coach text not null default '',
@@ -132,18 +132,18 @@ where not exists (select 1 from public.coaches);
 insert into public.schedule (dir, age, day, time, coach, spots, sort)
 select * from (values
   ('gym',      '1.5-3', 'mon', '10:00–10:45', 'Анна Соколова',      4, 1),
-  ('gym',      '3-5',   'mon', '11:00–11:45', 'Анна Соколова',      3, 2),
+  ('gym',      '3-4',   'mon', '11:00–11:45', 'Анна Соколова',      3, 2),
   ('acro',     '5-7',   'mon', '17:00–17:45', 'Дмитрий Орлов',      5, 3),
-  ('ofp',      '7-10',  'tue', '16:00–16:50', 'Дмитрий Орлов',      6, 4),
+  ('ofp',      '7-9',   'tue', '16:00–16:50', 'Дмитрий Орлов',      6, 4),
   ('rhythmic', '5-7',   'tue', '17:30–18:15', 'Ольга Кузнецова',    2, 5),
-  ('tramp',    '3-5',   'wed', '10:30–11:15', 'Екатерина Морозова', 4, 6),
+  ('tramp',    '4-5',   'wed', '10:30–11:15', 'Екатерина Морозова', 4, 6),
   ('gym',      '5-7',   'wed', '17:00–17:45', 'Анна Соколова',      3, 7),
-  ('acro',     '7-10',  'wed', '18:00–18:50', 'Дмитрий Орлов',      5, 8),
-  ('ofp',      '10-14', 'thu', '18:00–18:55', 'Дмитрий Орлов',      7, 9),
-  ('rhythmic', '3-5',   'thu', '16:00–16:40', 'Ольга Кузнецова',    4, 10),
+  ('acro',     '7-9',   'wed', '18:00–18:50', 'Дмитрий Орлов',      5, 8),
+  ('ofp',      '9+',    'thu', '18:00–18:55', 'Дмитрий Орлов',      7, 9),
+  ('rhythmic', '3-4',   'thu', '16:00–16:40', 'Ольга Кузнецова',    4, 10),
   ('tramp',    '5-7',   'fri', '17:00–17:45', 'Екатерина Морозова', 6, 11),
   ('gym',      '1.5-3', 'sat', '10:00–10:40', 'Анна Соколова',      3, 12),
-  ('acro',     '3-5',   'sat', '11:00–11:45', 'Екатерина Морозова', 5, 13),
-  ('rhythmic', '7-10',  'sat', '12:00–12:50', 'Ольга Кузнецова',    4, 14)
+  ('acro',     '4-5',   'sat', '11:00–11:45', 'Екатерина Морозова', 5, 13),
+  ('rhythmic', '9+',    'sat', '12:00–12:50', 'Ольга Кузнецова',    4, 14)
 ) as v(dir, age, day, time, coach, spots, sort)
 where not exists (select 1 from public.schedule);
