@@ -144,6 +144,11 @@
         a.textContent = s['contact.phone_display'];
       });
     }
+    if (s['contact.address']) {
+      document.querySelectorAll('.footer-address .fa-tx').forEach(function (el) {
+        el.textContent = s['contact.address'];
+      });
+    }
     if (s['contact.whatsapp']) {
       document.querySelectorAll('a[href*="wa.me/"]:not([data-keep-link])').forEach(function (a) {
         a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + s['contact.whatsapp']);
@@ -203,6 +208,7 @@
 
     applyTextSizes();
     applySectionSpacing();
+    applyGapSpacing();
   }
 
   /* ---------- Размер текста (настройки tsize.* в процентах) ---------- */
@@ -273,10 +279,39 @@
   }
   api.applySectionSpacing = applySectionSpacing;
 
+  /* ---------- Отдельные промежутки в футере (sspace.footer_* в процентах) ---------- */
+  function applyGapSpacing() {
+    var reg = window.TSK_GAP_SPACING || [];
+    var s = api.settings;
+    var mob = window.matchMedia('(max-width: 620px)').matches;
+    function num(x) { var v = parseFloat(x); return isNaN(v) ? null : v; }
+    function pick(k) {
+      return mob ? (num(s[k + '.mob']) !== null ? num(s[k + '.mob']) : num(s[k])) : num(s[k]);
+    }
+    // сначала снимаем прошлые значения, чтобы прочитать обычный отступ из CSS
+    reg.forEach(function (e) {
+      document.querySelectorAll(e.sel).forEach(function (el) { el.style[e.prop] = ''; });
+    });
+    var g = pick('sspace.global');
+    if (g === null) g = 100;
+    var jobs = [];
+    reg.forEach(function (e) {
+      var p = pick('sspace.' + e.key);
+      if (p === null) p = 100;
+      p = p * g / 100;
+      if (Math.abs(p - 100) < 0.5) return;              // 100% — оставляем как в CSS
+      document.querySelectorAll(e.sel).forEach(function (el) {
+        jobs.push([el, e.prop, parseFloat(getComputedStyle(el)[e.prop]) * p / 100]);
+      });
+    });
+    jobs.forEach(function (j) { j[0].style[j[1]] = j[2].toFixed(1) + 'px'; });
+  }
+  api.applyGapSpacing = applyGapSpacing;
+
   var tsResize;
   window.addEventListener('resize', function () {
     clearTimeout(tsResize);
-    tsResize = setTimeout(function () { applyTextSizes(); applySectionSpacing(); }, 200);
+    tsResize = setTimeout(function () { applyTextSizes(); applySectionSpacing(); applyGapSpacing(); }, 200);
   });
 
   /* ---------- Тренеры ---------- */

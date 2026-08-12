@@ -753,9 +753,11 @@ a { text-decoration: none; color: inherit; }
 
 /* ===================== FOOTER ===================== */
 .footer { background: #fff; padding: 50px 0 0; }
-.footer-inner { display: flex; flex-direction: column; align-items: center; gap: clamp(26px, 3vw, 40px); padding-bottom: 34px; }
+/* Промежутки заданы отдельными margin у детей (а не общим gap), чтобы каждый
+   из них настраивался в админке независимо — см. TSK_GAP_SPACING. */
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 0; padding-bottom: 34px; }
 .footer-phone { font-size: clamp(28px, 3vw, 40px); font-weight: 800; color: var(--green-d); letter-spacing: .5px; }
-.footer-main { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
+.footer-main { width: 100%; margin-top: clamp(26px, 3vw, 40px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
 .footer-center { grid-column: 2; justify-self: center; display: flex; align-items: center; gap: clamp(20px, 2.4vw, 34px); flex-wrap: wrap; justify-content: center; }
 .footer-nav { display: flex; gap: clamp(20px, 2vw, 32px); flex-wrap: wrap; justify-content: center; }
 .footer-nav a { color: var(--green-d); font-weight: 600; font-size: 15px; }
@@ -765,7 +767,7 @@ a { text-decoration: none; color: inherit; }
 /* Адрес + карта Яндекса: между телефоном и остальным футером.
    Высота карты задана в clamp(), поэтому блок не «прыгает», когда карта
    догружается лениво (важно и для авто-высоты при встраивании в рамку). */
-.footer-place { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; font-style: normal; }
+.footer-place { width: 100%; margin-top: clamp(26px, 3vw, 40px); display: flex; flex-direction: column; align-items: center; gap: 14px; font-style: normal; }
 .footer-address { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   color: var(--green-d); font-weight: 700; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.35;
   text-align: center; text-wrap: balance; }
@@ -1084,10 +1086,14 @@ a { text-decoration: none; color: inherit; }
   .footer-inner {
     display: grid; grid-template-columns: 1fr auto;
     grid-template-areas: "phone socials" "place place" "nav logo";
-    column-gap: 14px; row-gap: 22px; padding-bottom: 26px; text-align: left; align-items: center;
+    column-gap: 14px; row-gap: 0; padding-bottom: 26px; text-align: left; align-items: center;
   }
+  /* те же промежутки, что и на компьютере, но margin'ами — чтобы каждый
+     настраивался в админке отдельно (row-gap выключен намеренно) */
+  .footer-main { margin-top: 0; }
+  .footer-nav, .footer-logo { margin-top: 22px; }
   /* адрес + карта: своя строка во всю ширину, между телефоном и меню */
-  .footer-place { grid-area: place; align-items: flex-start; gap: 10px; }
+  .footer-place { grid-area: place; margin-top: 22px; align-items: flex-start; gap: 10px; }
   .footer-address { justify-content: flex-start; text-align: left; font-size: 15px; }
   .footer-map { height: clamp(190px, 46vw, 250px); border-radius: 16px; }
   .footer-main, .footer-center { display: contents; }

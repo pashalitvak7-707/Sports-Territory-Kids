@@ -121,3 +121,14 @@ window.TSK_SECTION_SPACING = [
   { key: 'sched_hero', label: 'Страница расписания: заголовок', sel: 'section.sched-hero' },
   { key: 'sched_page', label: 'Страница расписания: таблица', sel: 'section.sched-page' }
 ];
+
+/* Отдельные промежутки в футере (телефон — адрес — карта — меню).
+   В отличие от блоков выше, здесь настраивается один отступ, а не пара
+   «сверху/снизу»: prop — какое свойство масштабировать у найденных элементов.
+   Значение в процентах от обычного отступа: 100 — как сейчас, 0 — вплотную. */
+window.TSK_GAP_SPACING = [
+  { key: 'footer_top',   label: 'Футер: от зелёного блока до телефона', sel: '.footer',       prop: 'paddingTop' },
+  { key: 'footer_place', label: 'Футер: от телефона до адреса и карты',  sel: '.footer-place', prop: 'marginTop' },
+  { key: 'footer_below', label: 'Футер: от карты до меню и логотипа',
+    sel: '.footer-main, .footer-nav, .footer-logo', prop: 'marginTop' }
+];

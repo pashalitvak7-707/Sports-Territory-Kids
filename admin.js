@@ -652,6 +652,10 @@
     if (!box) return;
     box.innerHTML =
       sizeInput('sspace.global', 'Все блоки сразу', 0, 300, 10) +
+      // отдельные промежутки в футере: один отступ на строку, без пары «сверху/снизу»
+      (window.TSK_GAP_SPACING || []).map(function (e) {
+        return sizeInput('sspace.' + e.key, e.label, 0, 300, 10);
+      }).join('') +
       (window.TSK_SECTION_SPACING || []).map(function (e) {
         return sizeInput('sspace.' + e.key + '.top', e.label + ' — отступ сверху', 0, 300, 10) +
           sizeInput('sspace.' + e.key + '.bot', e.label + ' — отступ снизу', 0, 300, 10);
@@ -711,11 +715,13 @@
     $('cPhoneDisplay').value = settings['contact.phone_display'] || '';
     $('cPhoneTel').value = settings['contact.phone_tel'] || '';
     $('cWhatsapp').value = settings['contact.whatsapp'] || '';
+    $('cAddress').value = settings['contact.address'] || '';
   }
   $('contactsSaveBtn').addEventListener('click', function () {
     saveSettings({
       'contact.phone_display': $('cPhoneDisplay').value,
       'contact.phone_tel': $('cPhoneTel').value,
+      'contact.address': $('cAddress').value.trim(),
       'contact.whatsapp': $('cWhatsapp').value.replace(/\D/g, '')
     }).then(function () { flash('contactsSaved'); }).catch(fail);
   });
