@@ -762,6 +762,18 @@ a { text-decoration: none; color: inherit; }
 .footer-nav a:hover { color: var(--green); }
 .footer-socials { display: flex; gap: 10px; }
 .footer-logo { grid-column: 3; justify-self: end; height: 54px; width: auto; }
+/* Адрес + карта Яндекса: между телефоном и остальным футером.
+   Высота карты задана в clamp(), поэтому блок не «прыгает», когда карта
+   догружается лениво (важно и для авто-высоты при встраивании в рамку). */
+.footer-place { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; font-style: normal; }
+.footer-address { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  color: var(--green-d); font-weight: 700; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.35;
+  text-align: center; text-wrap: balance; }
+.footer-address:hover { color: var(--green); }
+.footer-address .fa-pin { flex: none; width: clamp(17px, 1.6vw, 20px); height: auto; }
+.footer-map { width: 100%; max-width: 980px; height: clamp(240px, 26vw, 360px); border-radius: var(--radius);
+  overflow: hidden; border: 1.5px solid #CFE0D4; box-shadow: var(--shadow-sm); background: #EEF4EF; }
+.footer-map iframe { display: block; width: 100%; height: 100%; border: 0; }
 .footer-bottom { border-top: 3px solid var(--green); }
 .footer-bottom-inner { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; padding: 22px 0 30px; }
 .footer-links { display: flex; gap: 34px; }
@@ -1071,9 +1083,13 @@ a { text-decoration: none; color: inherit; }
   .footer { padding-top: 16px; }        /* far less gap under the signup card */
   .footer-inner {
     display: grid; grid-template-columns: 1fr auto;
-    grid-template-areas: "phone socials" "nav logo";
+    grid-template-areas: "phone socials" "place place" "nav logo";
     column-gap: 14px; row-gap: 22px; padding-bottom: 26px; text-align: left; align-items: center;
   }
+  /* адрес + карта: своя строка во всю ширину, между телефоном и меню */
+  .footer-place { grid-area: place; align-items: flex-start; gap: 10px; }
+  .footer-address { justify-content: flex-start; text-align: left; font-size: 15px; }
+  .footer-map { height: clamp(190px, 46vw, 250px); border-radius: 16px; }
   .footer-main, .footer-center { display: contents; }
   .footer-spacer { display: none; }
   .footer-phone { grid-area: phone; justify-self: start; white-space: nowrap; font-size: clamp(21px, 6.4vw, 27px); }
