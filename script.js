@@ -223,7 +223,22 @@
           an.identify(data.get('phone'));
           var fire = function () { an.goal('form_submit', { form: ctx }); };
           if (saved && saved.then) saved.then(fire); else fire();
-          if (an.sendLead) an.sendLead(ctx, form); // заявка → amoCRM (через amo.php на Beget)
+          // заявка → amoCRM (через amo.php на Beget); Promise<boolean> с подтверждением
+          var lead = an.sendLead ? an.sendLead(ctx, form) : null;
+          /* Цель «Заявка КИДС — форма успешно отправлена» (kids_lead).
+             Срабатывает ровно один раз и только когда приём заявки подтвердил
+             сервер: amo.php ответил {"ok":true} либо заявка записана в базу
+             сайта. Если оба канала не ответили — цель не засчитывается. */
+          var counted = false;
+          var confirm = function (source) {
+            return function (ok) {
+              if (!ok || counted) return;
+              counted = true;
+              an.goal('kids_lead', { form: ctx, source: source });
+            };
+          };
+          if (lead && lead.then) lead.then(confirm('amo'), function () {});
+          if (saved && saved.then) saved.then(confirm('db'), function () {});
         }
         // Заявки только в amoCRM/админку: без мессенджера — показываем подтверждение
         if (form.hasAttribute('data-amo-only')) {

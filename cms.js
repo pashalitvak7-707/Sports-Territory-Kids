@@ -67,14 +67,17 @@
   var api = {
     configured: configured,
     settings: {},
+    // Promise<boolean>: true — заявка действительно записана в базу сайта
+    // (по этому подтверждению срабатывает цель «Заявка КИДС» в Метрике)
     saveMessage: function (context, formData) {
-      if (!configured) return Promise.resolve();
+      if (!configured) return Promise.resolve(false);
       var payload = {};
       formData.forEach(function (val, key) {
         val = (val || '').toString().trim();
         if (val) payload[key] = val;
       });
-      return quiet(rest('messages', 'POST', { context: context, payload: payload }));
+      return rest('messages', 'POST', { context: context, payload: payload })
+        .then(function () { return true; }, function (e) { console.warn(e); return false; });
     },
     submitReview: function (form) {
       var data = new FormData(form);

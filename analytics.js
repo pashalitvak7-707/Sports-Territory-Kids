@@ -9,6 +9,12 @@
  *     (payload сообщения в админке) и НЕ попадают в текст для мессенджера.
  *  3. Отправляет JS-цели в Метрику (их идентификаторы нужно завести в
  *     настройках счётчика, тип «JavaScript-событие»):
+ *       form_view       — карточку заявки увидели (открыли)
+ *       form_start      — начали заполнять карточку (курсор в поле)
+ *       kids_lead       — «Заявка КИДС — форма успешно отправлена»:
+ *                         только после подтверждения приёма сервером
+ *                         (amo.php ответил {"ok":true} или заявка записана
+ *                         в базу сайта). Воронка: form_view → form_start → kids_lead
  *       form_submit     — заявка отправлена и подтверждена записью в базу
  *       review_submit   — отправлен отзыв
  *       phone_click     — клик по телефону
@@ -129,23 +135,28 @@
   }
 
   /* ---------- Отправка заявки в amoCRM через серверный amo.php (Beget) ----------
-     amo.php лежит на том же домене. На хостинге без PHP (например, GitHub Pages)
-     запрос вернёт 404 — ошибка гасится, сайт продолжает работать как обычно. */
+     amo.php лежит на том же домене. Возвращает Promise<boolean>: true — только
+     если amo.php ответил 200 и подтвердил приём заявки ({"ok":true}).
+     На хостинге без PHP (например, GitHub Pages) придёт 404 и результат будет
+     false — ошибка гасится, сайт продолжает работать как обычно. */
   function sendLead(context, form) {
     try {
-      if (!form || !window.fetch) return;
+      if (!form || !window.fetch) return Promise.resolve(false);
       var payload = { _context: context || '', _page: location.pathname };
       new FormData(form).forEach(function (v, k) { payload[k] = (v == null ? '' : v.toString()); });
       var a = hiddenValues();
       Object.keys(a).forEach(function (k) { if (!payload[k]) payload[k] = a[k]; });
-      fetch('amo.php', {
+      return fetch('amo.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         keepalive: true,
         credentials: 'omit'
-      }).catch(function () {});
-    } catch (e) {}
+      }).then(function (res) {
+        if (!res.ok) return false;                       // 404 (нет PHP), 403, 500 …
+        return res.json().then(function (j) { return !!(j && j.ok); }, function () { return false; });
+      }, function () { return false; });                 // сеть недоступна
+    } catch (e) { return Promise.resolve(false); }
   }
 
   /* публичный API для script.js */
@@ -156,6 +167,45 @@
     refreshHiddenFields: fillHiddenFields,
     attribution: function () { return attr; }
   };
+
+  /* ---------- Воронка заявки: открыли карточку → начали заполнять ----------
+     Каждая цель срабатывает не больше одного раза на форму за просмотр
+     страницы, поэтому счётчики сопоставимы между собой:
+       form_view  — карточка заявки появилась на экране (её «открыли»)
+       form_start — человек начал заполнять (поставил курсор в любое поле)
+       kids_lead  — заявка принята сервером (см. script.js) */
+  function initFormFunnel() {
+    var forms = [].slice.call(
+      document.querySelectorAll('form[data-whatsapp-form]:not([data-review-form])')
+    );
+    if (!forms.length) return;
+    function ctxOf(form) { return form.getAttribute('data-context') || 'Заявка'; }
+
+    forms.forEach(function (form) {
+      var started = false;
+      // focusin всплывает (в отличие от focus) — одного слушателя на форму хватает
+      form.addEventListener('focusin', function () {
+        if (started) return;
+        started = true;
+        goal('form_start', { form: ctxOf(form) });
+      });
+    });
+
+    if (!window.IntersectionObserver) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);                 // считаем один раз
+        goal('form_view', { form: ctxOf(en.target) });
+      });
+    }, { threshold: 0.25 });
+    forms.forEach(function (f) { io.observe(f); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFormFunnel);
+  } else {
+    initFormFunnel();
+  }
 
   /* ---------- Клики: телефон, мессенджеры, VK, «Записаться» ---------- */
   document.addEventListener('click', function (e) {
