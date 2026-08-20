@@ -261,10 +261,9 @@
           if (choice === 'wa') {
             window.open('https://wa.me/' + MSG_NUMBER + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
           } else {
-            // Telegram/MAX/VK не принимают текст в ссылке — кладём заявку в буфер,
+            // Telegram/VK не принимают текст в ссылке — кладём заявку в буфер,
             // чтобы её можно было просто вставить в открывшийся чат
             var url = choice === 'tg' ? 'https://t.me/+' + MSG_NUMBER
-              : choice === 'max' ? 'https://max.ru/u/+' + MSG_NUMBER
               : (cms && cms.settings['contact.vk']) || 'https://vk.com/kidstersport';
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).catch(function () {});
