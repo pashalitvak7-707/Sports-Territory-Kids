@@ -210,6 +210,7 @@
         var data = new FormData(form);
         var an = window.TSKAnalytics;
         if (an) an.refreshHiddenFields(); // свежие ClientID/UTM перед чтением FormData
+        stampConsentDocs(form);           // редакция документов на момент согласия
         data = new FormData(form);
         // Отзывы уходят на модерацию в админку (если она подключена), а не в WhatsApp
         if (form.hasAttribute('data-review-form') && cms && cms.configured) {
@@ -671,6 +672,43 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
   }
 
+  /* ---------- Журнал согласий на обработку персональных данных ----------
+     Фиксируем точное время простановки каждой галочки и редакцию документов,
+     которые человек видел в этот момент. Поля начинаются с «_», поэтому в
+     текст сообщения не попадают, но сохраняются в карточке заявки. */
+  function setHidden(form, name, value) {
+    var inp = form.querySelector('input[name="' + name + '"]');
+    if (!inp) {
+      inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.name = name;
+      form.appendChild(inp);
+    }
+    inp.value = value;
+  }
+  function initConsent() {
+    document.querySelectorAll('form .consent-list').forEach(function (list) {
+      var form = list.closest('form');
+      if (!form) return;
+      list.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+          setHidden(form, cb.name + '_at', cb.checked ? new Date().toISOString() : '');
+        });
+      });
+    });
+  }
+  // редакция документов на момент отправки (ссылка на конкретный файл)
+  function stampConsentDocs(form) {
+    var list = form.querySelector('.consent-list');
+    if (!list) return;
+    var docs = [];
+    list.querySelectorAll('a[data-doc]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      docs.push(a.getAttribute('data-doc') + '=' + (href && href !== '#' ? href : 'не загружен'));
+    });
+    setHidden(form, '_consent_docs', docs.join(' | '));
+  }
+
   /* ---------- Кнопка «Наверх» ---------- */
   function initToTop() {
     var btn = document.getElementById('toTop');
@@ -703,6 +741,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
     initToTop();
+    initConsent();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
     document.querySelectorAll('.coaches-stage').forEach(initCoachStage);
     initAccordions();
