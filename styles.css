@@ -786,9 +786,13 @@ a { text-decoration: none; color: inherit; }
 .consent-row a { text-decoration: underline; color: inherit; }
 .consent-row a:hover { color: var(--green); }
 /* на зелёной плашке «Запишитесь на пробное занятие» — светлый текст */
-/* ширину не ограничиваем — иначе обе галочки не помещаются в одну строку */
-.signup-form .consent-list { flex-basis: 100%; margin: 2px auto 0; }
-.signup-form .consent-row { color: #fff; }
+/* Сетка повторяет раскладку полей ввода выше (та же минимальная ширина 240px
+   и тот же зазор 18px), поэтому каждая галочка стоит ровно под своим полем:
+   первая — под «Ваше имя», вторая — под «Номер для связи». Переносятся они
+   тоже одновременно с полями. */
+.signup-form .consent-list { flex-basis: 100%; margin: 2px auto 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 18px; }
+.signup-form .consent-row { color: #fff; justify-content: center; }
 .signup-form .consent-row input { accent-color: #fff; }
 .signup-form .consent-row a:hover { color: #D8F3D8; }
 /* на планшетах чуть плотнее — чтобы обе галочки ещё помещались в одну строку */
@@ -1270,6 +1274,8 @@ a { text-decoration: none; color: inherit; }
      (applies to both copies of this section) */
   .signup-wave { top: 14%; transform: none; width: 120%; }
   .signup-form { gap: 11px; margin-bottom: clamp(11px, 3vw, 16px); }
+  /* поля здесь во всю ширину и идут друг под другом — галочки тоже в один столбец */
+  .signup-form .consent-list { grid-template-columns: 1fr; gap: 8px; }
   .signup-form input {
     min-width: 100%; width: 100%; text-align: left;
     border-radius: 12px;              /* sharper than the default 14px, still soft */
