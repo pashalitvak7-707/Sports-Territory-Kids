@@ -708,6 +708,69 @@
     setHidden(form, '_consent_docs', docs.join(' | '));
   }
 
+  /* ---------- Отметка о ПД на фото тренера: касание на телефоне ----------
+     На компьютере достаточно наведения курсора (CSS :hover). Там, где
+     наведения нет, показываем отметку по касанию фото. */
+  function initCoachPd() {
+    if (window.matchMedia('(hover: hover)').matches) return;
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var photo = t && t.closest ? t.closest('.coach-photo') : null;
+      var card = photo ? photo.closest('.coach-card') : null;
+      // закрываем ранее открытые отметки
+      document.querySelectorAll('.coach-card.pd-open').forEach(function (c) {
+        if (c !== card) c.classList.remove('pd-open');
+      });
+      if (!card) return;
+      // если карточка ещё не в центре — первое касание её просто центрирует
+      var stage = card.closest('.coaches-stage');
+      if (stage && stage.querySelector('.coach-card.is-active') &&
+          !card.classList.contains('is-active')) return;
+      card.classList.toggle('pd-open');
+    });
+  }
+
+  /* ---------- Подсказки проверки форм по-русски ----------
+     Стандартные сообщения браузера («Please fill out this field») зависят от
+     языка браузера, а не страницы. Поэтому подставляем свои через
+     setCustomValidity. Событие invalid не всплывает — слушаем на перехвате. */
+  function ruValidationMessage(el) {
+    var v = el.validity;
+    if (v.valueMissing) {
+      if (el.type === 'checkbox') return 'Пожалуйста, отметьте этот пункт, чтобы продолжить.';
+      if (el.type === 'radio') return 'Пожалуйста, выберите один из вариантов.';
+      if (el.tagName === 'SELECT') return 'Пожалуйста, выберите значение из списка.';
+      return 'Пожалуйста, заполните это поле.';
+    }
+    if (v.typeMismatch) {
+      if (el.type === 'email') return 'Пожалуйста, введите корректный адрес электронной почты.';
+      if (el.type === 'url') return 'Пожалуйста, введите корректную ссылку.';
+      return 'Пожалуйста, введите значение в правильном формате.';
+    }
+    if (v.tooShort) return 'Слишком коротко: минимум ' + el.minLength + ' символов.';
+    if (v.tooLong) return 'Слишком длинно: максимум ' + el.maxLength + ' символов.';
+    if (v.rangeUnderflow) return 'Значение должно быть не меньше ' + el.min + '.';
+    if (v.rangeOverflow) return 'Значение должно быть не больше ' + el.max + '.';
+    if (v.stepMismatch) return 'Пожалуйста, выберите допустимое значение.';
+    if (v.patternMismatch) return 'Пожалуйста, введите значение в требуемом формате.';
+    if (v.badInput) return 'Пожалуйста, проверьте, правильно ли введено значение.';
+    return 'Пожалуйста, проверьте это поле.';
+  }
+  function initRuValidation() {
+    document.addEventListener('invalid', function (e) {
+      var el = e.target;
+      if (!el || !el.setCustomValidity) return;
+      el.setCustomValidity(ruValidationMessage(el));
+    }, true);
+    // свою подпись обязательно снимаем, иначе поле навсегда останется «неверным»
+    function clear(e) {
+      var el = e.target;
+      if (el && el.setCustomValidity) el.setCustomValidity('');
+    }
+    document.addEventListener('input', clear, true);
+    document.addEventListener('change', clear, true);
+  }
+
   /* ---------- Кнопка «Наверх» ---------- */
   function initToTop() {
     var btn = document.getElementById('toTop');
@@ -741,6 +804,8 @@
     initReveal();
     initToTop();
     initConsent();
+    initCoachPd();
+    initRuValidation();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
     document.querySelectorAll('.coaches-stage').forEach(initCoachStage);
     initAccordions();

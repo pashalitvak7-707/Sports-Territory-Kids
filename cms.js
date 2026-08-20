@@ -340,9 +340,9 @@
       return '<article class="coach-card">' +
         '<div class="coach-tags"><span class="tag-pos">' + esc(c.tag_pos || '') + '</span>' +
         '<span class="tag-exp">' + esc(c.tag_exp || '') + '</span></div>' +
-        '<div class="coach-photo"><img src="' + esc(c.photo_url || 'assets/img/coach-1.png') + '" alt="' + esc(c.name) + '" /></div>' +
-        // обязательная отметка о согласии субъекта ПД (требование юристов)
-        '<p class="coach-pd">' + PD_NOTE + '</p>' +
+        // отметка о согласии субъекта ПД лежит поверх фото и видна при наведении
+        '<div class="coach-photo"><img src="' + esc(c.photo_url || 'assets/img/coach-1.png') + '" alt="' + esc(c.name) + '" />' +
+        '<p class="coach-pd">' + PD_NOTE + '</p></div>' +
         '<h3>' + name + '</h3>' +
         '<p>' + toHtml(c.bio || '') + '</p>' +
         '</article>';
