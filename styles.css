@@ -795,6 +795,11 @@ a { text-decoration: none; color: inherit; }
 .signup-form .consent-row { color: #fff; justify-content: center; }
 .signup-form .consent-row input { accent-color: #fff; }
 .signup-form .consent-row a:hover { color: #D8F3D8; }
+/* В форме отзыва — строго друг под другом и по левому краю, как белый блок
+   с полями сверху и кнопка «Отправить» снизу. */
+.review-form .consent-list { flex-flow: column nowrap; align-items: flex-start;
+  justify-content: flex-start; gap: 9px; margin-top: clamp(14px, 1.6vw, 18px); }
+.review-form .consent-row { justify-content: flex-start; }
 /* на планшетах чуть плотнее — чтобы обе галочки ещё помещались в одну строку */
 @media (max-width: 1000px) {
   .consent-list { gap: 8px 16px; }
