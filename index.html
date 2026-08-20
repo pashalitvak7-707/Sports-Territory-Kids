@@ -10,7 +10,7 @@
 <link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
 <link href="assets/img/logo.png" rel="icon" type="image/png"/>
-<link href="styles.css?v=20260731-1" rel="stylesheet"/>
+<link href="styles.css?v=20260802-1" rel="stylesheet"/>
 <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -397,30 +397,35 @@
 <article class="coach-card">
 <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">7 лет опыта</span></div>
 <div class="coach-photo"><img alt="Анна Соколова" src="assets/img/coach-w2.png"/></div>
+<p class="coach-pd">*Субъектом персональных данных разрешена обработка персональных данных неограниченным кругом лиц, запретов не установлено.</p>
 <h3>Анна<br/>Соколова</h3>
 <p>Помогает детям мягко входить в спорт, <br class="br-m"/>развивать гибкость и уверенность без <br class="br-m"/>страха ошибки.</p>
 </article>
 <article class="coach-card">
 <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">5 лет опыта</span></div>
 <div class="coach-photo"><img alt="Екатерина Морозова" src="assets/img/coach-w1.png"/></div>
+<p class="coach-pd">*Субъектом персональных данных разрешена обработка персональных данных неограниченным кругом лиц, запретов не установлено.</p>
 <h3>Екатерина<br/>Морозова</h3>
 <p>Помогает детям мягко входить в спорт, <br class="br-m"/>развивать гибкость и уверенность без <br class="br-m"/>страха ошибки.</p>
 </article>
 <article class="coach-card">
 <div class="coach-tags"><span class="tag-pos">Тренер</span><span class="tag-exp">4 года опыта</span></div>
 <div class="coach-photo"><img alt="Дмитрий Орлов" src="assets/img/coach-m1.png"/></div>
+<p class="coach-pd">*Субъектом персональных данных разрешена обработка персональных данных неограниченным кругом лиц, запретов не установлено.</p>
 <h3>Дмитрий<br/>Орлов</h3>
 <p>Помогает детям мягко входить в спорт, <br class="br-m"/>развивать гибкость и уверенность без <br class="br-m"/>страха ошибки.</p>
 </article>
 <article class="coach-card">
 <div class="coach-tags"><span class="tag-pos">Тренер</span><span class="tag-exp">6 лет опыта</span></div>
 <div class="coach-photo"><img alt="Ольга Кузнецова" src="assets/img/coach-w2.png"/></div>
+<p class="coach-pd">*Субъектом персональных данных разрешена обработка персональных данных неограниченным кругом лиц, запретов не установлено.</p>
 <h3>Ольга<br/>Кузнецова</h3>
 <p>Помогает детям мягко входить в спорт, <br class="br-m"/>развивать гибкость и уверенность без <br class="br-m"/>страха ошибки.</p>
 </article>
 <article class="coach-card">
 <div class="coach-tags"><span class="tag-pos">Старший тренер</span><span class="tag-exp">8 лет опыта</span></div>
 <div class="coach-photo"><img alt="Сергей Лебедев" src="assets/img/coach-m1.png"/></div>
+<p class="coach-pd">*Субъектом персональных данных разрешена обработка персональных данных неограниченным кругом лиц, запретов не установлено.</p>
 <h3>Сергей<br/>Лебедев</h3>
 <p>Помогает детям мягко входить в спорт, <br class="br-m"/>развивать гибкость и уверенность без <br class="br-m"/>страха ошибки.</p>
 </article>
@@ -650,6 +655,8 @@
 </div>
 </footer>
 <!-- Floating messenger button: WhatsApp / Telegram / MAX / VK -->
+<!-- Кнопка «Наверх»: появляется после прокрутки на экран -->
+<button aria-label="Наверх" class="to-top" hidden="" id="toTop" type="button"><svg aria-hidden="true" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="18"><path d="M12 19V5M5 12l7-7 7 7"></path></svg><span>Наверх</span></button>
 <div class="msg-float" id="msgFloat">
 <div class="msg-menu" role="menu">
 <a class="msg-opt" data-app="tg://resolve?domain=kidstersport" href="https://t.me/kidstersport" rel="noopener" target="_blank"><span class="msg-ic mi-tg"><svg fill="#fff" height="19" viewbox="0 0 24 24" width="19"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"></path></svg></span><span>Telegram</span></a>
@@ -664,8 +671,8 @@
 </div>
 <script src="cms-config.js?v=2"></script>
 <script src="textsizes.js?v=4"></script>
-<script src="cms.js?v=19"></script>
-<script src="script.js?v=20260801-1"></script>
+<script src="cms.js?v=20"></script>
+<script src="script.js?v=20260802-1"></script>
 <script src="analytics.js?v=4"></script>
 <script>
 /* Авто-высота при встраивании через iframe (Tilda и т.п.).

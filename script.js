@@ -671,8 +671,38 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
   }
 
+  /* ---------- Кнопка «Наверх» ---------- */
+  function initToTop() {
+    var btn = document.getElementById('toTop');
+    if (!btn) return;
+    // Кнопка нужна только там, где страница длиннее экрана
+    function longPage() {
+      return document.documentElement.scrollHeight > window.innerHeight * 1.5;
+    }
+    btn.hidden = false;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      btn.classList.toggle('is-on', longPage() && y > window.innerHeight * 0.8);
+    }
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    btn.addEventListener('click', function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+      catch (e) { window.scrollTo(0, 0); }   // старые браузеры
+    });
+    update();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
+    initToTop();
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
     document.querySelectorAll('.coaches-stage').forEach(initCoachStage);
     initAccordions();

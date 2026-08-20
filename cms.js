@@ -318,6 +318,19 @@
   });
 
   /* ---------- Тренеры ---------- */
+  /* Отметка рядом с фотографией тренера — формулировка согласована юристами.
+     Такая же строка продублирована в запасных карточках в index.html. */
+  var PD_NOTE = '*Субъектом персональных данных разрешена обработка персональных ' +
+    'данных неограниченным кругом лиц, запретов не установлено.';
+
+  /* Пока тренеры не пришли из базы, запасные карточки в HTML скрыты —
+     иначе при каждой загрузке на секунду видны прежние тренеры. */
+  function revealCoaches() {
+    var s = document.querySelector('.coaches-stage');
+    if (s) s.classList.remove('cms-pending');
+  }
+  api.revealCoaches = revealCoaches;
+
   function renderCoaches(coaches) {
     if (!coaches || !coaches.length) return;
     var stage = document.querySelector('.coaches-stage');
@@ -328,6 +341,8 @@
         '<div class="coach-tags"><span class="tag-pos">' + esc(c.tag_pos || '') + '</span>' +
         '<span class="tag-exp">' + esc(c.tag_exp || '') + '</span></div>' +
         '<div class="coach-photo"><img src="' + esc(c.photo_url || 'assets/img/coach-1.png') + '" alt="' + esc(c.name) + '" /></div>' +
+        // обязательная отметка о согласии субъекта ПД (требование юристов)
+        '<p class="coach-pd">' + PD_NOTE + '</p>' +
         '<h3>' + name + '</h3>' +
         '<p>' + toHtml(c.bio || '') + '</p>' +
         '</article>';
@@ -340,6 +355,7 @@
     // скрытыми (opacity:0). Снимаем reveal-гейт, чтобы сцена была видима сразу.
     clone.classList.remove('reveal');
     clone.classList.add('in');
+    clone.classList.remove('cms-pending');   // данные пришли — показываем
     stage.parentNode.replaceChild(clone, stage);
     if (window.TSK && window.TSK.initCoachStage) window.TSK.initCoachStage(clone);
   }
@@ -409,11 +425,20 @@
 
   /* ---------- Загрузка ---------- */
   document.addEventListener('DOMContentLoaded', function () {
+    // Прячем запасных тренеров из HTML до ответа базы, чтобы прежние карточки
+    // не мелькали при загрузке. Страховка: если база молчит — всё равно покажем.
+    var stage0 = document.querySelector('.coaches-stage');
+    if (stage0) {
+      stage0.classList.add('cms-pending');
+      setTimeout(revealCoaches, 4000);
+    }
     // Сначала настройки (тексты/цвета/подписи), затем зависящие от них блоки.
     // После каждой перерисовки заново применяем размеры текста — рендер заменяет узлы.
     quiet(rest('settings?select=key,value')).then(applySettings).then(function () {
       if (document.querySelector('.coaches-stage')) {
-        quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) { renderCoaches(rows); applyTextSizes(); });
+        quiet(rest('coaches?select=*&order=sort.asc,id.asc')).then(function (rows) {
+          renderCoaches(rows); revealCoaches(); applyTextSizes();
+        });
       }
       if (document.querySelector('.reviews-grid')) {
         quiet(rest('reviews?select=*&approved=is.true&order=created_at.desc')).then(function (rows) { renderReviews(rows); applyTextSizes(); });

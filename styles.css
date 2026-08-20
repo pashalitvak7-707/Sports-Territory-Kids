@@ -751,6 +751,30 @@ a { text-decoration: none; color: inherit; }
 /* line-break toggles: .br-d shows on desktop only, .br-m on mobile only */
 .br-m { display: none; }
 
+/* Запасные карточки тренеров скрыты, пока не ответила база (без мигания
+   прежних тренеров). visibility, а не display — высота блока не скачет. */
+.coaches-stage.cms-pending .cstage-track { visibility: hidden; }
+/* Отметка о согласии субъекта персональных данных под фото тренера */
+.coach-pd { margin: 8px 0 0; font-size: 11px; line-height: 1.35; color: var(--muted); text-align: left; }
+
+/* ===================== КНОПКА «НАВЕРХ» ===================== */
+.to-top { position: fixed; right: 26px; bottom: 98px; z-index: 199;
+  width: 52px; height: 52px; border: 0; border-radius: 50%; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1px;
+  background: #fff; color: var(--green-d); font-family: inherit; font-size: 9px; font-weight: 700;
+  box-shadow: 0 8px 22px rgba(12, 92, 70, .22); border: 1.5px solid #CFE0D4;
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity .25s var(--ease), transform .25s var(--ease), visibility .25s; }
+.to-top.is-on { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--green-d); color: #fff; border-color: var(--green-d); }
+.to-top:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.to-top svg { display: block; }
+@media (max-width: 620px) {
+  /* плавающая кнопка мессенджера занимает 26–86px снизу — держимся выше неё */
+  .to-top { right: 26px; bottom: 96px; width: 46px; height: 46px; font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .to-top { transition: none; } }
+
 /* ===================== FOOTER ===================== */
 .footer { background: #fff; padding: 50px 0 0; }
 /* Промежутки заданы отдельными margin у детей (а не общим gap), чтобы каждый
