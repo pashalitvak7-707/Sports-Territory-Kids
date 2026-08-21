@@ -78,13 +78,19 @@
 
   /* ---------- ClientID Метрики ---------- */
   var clientId = '';
-  try {
-    // вызов встаёт в очередь заглушки ym и выполнится, когда tag.js загрузится
-    window.ym(YM_ID, 'getClientID', function (id) {
-      clientId = id || '';
-      fillHiddenFields();
-    });
-  } catch (e) {}
+  function askClientId() {
+    try {
+      window.ym(YM_ID, 'getClientID', function (id) {
+        clientId = id || '';
+        fillHiddenFields();
+      });
+    } catch (e) {}
+  }
+  askClientId();
+  /* До согласия на куки Метрика не загружена и ClientID недоступен
+     (см. cookies.js). Как только посетитель согласился и tag.js
+     подключился — запрашиваем ClientID заново. */
+  document.addEventListener('tsk:metrika-ready', askClientId);
 
   /* ---------- 2. Скрытые поля в формах ----------
      Имена начинаются с «_»: script.js не включает такие поля в текст

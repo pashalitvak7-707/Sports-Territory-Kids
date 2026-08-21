@@ -812,6 +812,41 @@ a { text-decoration: none; color: inherit; }
   .consent-row { font-size: 12px; gap: 8px; }
 }
 
+/* ============ СОГЛАСИЕ НА КУКИ И ЯНДЕКС.МЕТРИКУ ============
+   Полоса внизу экрана. Пока посетитель не нажал «Я согласен/согласна»,
+   Метрика не подключается (см. cookies.js), поэтому окно должно быть
+   заметным, но не перекрывать содержимое и плавающие кнопки. */
+.cookie-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 400;
+  background: #fff; border-top: 2px solid var(--green);
+  box-shadow: 0 -10px 30px rgba(20, 40, 30, .16);
+  padding: 14px clamp(14px, 3vw, 34px); }
+.cookie-bar[hidden] { display: none; }
+.cookie-inner { max-width: 1300px; margin: 0 auto;
+  display: flex; align-items: center; gap: clamp(14px, 2vw, 30px); }
+.cookie-text { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink); }
+.cookie-text a { color: var(--green-d); text-decoration: underline; }
+.cookie-text a:hover { color: var(--green); }
+.cookie-btn { flex: none; border: 0; cursor: pointer; border-radius: 14px;
+  padding: 14px 30px; background: var(--orange); color: #fff;
+  font-family: inherit; font-size: 15px; font-weight: 700; line-height: 1.2;
+  transition: background .2s var(--ease); }
+.cookie-btn:hover { background: var(--orange-d); }
+.cookie-btn:focus-visible { outline: 3px solid var(--green-d); outline-offset: 2px; }
+@media (max-width: 820px) {
+  .cookie-bar { padding: 12px 14px; }
+  .cookie-inner { flex-direction: column; align-items: stretch; gap: 11px; }
+  .cookie-text { font-size: 12px; line-height: 1.4; max-height: 42vh; overflow-y: auto; }
+  .cookie-btn { width: 100%; padding: 13px 20px; font-size: 15px; }
+}
+/* Пока полоса видна, плавающие кнопки поднимаются над ней ровно на её
+   высоту (--cookie-h выставляет cookies.js и обновляет при resize). */
+.cookie-on .to-top { bottom: calc(98px + var(--cookie-h, 0px)); }
+.cookie-on .msg-float { bottom: calc(26px + var(--cookie-h, 0px)); }
+@media (max-width: 620px) {
+  .cookie-on .to-top { bottom: calc(96px + var(--cookie-h, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .cookie-btn { transition: none; } }
+
 /* ===================== КНОПКА «НАВЕРХ» ===================== */
 .to-top { position: fixed; right: 26px; bottom: 98px; z-index: 199;
   width: 52px; height: 52px; border: 0; border-radius: 50%; cursor: pointer; padding: 0;

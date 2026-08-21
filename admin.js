@@ -170,18 +170,29 @@
     return saveSettings({ 'gallery.extra': arr.length ? JSON.stringify(arr) : '' });
   }
 
-  /* Документы для кнопок в подвале (Политика/Оферта) */
+  /* Документы сайта. Каждый документ — отдельный файл (требование юристов:
+     объединять их в один файл нельзя). «where» поясняет, где на сайте
+     используется файл, чтобы было понятно, что именно загружать. */
   var DOC_FIELDS = [
-    { key: 'doc.privacy', label: 'Политика конфиденциальности' },
-    { key: 'doc.consent', label: 'Согласие на обработку персональных данных' },
-    { key: 'doc.oferta', label: 'Публичная оферта' }
+    { key: 'doc.privacy', label: 'ТССЗ КИДС Политика конфиденциальности',
+      where: 'подвал сайта, чекбоксы под всеми формами, окно согласия на куки' },
+    { key: 'doc.pd_policy', label: 'ТССЗ КИДС Политика обработки персональных данных',
+      where: 'отдельная политика, наличие которой требует Роскомнадзор; будет добавлена в раздел документов' },
+    { key: 'doc.consent_metrika', label: 'ТССЗ КИДС Согласие Яндекс.Метрика (куки)',
+      where: 'окно согласия на куки, которое показывается при входе на сайт' },
+    { key: 'doc.consent', label: 'ТССЗ КИДС Согласие ПД запись на занятие',
+      where: 'чекбокс «Я даю согласие на обработку персональных данных» под формами' },
+    { key: 'doc.consent_review', label: 'ТССЗ КИДС Согласие ПД отзыв',
+      where: 'отдельное согласие для формы отзыва; заработает после разделения согласий по формам' },
+    { key: 'doc.oferta', label: 'Публичная оферта', where: 'подвал сайта' }
   ];
   function renderDocs() {
     $('docsList').innerHTML = DOC_FIELDS.map(function (f) {
       var url = settings[f.key];
       return '<div class="adm-item"><div class="adm-item-body">' +
         '<p class="adm-item-title">' + esc(f.label) + '</p>' +
-        '<p class="adm-item-meta">' + (url ? 'файл загружен — кнопка на сайте открывает его' : 'файл не загружен — кнопка на сайте пока ничего не открывает') + '</p></div>' +
+        (f.where ? '<p class="adm-item-meta">Где используется: ' + esc(f.where) + '</p>' : '') +
+        '<p class="adm-item-meta">' + (url ? 'файл загружен — ссылка на сайте открывает его' : 'файл не загружен — ссылка на сайте пока ничего не открывает') + '</p></div>' +
         '<div class="adm-item-actions">' +
         (url ? '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener">Открыть</a>' : '') +
         '<label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">' + (url ? 'Заменить файл' : 'Загрузить файл') + '<input type="file" data-dockey="' + f.key + '" accept=".pdf,.doc,.docx,.rtf,.txt,image/*" hidden /></label>' +

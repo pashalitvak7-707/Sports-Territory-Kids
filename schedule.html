@@ -10,7 +10,7 @@
 <link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
 <link href="assets/img/logo.png" rel="icon" type="image/png"/>
-<link href="styles.css?v=20260821-1" rel="stylesheet"/>
+<link href="styles.css?v=20260821-2" rel="stylesheet"/>
 <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -23,21 +23,10 @@
       }
     }, 3000);
   </script>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110643212', 'ym');
-
-    ym(110643212, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<!-- /Yandex.Metrika counter -->
+<!-- Яндекс.Метрика подключается только после согласия — см. cookies.js -->
+<script src="cookies.js?v=1"></script>
 </head>
 <body>
-<noscript><div><img src="https://mc.yandex.ru/watch/110643212" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 <!-- ================= HEADER ================= -->
 <header class="header" id="top">
 <div class="topbar">
@@ -322,6 +311,14 @@
 </div>
 </footer>
 <!-- Floating messenger button: Telegram / VK -->
+<!-- Согласие на куки и Яндекс.Метрику (текст согласован юристами).
+     До нажатия «Я согласен/согласна» Метрика не загружается — см. cookies.js -->
+<div aria-label="Согласие на обработку файлов cookie" class="cookie-bar" hidden="" id="cookieBar" role="dialog">
+<div class="cookie-inner">
+<p class="cookie-text">Сайт использует сервис веб-аналитики Яндекс Метрика с помощью технологии «куки» («cookie»). Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его лучше. Продолжая пользоваться сайтом, <a data-doc="doc.consent_metrika" href="#" rel="noopener" target="_blank">Вы соглашаетесь на обработку персональных данных</a> (файлов куки («cookie»)), собираемых с использованием программного средства Яндекс Метрика в соответствии с <a data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a>. Вы можете: отказаться от куки («cookie»), отключив их в браузере; использовать <a href="https://yandex.ru/support/metrica/ru/general/opt-out.html" rel="noopener" target="_blank">инструмент блокировки</a>; покинуть этот сайт.</p>
+<button class="cookie-btn" id="cookieAccept" type="button">Я согласен/согласна</button>
+</div>
+</div>
 <!-- Кнопка «Наверх»: появляется после прокрутки на экран -->
 <button aria-label="Наверх" class="to-top" hidden="" id="toTop" type="button"><svg aria-hidden="true" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="18"><path d="M12 19V5M5 12l7-7 7 7"></path></svg><span>Наверх</span></button>
 <div class="msg-float" id="msgFloat">
@@ -338,7 +335,7 @@
 <script src="textsizes.js?v=4"></script>
 <script src="cms.js?v=21"></script>
 <script src="script.js?v=20260805-1"></script>
-<script src="analytics.js?v=4"></script>
+<script src="analytics.js?v=5"></script>
 <script src="schedule.js?v=20260715-1"></script>
 <script>
 /* Авто-высота при встраивании через iframe (Tilda и т.п.).
