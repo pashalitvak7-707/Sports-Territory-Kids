@@ -800,6 +800,12 @@ a { text-decoration: none; color: inherit; }
 .review-form .consent-list { flex-flow: column nowrap; align-items: flex-start;
   justify-content: flex-start; gap: 9px; margin-top: clamp(14px, 1.6vw, 18px); }
 .review-form .consent-row { justify-content: flex-start; }
+/* В форме записи (страница расписания) поля идут одной колонкой, поэтому обе
+   галочки стоят друг под другом и по левому краю полей ввода — тот же принцип,
+   что и на главной, где каждая галочка стоит под своим полем. */
+.book-form .consent-list { flex-flow: column nowrap; align-items: flex-start;
+  justify-content: flex-start; gap: 9px; }
+.book-form .consent-row { justify-content: flex-start; }
 /* на планшетах чуть плотнее — чтобы обе галочки ещё помещались в одну строку */
 @media (max-width: 1000px) {
   .consent-list { gap: 8px 16px; }
@@ -1281,6 +1287,9 @@ a { text-decoration: none; color: inherit; }
   .signup-form { gap: 11px; margin-bottom: clamp(11px, 3vw, 16px); }
   /* поля здесь во всю ширину и идут друг под другом — галочки тоже в один столбец */
   .signup-form .consent-list { grid-template-columns: 1fr; gap: 8px; }
+  /* Одна колонка — галочки друг под другом и по левому краю полей ввода
+     (по центру они вставали бы вразнобой: подписи разной длины). */
+  .signup-form .consent-row { justify-content: flex-start; }
   .signup-form input {
     min-width: 100%; width: 100%; text-align: left;
     border-radius: 12px;              /* sharper than the default 14px, still soft */
