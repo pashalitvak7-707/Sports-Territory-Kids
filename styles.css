@@ -786,13 +786,13 @@ a { text-decoration: none; color: inherit; }
 .consent-row a { text-decoration: underline; color: inherit; }
 .consent-row a:hover { color: var(--green); }
 /* на зелёной плашке «Запишитесь на пробное занятие» — светлый текст */
-/* Сетка повторяет раскладку полей ввода выше (та же минимальная ширина 240px
-   и тот же зазор 18px), поэтому каждая галочка стоит ровно под своим полем:
-   первая — под «Ваше имя», вторая — под «Номер для связи». Переносятся они
-   тоже одновременно с полями. */
-.signup-form .consent-list { flex-basis: 100%; margin: 2px auto 0;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 18px; }
-.signup-form .consent-row { color: #fff; justify-content: center; }
+/* Галочек три (две политики и согласие), поэтому они идут одним столбцом
+   друг под другом и по левому краю полей ввода — так же, как в форме отзыва
+   и в форме записи, и как в образце, присланном юристами. */
+.signup-form .consent-list { flex-basis: 100%; margin: 2px 0 0;
+  display: flex; flex-flow: column nowrap; align-items: flex-start;
+  justify-content: flex-start; gap: 8px; }
+.signup-form .consent-row { color: #fff; justify-content: flex-start; }
 .signup-form .consent-row input { accent-color: #fff; }
 .signup-form .consent-row a:hover { color: #D8F3D8; }
 /* В форме отзыва — строго друг под другом и по левому краю, как белый блок
@@ -811,6 +811,34 @@ a { text-decoration: none; color: inherit; }
   .consent-list { gap: 8px 16px; }
   .consent-row { font-size: 12px; gap: 8px; }
 }
+
+/* ===================== СТРАНИЦА «ДОКУМЕНТЫ» =====================
+   Отдельный раздел сайта со всеми политиками и согласиями (требование
+   юристов: документы должны быть доступны не только под формами сбора).
+   Документ, файл которого ещё не загружен в админке, скрывается — см. cms.js. */
+.docs-page { background: var(--bg-soft); padding: clamp(36px, 5vw, 74px) 0 clamp(48px, 6vw, 96px); }
+.docs-title { font-size: clamp(30px, 4.4vw, 54px); font-weight: 800; color: var(--green-d); line-height: 1.1; }
+.docs-lead { margin-top: clamp(10px, 1.4vw, 16px); max-width: 720px;
+  font-size: clamp(15px, 1.5vw, 18px); line-height: 1.5; color: var(--muted); }
+.docs-list { list-style: none; margin: clamp(22px, 3vw, 38px) 0 0; padding: 0;
+  display: grid; gap: clamp(10px, 1.2vw, 14px); max-width: 900px; }
+.docs-link { display: flex; align-items: center; gap: 14px; background: #fff;
+  border: 2px solid #E4EFE6; border-radius: 18px; padding: clamp(14px, 1.6vw, 20px) clamp(16px, 1.8vw, 24px);
+  color: var(--green-d); font-size: clamp(15px, 1.4vw, 17px); font-weight: 600; line-height: 1.35;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .2s var(--ease); }
+.docs-link:hover { border-color: var(--green); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+.docs-link:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.docs-ic { flex: none; width: 26px; height: 26px; color: var(--green); }
+.docs-name { flex: 1; }
+.docs-go { flex: none; width: 18px; height: 18px; color: var(--green); }
+.docs-empty { margin-top: clamp(22px, 3vw, 38px); color: var(--muted); font-size: 16px; }
+.docs-empty[hidden] { display: none; }
+.docs-item[hidden] { display: none; }
+@media (max-width: 620px) {
+  .docs-link { gap: 11px; padding: 14px 15px; font-size: 14px; border-radius: 15px; }
+  .docs-ic { width: 22px; height: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .docs-link { transition: none; } .docs-link:hover { transform: none; } }
 
 /* ============ СОГЛАСИЕ НА КУКИ И ЯНДЕКС.МЕТРИКУ ============
    Полоса внизу экрана. Пока посетитель не нажал «Я согласен/согласна»,
@@ -953,9 +981,10 @@ a { text-decoration: none; color: inherit; }
   .how-cta { position: static; width: 100%; aspect-ratio: 1; max-width: 200px; margin: 0 auto; }
   .deco-bigarc { display: none; }
 }
-/* the inline top menu fits on one line only from 1120px up — below that
-   (tablets incl. iPad Pro portrait) the hamburger menu is used instead */
-@media (max-width: 1119px) {
+/* С пунктом «Документы» в меню стало восемь ссылок: в одну строку они
+   помещаются от 1170px, поэтому порог поднят с 1119px до 1189px (небольшой
+   запас — подписи пунктов меняются в админке). Ниже него — гамбургер. */
+@media (max-width: 1189px) {
   .nav-toggle { display: flex; }
   /* the nav becomes a full-width dropdown under the green bar when the burger is tapped */
   .topnav { display: none; }
@@ -1320,11 +1349,9 @@ a { text-decoration: none; color: inherit; }
      (applies to both copies of this section) */
   .signup-wave { top: 14%; transform: none; width: 120%; }
   .signup-form { gap: 11px; margin-bottom: clamp(11px, 3vw, 16px); }
-  /* поля здесь во всю ширину и идут друг под другом — галочки тоже в один столбец */
-  .signup-form .consent-list { grid-template-columns: 1fr; gap: 8px; }
-  /* Одна колонка — галочки друг под другом и по левому краю полей ввода
-     (по центру они вставали бы вразнобой: подписи разной длины). */
-  .signup-form .consent-row { justify-content: flex-start; }
+  /* столбец и выравнивание по левому краю заданы выше — на телефоне
+     отличается только плотность */
+  .signup-form .consent-list { gap: 7px; }
   .signup-form input {
     min-width: 100%; width: 100%; text-align: left;
     border-radius: 12px;              /* sharper than the default 14px, still soft */

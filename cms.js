@@ -192,16 +192,34 @@
       } catch (e) { console.warn('gallery.extra:', e); }
     }
 
-    // Документы («Политика конфиденциальности», «Публичная оферта»):
-    // если файл загружен в админке — кнопка открывает его в новой вкладке
+    // Документы (политики, согласия, оферта): если файл загружен в админке —
+    // ссылка открывает его в новой вкладке
     document.querySelectorAll('[data-doc]').forEach(function (a) {
       var url = s[a.getAttribute('data-doc')];
+      // Согласие для формы отзыва: пока свой файл не загружен, используем
+      // общее согласие, чтобы ссылка под формой не осталась пустой
+      if (!url && a.getAttribute('data-doc') === 'doc.consent_review') url = s['doc.consent'];
       if (url) {
         a.href = url;
         a.target = '_blank';
         a.rel = 'noopener';
       }
     });
+
+    // Раздел «Документы»: показываем только те, чей файл уже загружен,
+    // чтобы на странице не было ссылок, которые никуда не ведут
+    var docItems = document.querySelectorAll('[data-doc-item]');
+    if (docItems.length) {
+      var shown = 0;
+      docItems.forEach(function (li) {
+        var key = li.getAttribute('data-doc-item');
+        var has = !!s[key] || (key === 'doc.consent_review' && !!s['doc.consent']);
+        li.hidden = !has;
+        if (has) shown++;
+      });
+      var empty = document.getElementById('docsEmpty');
+      if (empty) empty.hidden = shown > 0;
+    }
 
     // Цвет отдельного текста (tcolor.<ключ>)
     document.querySelectorAll('[data-cms]').forEach(function (el) {

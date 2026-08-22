@@ -10,7 +10,7 @@
 <link as="font" crossorigin="" href="assets/fonts/ag-bold.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/ag-medium.woff2" rel="preload" type="font/woff2"/>
 <link href="assets/img/logo.png" rel="icon" type="image/png"/>
-<link href="styles.css?v=20260821-2" rel="stylesheet"/>
+<link href="styles.css?v=20260822-2" rel="stylesheet"/>
 <script>
     /* Enable the scroll-reveal animation only when JS is running, and add a
        fail-safe: if the reveal observer hasn't marked itself ready shortly
@@ -38,6 +38,7 @@
 <a data-cms="t.i.22" href="schedule.html">Расписание</a>
 <a data-cms="t.i.23" href="#reviews">Отзывы</a>
 <a data-cms="t.i.24" href="#faq">Частые вопросы</a>
+<a data-cms="t.i.152" href="documents.html">Документы</a>
 <a data-cms="t.i.25" href="#contacts">Контакты</a>
 </nav>
 <a class="topbar-phone" data-cms="t.i.26" href="tel:+77054290000">8 705 429 0000</a>
@@ -295,6 +296,7 @@
 <input class="ym-disable-keys" data-cms-ph="ph.i.2" name="phone" placeholder="Номер для связи" required="" type="tel"/>
 <div class="consent-list">
 <label class="consent-row"><input name="_consent_privacy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a>.</span></label>
+<label class="consent-row"><input name="_consent_pd_policy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.pd_policy" href="#" rel="noopener" target="_blank">политикой обработки персональных данных</a>.</span></label>
 <label class="consent-row"><input name="_consent_pd" required="" type="checkbox" value="да"/><span>Я даю согласие на <a data-doc="doc.consent" href="#" rel="noopener" target="_blank">обработку персональных данных</a>.</span></label>
 </div>
 <button class="btn btn-orange btn-lg signup-btn" data-cms="t.i.112" type="submit">Записаться на занятие</button>
@@ -566,7 +568,8 @@
 </div>
 <div class="consent-list">
 <label class="consent-row"><input name="_consent_privacy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a>.</span></label>
-<label class="consent-row"><input name="_consent_pd" required="" type="checkbox" value="да"/><span>Я даю согласие на <a data-doc="doc.consent" href="#" rel="noopener" target="_blank">обработку персональных данных</a>.</span></label>
+<label class="consent-row"><input name="_consent_pd_policy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.pd_policy" href="#" rel="noopener" target="_blank">политикой обработки персональных данных</a>.</span></label>
+<label class="consent-row"><input name="_consent_pd" required="" type="checkbox" value="да"/><span>Я даю согласие на <a data-doc="doc.consent_review" href="#" rel="noopener" target="_blank">обработку персональных данных</a>.</span></label>
 </div>
 <button class="review-submit" data-cms="t.i.132" type="submit">Отправить</button>
 </form>
@@ -602,6 +605,7 @@
 <input class="ym-disable-keys" data-cms-ph="ph.i.7" name="phone" placeholder="Номер для связи" required="" type="tel"/>
 <div class="consent-list">
 <label class="consent-row"><input name="_consent_privacy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a>.</span></label>
+<label class="consent-row"><input name="_consent_pd_policy" required="" type="checkbox" value="да"/><span>Я ознакомился с <a data-doc="doc.pd_policy" href="#" rel="noopener" target="_blank">политикой обработки персональных данных</a>.</span></label>
 <label class="consent-row"><input name="_consent_pd" required="" type="checkbox" value="да"/><span>Я даю согласие на <a data-doc="doc.consent" href="#" rel="noopener" target="_blank">обработку персональных данных</a>.</span></label>
 </div>
 <button class="btn btn-orange btn-lg signup-btn" data-cms="t.i.141" type="submit">Записаться на занятие</button>
@@ -630,6 +634,7 @@
 <a data-cms="t.i.145" href="#coaches">Тренеры</a>
 <a data-cms="t.i.146" href="#reviews">Отзывы</a>
 <a data-cms="t.i.147" href="#faq">Частые вопросы</a>
+<a data-cms="t.i.153" href="documents.html">Документы</a>
 <a data-cms="t.i.148" href="#contacts">Контакты</a>
 </nav>
 <div class="footer-socials">
@@ -653,10 +658,10 @@
 <!-- Floating messenger button: Telegram / VK -->
 <!-- Согласие на куки и Яндекс.Метрику (текст согласован юристами).
      До нажатия «Я согласен/согласна» Метрика не загружается — см. cookies.js -->
-<div aria-label="Согласие на обработку файлов cookie" class="cookie-bar" hidden="" id="cookieBar" role="dialog">
+<div aria-label="Согласие на обработку файлов cookie" class="cookie-bar" data-cms-group="Окно согласия на куки" hidden="" id="cookieBar" role="dialog">
 <div class="cookie-inner">
-<p class="cookie-text">Сайт использует сервис веб-аналитики Яндекс Метрика с помощью технологии «куки» («cookie»). Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его лучше. Продолжая пользоваться сайтом, <a data-doc="doc.consent_metrika" href="#" rel="noopener" target="_blank">Вы соглашаетесь на обработку персональных данных</a> (файлов куки («cookie»)), собираемых с использованием программного средства Яндекс Метрика в соответствии с <a data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a>. Вы можете: отказаться от куки («cookie»), отключив их в браузере; использовать <a href="https://yandex.ru/support/metrica/ru/general/opt-out.html" rel="noopener" target="_blank">инструмент блокировки</a>; покинуть этот сайт.</p>
-<button class="cookie-btn" id="cookieAccept" type="button">Я согласен/согласна</button>
+<p class="cookie-text"><span data-cms="cookie.t1">Сайт использует сервис веб-аналитики Яндекс Метрика с помощью технологии «куки» («cookie»). Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его лучше. Продолжая пользоваться сайтом,</span> <a data-cms="cookie.link_consent" data-doc="doc.consent_metrika" href="#" rel="noopener" target="_blank">Вы соглашаетесь на обработку персональных данных</a> <span data-cms="cookie.t2">(файлов куки («cookie»)), собираемых с использованием программного средства Яндекс Метрика в соответствии с</span> <a data-cms="cookie.link_privacy" data-doc="doc.privacy" href="#" rel="noopener" target="_blank">политикой конфиденциальности</a><span data-cms="cookie.t3">. Вы можете: отказаться от куки («cookie»), отключив их в браузере; использовать</span> <a data-cms="cookie.link_block" href="https://yandex.ru/support/metrica/ru/general/opt-out.html" rel="noopener" target="_blank">инструмент блокировки</a><span data-cms="cookie.t4">; покинуть этот сайт.</span></p>
+<button class="cookie-btn" data-cms="cookie.btn" id="cookieAccept" type="button">Я согласен/согласна</button>
 </div>
 </div>
 <!-- Кнопка «Наверх»: появляется после прокрутки на экран -->
@@ -673,7 +678,7 @@
 </div>
 <script src="cms-config.js?v=2"></script>
 <script src="textsizes.js?v=4"></script>
-<script src="cms.js?v=21"></script>
+<script src="cms.js?v=22"></script>
 <script src="script.js?v=20260805-1"></script>
 <script src="analytics.js?v=5"></script>
 <script>
