@@ -63,6 +63,13 @@
   }
   function toHtml(text) { return esc(text).replace(/\n/g, '<br />'); }
 
+  /* Иконки карточек в разделе «Документы» (лист и стрелка «открыть») */
+  var DOC_ICON = '<svg aria-hidden="true" class="docs-ic" fill="none" stroke="currentColor" stroke-linecap="round" ' +
+    'stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z">' +
+    '</path><path d="M14 3v5h5"></path></svg>';
+  var DOC_ARROW = '<svg aria-hidden="true" class="docs-go" fill="none" stroke="currentColor" stroke-linecap="round" ' +
+    'stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"></path></svg>';
+
   /* ---------- Публичный API (используется script.js) ---------- */
   var api = {
     configured: configured,
@@ -206,19 +213,31 @@
       }
     });
 
-    // Раздел «Документы»: показываем только те, чей файл уже загружен,
-    // чтобы на странице не было ссылок, которые никуда не ведут
-    var docItems = document.querySelectorAll('[data-doc-item]');
-    if (docItems.length) {
-      var shown = 0;
-      docItems.forEach(function (li) {
-        var key = li.getAttribute('data-doc-item');
-        var has = !!s[key] || (key === 'doc.consent_review' && !!s['doc.consent']);
-        li.hidden = !has;
-        if (has) shown++;
-      });
+    // Раздел «Документы»: карточки и их порядок задаются в админке
+    // (настройка docs.items), значения по умолчанию — в textsizes.js.
+    // Документ без загруженного файла не показываем, чтобы на странице
+    // не было ссылок, которые никуда не ведут.
+    var docsBox = document.getElementById('docsList');
+    if (docsBox) {
+      var items = [];
+      try {
+        var parsed = JSON.parse(s['docs.items'] || 'null');
+        if (Array.isArray(parsed)) items = parsed.filter(function (x) { return x && x.key; });
+      } catch (e) { console.warn('docs.items:', e); }
+      if (!items.length) items = window.TSK_DOCS_DEFAULT || [];
+
+      var html = items.map(function (it) {
+        var url = s[it.key];
+        // пока своё согласие для отзыва не загружено — открываем общее
+        if (!url && it.key === 'doc.consent_review') url = s['doc.consent'];
+        if (!url) return '';
+        return '<li class="docs-item"><a class="docs-link" href="' + esc(url) + '" rel="noopener" target="_blank">' +
+          DOC_ICON + '<span class="docs-name">' + esc(it.name || '') + '</span>' + DOC_ARROW + '</a></li>';
+      }).join('');
+
+      docsBox.innerHTML = html;
       var empty = document.getElementById('docsEmpty');
-      if (empty) empty.hidden = shown > 0;
+      if (empty) empty.hidden = !!html;
     }
 
     // Цвет отдельного текста (tcolor.<ключ>)

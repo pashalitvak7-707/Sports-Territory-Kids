@@ -174,35 +174,68 @@
     return saveSettings({ 'gallery.extra': arr.length ? JSON.stringify(arr) : '' });
   }
 
-  /* Документы сайта. Каждый документ — отдельный файл (требование юристов:
-     объединять их в один файл нельзя). «where» поясняет, где на сайте
-     используется файл, чтобы было понятно, что именно загружать. */
-  var DOC_FIELDS = [
-    { key: 'doc.privacy', label: 'ТССЗ КИДС Политика конфиденциальности',
-      where: 'подвал сайта, раздел «Документы», чекбоксы под всеми формами, окно согласия на куки' },
-    { key: 'doc.pd_policy', label: 'ТССЗ КИДС Политика обработки персональных данных',
-      where: 'чекбокс «Я ознакомился…» под всеми формами, раздел «Документы» (требование Роскомнадзора)' },
-    { key: 'doc.consent_metrika', label: 'ТССЗ КИДС Согласие Яндекс.Метрика (куки)',
-      where: 'окно согласия на куки при входе на сайт, раздел «Документы»' },
-    { key: 'doc.consent', label: 'ТССЗ КИДС Согласие ПД запись на занятие',
-      where: 'чекбокс «Я даю согласие…» под формами записи, раздел «Документы»' },
-    { key: 'doc.consent_review', label: 'ТССЗ КИДС Согласие ПД отзыв',
-      where: 'чекбокс «Я даю согласие…» под формой отзыва; пока файл не загружен, там используется согласие для записи' },
-    { key: 'doc.oferta', label: 'Публичная оферта', where: 'подвал сайта, раздел «Документы»' }
-  ];
+  /* ---------- Документы ----------
+     Список карточек редактируется прямо в админке: можно добавить новый
+     документ, переименовать, заменить файл, поменять порядок и удалить.
+     Значения по умолчанию — в textsizes.js (window.TSK_DOCS_DEFAULT).
+     Сам список хранится в настройке docs.items (JSON), ссылка на файл —
+     в отдельной настройке с ключом карточки. */
+  var DOC_ACCEPT = '.pdf,.doc,.docx,.rtf,.txt,image/*';
+
+  function docsDefault() {
+    return (window.TSK_DOCS_DEFAULT || []).map(function (d) {
+      return { key: d.key, name: d.name };
+    });
+  }
+  function docsItems() {
+    try {
+      var arr = JSON.parse(settings['docs.items'] || 'null');
+      if (Array.isArray(arr) && arr.length) {
+        return arr.filter(function (x) { return x && x.key; });
+      }
+    } catch (e) { console.warn('docs.items:', e); }
+    return docsDefault();
+  }
+  function saveDocsItems(arr) {
+    return saveSettings({ 'docs.items': JSON.stringify(arr) });
+  }
+  /* Подсказка «где ещё используется» — только у документов из списка по
+     умолчанию: на них ссылаются галочки под формами и окно о куки. */
+  function docSysNote(key) {
+    var d = (window.TSK_DOCS_DEFAULT || []).filter(function (x) { return x.key === key; })[0];
+    return d ? d.sys : '';
+  }
+
   function renderDocs() {
-    $('docsList').innerHTML = DOC_FIELDS.map(function (f) {
+    var items = docsItems();
+    var head = '<div class="adm-docs-bar">' +
+      '<button class="adm-btn adm-btn-primary" data-act="doc-add" type="button">+ Добавить документ</button>' +
+      '<span class="adm-saved" id="docsSaved" hidden>Сохранено ✓</span></div>';
+
+    var body = items.map(function (f, i) {
       var url = settings[f.key];
-      return '<div class="adm-item"><div class="adm-item-body">' +
-        '<p class="adm-item-title">' + esc(f.label) + '</p>' +
-        (f.where ? '<p class="adm-item-meta">Где используется: ' + esc(f.where) + '</p>' : '') +
-        '<p class="adm-item-meta">' + (url ? 'файл загружен — ссылка на сайте открывает его' : 'файл не загружен — ссылка на сайте пока ничего не открывает') + '</p></div>' +
+      var note = docSysNote(f.key);
+      return '<div class="adm-item">' +
+        '<div class="adm-item-body">' +
+        '<label class="adm-docname">Название на сайте' +
+        '<input type="text" data-docname="' + i + '" value="' + esc(f.name || '') + '" placeholder="Название документа" /></label>' +
+        (note ? '<p class="adm-item-meta">Используется не только в разделе «Документы»: ' + esc(note) + '</p>' : '') +
+        '<p class="adm-item-meta">' + (url
+          ? 'файл загружен — ссылка на сайте открывает его'
+          : 'файл не загружен — в разделе «Документы» карточка не показывается') + '</p>' +
+        '</div>' +
         '<div class="adm-item-actions">' +
+        '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-up" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
+        '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-down" data-i="' + i + '"' + (i === items.length - 1 ? ' disabled' : '') + '>↓</button>' +
         (url ? '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener">Открыть</a>' : '') +
-        '<label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">' + (url ? 'Заменить файл' : 'Загрузить файл') + '<input type="file" data-dockey="' + f.key + '" accept=".pdf,.doc,.docx,.rtf,.txt,image/*" hidden /></label>' +
-        (url ? '<button class="adm-btn adm-btn-sm adm-btn-danger" data-act="doc-del" data-key="' + f.key + '">Удалить файл</button>' : '') +
+        '<label class="adm-btn adm-btn-sm adm-btn-primary adm-upload">' + (url ? 'Заменить файл' : 'Загрузить файл') +
+        '<input type="file" data-dockey="' + esc(f.key) + '" accept="' + DOC_ACCEPT + '" hidden /></label>' +
+        (url ? '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-file-del" data-key="' + esc(f.key) + '">Удалить файл</button>' : '') +
+        '<button class="adm-btn adm-btn-sm adm-btn-danger" data-act="doc-del" data-i="' + i + '">Удалить</button>' +
         '</div></div>';
     }).join('');
+
+    $('docsList').innerHTML = head + (items.length ? body : '<p class="adm-empty">Документов пока нет — добавьте первый.</p>');
   }
 
   /* ---------- Авторизация ---------- */
@@ -620,6 +653,17 @@
   }
 
   document.addEventListener('change', function (e) {
+    // переименование карточки документа — сохраняем по уходу из поля
+    var nameInp = e.target.closest('input[data-docname]');
+    if (nameInp) {
+      var arr = docsItems();
+      var ni = parseInt(nameInp.dataset.docname, 10);
+      if (arr[ni]) {
+        arr[ni].name = nameInp.value.trim() || arr[ni].name;
+        saveDocsItems(arr).then(function () { flash('docsSaved'); }).catch(fail);
+      }
+      return;
+    }
     var doc = e.target.closest('input[data-dockey]');
     if (doc && doc.files[0]) {
       doc.disabled = true;
@@ -789,9 +833,43 @@
       var m = {}; m[btn.dataset.key] = '';
       saveSettings(m).then(renderImages).catch(fail);
     }
-    if (act === 'doc-del' && confirm('Удалить файл? Кнопка на сайте перестанет открывать документ.')) {
+    // очистить загруженный файл, карточка остаётся
+    if (act === 'doc-file-del' && confirm('Удалить файл? Ссылки на сайте перестанут его открывать.')) {
       var dm = {}; dm[btn.dataset.key] = '';
       saveSettings(dm).then(renderDocs).catch(fail);
+    }
+    // новая карточка документа: ключ уникальный, имя правится на месте
+    if (act === 'doc-add') {
+      var added = docsItems().concat([{ key: 'doc.custom_' + Date.now(), name: 'Новый документ' }]);
+      saveDocsItems(added).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);
+    }
+    if (act === 'doc-up' || act === 'doc-down') {
+      var list = docsItems();
+      var from = parseInt(btn.dataset.i, 10);
+      var to = from + (act === 'doc-up' ? -1 : 1);
+      if (list[from] && list[to]) {
+        var tmp = list[from]; list[from] = list[to]; list[to] = tmp;
+        saveDocsItems(list).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);
+      }
+    }
+    if (act === 'doc-del') {
+      var all = docsItems();
+      var di = parseInt(btn.dataset.i, 10);
+      var item = all[di];
+      if (item) {
+        var note = docSysNote(item.key);
+        var msg = note
+          ? 'Убрать «' + item.name + '» из раздела «Документы»?\n\nЗагруженный файл останется на месте, и ссылки в других местах (' +
+            note + ') продолжат его открывать.'
+          : 'Удалить «' + item.name + '»? Карточка и загруженный файл будут отвязаны от сайта.';
+        if (confirm(msg)) {
+          all.splice(di, 1);
+          // у своих документов ключ больше нигде не используется — убираем и ссылку на файл
+          var after = note ? saveDocsItems(all)
+            : saveDocsItems(all).then(function () { var m = {}; m[item.key] = ''; return saveSettings(m); });
+          after.then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);
+        }
+      }
     }
     if (act === 'gal-del' && confirm('Удалить это фото из галереи?')) {
       var arr = galExtra();

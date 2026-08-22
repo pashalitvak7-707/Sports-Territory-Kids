@@ -160,3 +160,12 @@ textarea { resize: vertical; }
 
 /* Оценка в отзывах */
 .adm-stars { color: #F5B400; font-size: 15px; letter-spacing: 1px; font-weight: 400; }
+
+/* ---------- Вкладка «Документы»: редактируемый список карточек ---------- */
+.adm-docs-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.adm-docname { display: flex; flex-direction: column; gap: 5px;
+  font-size: 12px; font-weight: 700; color: var(--a-muted); margin-bottom: 6px; }
+.adm-docname input { font-family: inherit; font-size: 15px; font-weight: 600; color: var(--a-ink);
+  padding: 9px 12px; border: 1.5px solid var(--a-border); border-radius: 9px; background: #fff;
+  width: 100%; max-width: 520px; }
+.adm-docname input:focus { outline: none; border-color: var(--a-accent); }
