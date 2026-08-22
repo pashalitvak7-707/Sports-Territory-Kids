@@ -208,8 +208,21 @@
 
   function renderDocs() {
     var items = docsItems();
-    var head = '<div class="adm-docs-bar">' +
+    var withFile = items.filter(function (f) { return !!settings[f.key]; }).length;
+    var missing = items.length - withFile;
+
+    /* Сразу показываем, сколько документов реально видно на сайте: карточка
+       без загруженного файла в раздел «Документы» не попадает, и без этой
+       строки непонятно, почему на сайте документов меньше, чем здесь. */
+    var summary = '<p class="adm-docs-note' + (missing ? ' warn' : '') + '">' +
+      'В разделе «Документы» на сайте показываются <b>' + withFile + '</b> из <b>' + items.length + '</b>.' +
+      (missing
+        ? ' У остальных ' + missing + ' не загружен файл — такие карточки на сайте не видны. Загрузите файлы, и они появятся.'
+        : ' У всех карточек загружены файлы.') + '</p>';
+
+    var head = summary + '<div class="adm-docs-bar">' +
       '<button class="adm-btn adm-btn-primary" data-act="doc-add" type="button">+ Добавить документ</button>' +
+      '<button class="adm-btn adm-btn-ghost" data-act="doc-reset" type="button">Восстановить стандартные</button>' +
       '<span class="adm-saved" id="docsSaved" hidden>Сохранено ✓</span></div>';
 
     var body = items.map(function (f, i) {
@@ -220,9 +233,9 @@
         '<label class="adm-docname">Название на сайте' +
         '<input type="text" data-docname="' + i + '" value="' + esc(f.name || '') + '" placeholder="Название документа" /></label>' +
         (note ? '<p class="adm-item-meta">Используется не только в разделе «Документы»: ' + esc(note) + '</p>' : '') +
-        '<p class="adm-item-meta">' + (url
-          ? 'файл загружен — ссылка на сайте открывает его'
-          : 'файл не загружен — в разделе «Документы» карточка не показывается') + '</p>' +
+        (url
+          ? '<p class="adm-item-meta">файл загружен — ссылка на сайте открывает его</p>'
+          : '<p class="adm-nofile">Файл не загружен — на сайте не показывается</p>') +
         '</div>' +
         '<div class="adm-item-actions">' +
         '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-up" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
@@ -839,6 +852,22 @@
       saveSettings(dm).then(renderDocs).catch(fail);
     }
     // новая карточка документа: ключ уникальный, имя правится на месте
+    /* Возвращает шесть стандартных документов юротдела, если их случайно
+       удалили из списка. Свои добавленные документы при этом сохраняются. */
+    if (act === 'doc-reset') {
+      var cur = docsItems();
+      var defs = docsDefault();
+      var defKeys = defs.map(function (d) { return d.key; });
+      var mine = cur.filter(function (x) { return defKeys.indexOf(x.key) === -1; });
+      // у стандартных документов сохраняем названия, если их уже меняли
+      var merged = defs.map(function (d) {
+        var was = cur.filter(function (x) { return x.key === d.key; })[0];
+        return { key: d.key, name: was ? was.name : d.name };
+      }).concat(mine);
+      if (confirm('Вернуть в список все стандартные документы?\n\nДобавленные вами документы и уже загруженные файлы останутся на месте.')) {
+        saveDocsItems(merged).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);
+      }
+    }
     if (act === 'doc-add') {
       var added = docsItems().concat([{ key: 'doc.custom_' + Date.now(), name: 'Новый документ' }]);
       saveDocsItems(added).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);

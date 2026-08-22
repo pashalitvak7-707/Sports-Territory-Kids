@@ -169,3 +169,10 @@ textarea { resize: vertical; }
   padding: 9px 12px; border: 1.5px solid var(--a-border); border-radius: 9px; background: #fff;
   width: 100%; max-width: 520px; }
 .adm-docname input:focus { outline: none; border-color: var(--a-accent); }
+.adm-docs-note { font-size: 13px; line-height: 1.45; color: var(--a-muted);
+  background: #fff; border: 1px solid var(--a-border); border-left: 4px solid var(--a-accent);
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.adm-docs-note.warn { border-left-color: var(--a-orange); }
+.adm-docs-note b { color: var(--a-ink); }
+.adm-nofile { display: inline-block; font-size: 12px; font-weight: 700; color: #9A4A16;
+  background: #FFF1E6; border: 1px solid #FFD5B5; border-radius: 8px; padding: 4px 10px; margin-top: 2px; }
