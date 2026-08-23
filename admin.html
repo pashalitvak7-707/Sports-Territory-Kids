@@ -197,7 +197,7 @@
 
       <section id="tab-contacts" class="adm-tabpane" hidden>
         <h2>Контакты</h2>
-        <p class="adm-hint">Эти данные подставляются во все телефоны, кнопки и ссылки WhatsApp на сайте, а адрес — в подпись под телефоном в футере.</p>
+        <p class="adm-hint">Эти данные подставляются во все телефоны, кнопки и ссылки WhatsApp на сайте, а адрес — в подпись под телефоном в футере. Наименование, ИНН, ОГРН, юридический адрес и почта показываются в реквизитах внизу сайта — их наличие требует ч. 2 ст. 10 Закона об информации. Пустое поле = значение по умолчанию из вёрстки.</p>
         <div class="adm-card adm-form">
           <div class="adm-grid">
             <label>Телефон (как показан на сайте)
@@ -210,7 +210,22 @@
               <input type="text" id="cWhatsapp" placeholder="77054290000" />
             </label>
             <label>Адрес (в футере, под телефоном)
-              <input type="text" id="cAddress" placeholder="ул. Ярослава Гашека, 19, стр. 1" />
+              <input type="text" id="cAddress" placeholder="г. Санкт-Петербург, ул. Ярослава Гашека, 19, стр. 1" />
+            </label>
+            <label>Наименование компании
+              <input type="text" id="cLegalName" placeholder="ООО «Территория Спорта Северо-Запад»" />
+            </label>
+            <label>ИНН
+              <input type="text" id="cInn" placeholder="ИНН 7816742240" />
+            </label>
+            <label>ОГРН
+              <input type="text" id="cOgrn" placeholder="ОГРН 1237800071211" />
+            </label>
+            <label>Юридический адрес (в реквизитах)
+              <input type="text" id="cLegalAddress" placeholder="192283, г. Санкт-Петербург, ул. Ярослава Гашека, д. 19, стр. 1" />
+            </label>
+            <label>Электронная почта (для обращений)
+              <input type="text" id="cEmail" placeholder="kids@tersportspb.ru" />
             </label>
           </div>
         </div>
@@ -231,6 +246,6 @@
     };
   </script>
   <script src="textsizes.js?v=5"></script>
-  <script src="admin.js?v=20"></script>
+  <script src="admin.js?v=21"></script>
 </body>
 </html>

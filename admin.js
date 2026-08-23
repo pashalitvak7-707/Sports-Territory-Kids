@@ -795,12 +795,22 @@
     $('cPhoneTel').value = settings['contact.phone_tel'] || '';
     $('cWhatsapp').value = settings['contact.whatsapp'] || '';
     $('cAddress').value = settings['contact.address'] || '';
+    $('cLegalName').value = settings['contact.legal_name'] || '';
+    $('cInn').value = settings['contact.inn'] || '';
+    $('cOgrn').value = settings['contact.ogrn'] || '';
+    $('cLegalAddress').value = settings['contact.legal_address'] || '';
+    $('cEmail').value = settings['contact.email'] || '';
   }
   $('contactsSaveBtn').addEventListener('click', function () {
     saveSettings({
       'contact.phone_display': $('cPhoneDisplay').value,
       'contact.phone_tel': $('cPhoneTel').value,
       'contact.address': $('cAddress').value.trim(),
+      'contact.legal_name': $('cLegalName').value.trim(),
+      'contact.inn': $('cInn').value.trim(),
+      'contact.ogrn': $('cOgrn').value.trim(),
+      'contact.legal_address': $('cLegalAddress').value.trim(),
+      'contact.email': $('cEmail').value.trim(),
       'contact.whatsapp': $('cWhatsapp').value.replace(/\D/g, '')
     }).then(function () { flash('contactsSaved'); }).catch(fail);
   });

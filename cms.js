@@ -159,6 +159,24 @@
         el.textContent = s['contact.address'];
       });
     }
+
+    // Реквизиты владельца сайта в подвале (вкладка «Контакты» в админке)
+    var LEGAL = {
+      'contact.legal_name': '.fl-name',
+      'contact.inn': '.fl-inn',
+      'contact.ogrn': '.fl-ogrn',
+      'contact.legal_address': '.fl-addr'
+    };
+    Object.keys(LEGAL).forEach(function (key) {
+      if (!s[key]) return;
+      document.querySelectorAll(LEGAL[key]).forEach(function (el) { el.textContent = s[key]; });
+    });
+    if (s['contact.email']) {
+      document.querySelectorAll('.fl-email').forEach(function (a) {
+        a.textContent = s['contact.email'];
+        a.href = 'mailto:' + s['contact.email'];
+      });
+    }
     if (s['contact.whatsapp']) {
       document.querySelectorAll('a[href*="wa.me/"]:not([data-keep-link])').forEach(function (a) {
         a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + s['contact.whatsapp']);
