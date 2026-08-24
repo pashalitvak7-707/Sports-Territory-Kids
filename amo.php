@@ -161,6 +161,16 @@ if ($leadId) {
   ];
   $lines = [];
   if ($phone !== '') $lines[] = 'Телефон: ' . $phone;
+  /* IP виден только серверу — берём его здесь, а не из данных формы */
+  $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+  if ($ip !== '' && !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+    foreach (['HTTP_X_REAL_IP', 'HTTP_X_FORWARDED_FOR'] as $h) {
+      if (empty($_SERVER[$h])) continue;
+      $first = trim(explode(',', $_SERVER[$h])[0]);
+      if (filter_var($first, FILTER_VALIDATE_IP)) { $ip = $first; break; }
+    }
+  }
+  if ($ip !== '') $lines[] = 'IP-адрес: ' . $ip;
   foreach ($labels as $k => $label) {
     $v = trim((string)($in[$k] ?? ''));
     if ($v !== '') $lines[] = $label . ': ' . $v;

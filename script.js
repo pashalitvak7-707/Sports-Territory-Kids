@@ -197,6 +197,25 @@
     form.__sentTimer = setTimeout(function () { note.hidden = true; }, 9000);
   }
 
+  /* Запись согласия в журнал на сервере: имя, время простановки галочек и
+     редакции документов уходят на consent-log.php, IP проставляется там же
+     (из браузера свой IP не виден). Требование юристов по 152-ФЗ. */
+  function logFormConsent(form, ctx, data) {
+    if (!form.querySelector('.consent-row')) return;   // формы без галочек не логируем
+    var log = window.TSKCookies && window.TSKCookies.logConsent;
+    if (!log) return;
+    var payload = { _type: 'form', _context: ctx, _page: location.pathname };
+    data.forEach(function (val, key) {
+      val = (val || '').toString().trim();
+      // служебные поля аналитики в журнал согласий не нужны
+      if (!val || key === '_ym_cid' || key.indexOf('_utm_') === 0 ||
+          key === '_yclid' || key === '_referrer' || key === '_landing' ||
+          key === '_first_visit') return;
+      payload[key] = val;
+    });
+    log(payload);
+  }
+
   function initForms() {
     document.querySelectorAll('[data-whatsapp-form]').forEach(function (form) {
       // формы с выбором мессенджера: запоминаем, какую кнопку нажали
@@ -212,6 +231,7 @@
         if (an) an.refreshHiddenFields(); // свежие ClientID/UTM перед чтением FormData
         stampConsentDocs(form);           // редакция документов на момент согласия
         data = new FormData(form);
+        logFormConsent(form, ctx, data);  // журнал согласий на сервере (там же ставится IP)
         // Отзывы уходят на модерацию в админку (если она подключена), а не в WhatsApp
         if (form.hasAttribute('data-review-form') && cms && cms.configured) {
           cms.submitReview(form);

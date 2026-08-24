@@ -108,6 +108,15 @@
         docs: docs
       });
 
+      logConsent({
+        _type: 'cookie',
+        _context: 'Согласие на куки и Яндекс.Метрику',
+        _page: location.pathname,
+        _consent_cookie: 'да',
+        _consent_cookie_at: new Date().toISOString(),
+        _consent_docs: Object.keys(docs).map(function (k) { return k + '=' + docs[k]; }).join(' | ')
+      });
+
       bar.hidden = true;
       document.documentElement.classList.remove('cookie-on');
       setBarHeight(bar);
@@ -121,10 +130,28 @@
     initBar();
   }
 
-  /* Публичный API — пригодится для журнала согласий на стороне сервера */
+  /* ---------- Журнал согласий на сервере ----------
+     IP-адрес виден только серверу, поэтому запись отправляется на
+     consent-log.php, а IP там проставляется сам. На хостинге без PHP
+     запрос вернёт 404 — ошибка гасится, сайт работает как обычно. */
+  function logConsent(payload) {
+    try {
+      if (!window.fetch) return Promise.resolve(false);
+      return fetch('consent-log.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload || {}),
+        keepalive: true,
+        credentials: 'omit'
+      }).then(function (r) { return r.ok; }, function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
+  }
+
+  /* Публичный API */
   window.TSKCookies = {
     granted: isGranted,
     record: readConsent,
-    start: startMetrika
+    start: startMetrika,
+    logConsent: logConsent
   };
 })();
