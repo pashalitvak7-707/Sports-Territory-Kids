@@ -32,6 +32,8 @@
     _consent_pd_policy_at: 'Отметка о политике обработки ПД поставлена',
     _consent_pd: 'Согласие на обработку персональных данных',
     _consent_pd_at: 'Отметка о согласии поставлена',
+    _consent_cookie: 'Согласие на куки и Яндекс.Метрику',
+    _consent_cookie_at: 'Отметка о согласии на куки поставлена',
     _consent_docs: 'Редакция документов на момент согласия' };
 
   /* ---------- Сканер страниц сайта: находит все редактируемые тексты и картинки ---------- */
@@ -195,6 +197,44 @@
     } catch (e) { console.warn('docs.items:', e); }
     return docsDefault();
   }
+  /* ---------- История версий документов (требование юристов) ----------
+     При каждой загрузке файла запоминаем ссылку и дату. Старые файлы в
+     хранилище не удаляются, поэтому по записи в журнале согласий всегда
+     видно, с какой именно редакцией согласился человек. */
+  function docVersions() {
+    try {
+      var v = JSON.parse(settings['docs.versions'] || '{}');
+      return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+    } catch (e) { console.warn('docs.versions:', e); return {}; }
+  }
+  function addDocVersion(key, url, fileName) {
+    var all = docVersions();
+    var list = all[key] || [];
+    list.push({ url: url, at: new Date().toISOString(), name: fileName || '' });
+    if (list.length > 30) list = list.slice(-30);     // настройка не должна разрастаться
+    all[key] = list;
+    return saveSettings({ 'docs.versions': JSON.stringify(all) });
+  }
+  function versionsHtml(key, currentUrl) {
+    var list = (docVersions()[key] || []).slice().reverse();
+    var known = list.some(function (v) { return v.url === currentUrl; });
+    if (!list.length && !currentUrl) return '';
+    var rows = list.map(function (v) {
+      var cur = v.url === currentUrl;
+      return '<div class="adm-ver">' +
+        '<span class="adm-ver-when">' + esc(fmtDate(v.at)) + (v.name ? ' · ' + esc(v.name) : '') +
+        (cur ? ' · <b>текущая</b>' : '') + '</span>' +
+        '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(v.url) + '" target="_blank" rel="noopener">Открыть</a>' +
+        (cur ? '' : '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-restore" data-key="' +
+          esc(key) + '" data-url="' + esc(v.url) + '">Сделать текущей</button>') +
+        '</div>';
+    }).join('');
+    if (currentUrl && !known) {
+      rows = '<div class="adm-ver"><span class="adm-ver-when">Текущий файл загружен до того, как появилась история версий</span></div>' + rows;
+    }
+    return '<details class="adm-vers"><summary>История версий: ' + list.length + '</summary>' + rows + '</details>';
+  }
+
   function saveDocsItems(arr) {
     return saveSettings({ 'docs.items': JSON.stringify(arr) });
   }
@@ -232,6 +272,7 @@
         '<label class="adm-docname">Название на сайте' +
         '<input type="text" data-docname="' + i + '" value="' + esc(f.name || '') + '" placeholder="Название документа" /></label>' +
         (note ? '<p class="adm-item-meta">Используется не только в разделе «Документы»: ' + esc(note) + '</p>' : '') +
+        versionsHtml(f.key, url) +
         (url
           ? '<p class="adm-item-meta">файл загружен — ссылка на сайте открывает его</p>'
           : '<p class="adm-nofile">Файл не загружен — на сайте не показывается</p>') +
@@ -283,7 +324,7 @@
   });
 
   /* ---------- Вкладки ---------- */
-  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, docs: renderDocs, contacts: renderContacts };
+  var loaders = { messages: loadMessages, reviews: loadReviews, schedule: loadSchedule, coaches: loadCoaches, texts: renderTexts, images: renderImages, design: renderDesign, docs: renderDocs, consents: renderConsents, contacts: renderContacts };
   function openTab(name) {
     document.querySelectorAll('.adm-tabpane').forEach(function (p) { p.hidden = true; });
     document.querySelectorAll('.adm-tabs button').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
@@ -678,8 +719,13 @@
     var doc = e.target.closest('input[data-dockey]');
     if (doc && doc.files[0]) {
       doc.disabled = true;
+      var docKey = doc.dataset.dockey, fileName = doc.files[0].name;
       uploadImage(doc.files[0], 'docs')
-        .then(function (url) { var m = {}; m[doc.dataset.dockey] = url; return saveSettings(m); })
+        .then(function (url) {
+          var m = {}; m[docKey] = url;
+          // сначала ссылка на текущий файл, затем запись в историю версий
+          return saveSettings(m).then(function () { return addDocVersion(docKey, url, fileName); });
+        })
         .then(renderDocs)
         .catch(fail);
       return;
@@ -787,6 +833,100 @@
     saveSettings(map).then(function () { renderDesign(); flash('designSaved'); }).catch(fail);
   });
 
+  /* ---------- Журнал согласий (выгрузка для проверки) ----------
+     Журнал ведёт consent-log.php на сервере сайта, а не эта база: IP-адрес
+     виден только серверу. Здесь — просмотр последних записей и выгрузка
+     всех сведений за месяц в CSV или JSON.
+     Ключ в коде не хранится: его вводит администратор, и он живёт только
+     до конца сессии в браузере. */
+  var CL_KEY = 'tsk_consent_key';
+
+  function clKey() {
+    try { return window.sessionStorage.getItem(CL_KEY) || ''; } catch (e) { return ''; }
+  }
+  function clSaveKey(v) {
+    try { window.sessionStorage.setItem(CL_KEY, v); } catch (e) {}
+  }
+  function clUrl(params) {
+    return 'consent-log.php?' + params;
+  }
+  function clError(msg) {
+    var el = $('clError');
+    el.textContent = msg;
+    el.hidden = !msg;
+  }
+
+  function renderConsents() {
+    $('clKey').value = clKey();
+    $('clResult').innerHTML = '';
+    clError('');
+    if (clKey()) loadConsents();
+  }
+
+  function loadConsents() {
+    var key = $('clKey').value.trim();
+    if (!key) { clError('Введите ключ доступа.'); return; }
+    clError('');
+    $('clResult').innerHTML = '<p class="adm-empty">Загрузка журнала…</p>';
+
+    Promise.all([
+      fetch(clUrl('months=' + encodeURIComponent(key))).then(function (r) { return r.json(); }),
+      fetch(clUrl('recent=' + encodeURIComponent(key) + '&n=20')).then(function (r) { return r.json(); })
+    ]).then(function (res) {
+      var months = res[0], recent = res[1];
+      if (!months || months.error === 'bad_key') {
+        $('clResult').innerHTML = '';
+        clError('Ключ не подошёл. Это значение AMO_SELFTEST_KEY из файла amo-config.php на сервере.');
+        return;
+      }
+      clSaveKey(key);
+      var ms = months.months || {};
+      var keys = Object.keys(ms);
+
+      var head = '<div class="adm-card adm-form"><h3>Выгрузка за месяц</h3>' +
+        (keys.length
+          ? '<div class="adm-list">' + keys.map(function (m) {
+              return '<div class="adm-item"><div class="adm-item-body">' +
+                '<p class="adm-item-title">' + esc(m) + '</p>' +
+                '<p class="adm-item-meta">записей: ' + ms[m] + '</p></div>' +
+                '<div class="adm-item-actions">' +
+                '<a class="adm-btn adm-btn-sm adm-btn-primary" href="' +
+                  esc(clUrl('export=' + encodeURIComponent(key) + '&month=' + encodeURIComponent(m) + '&format=csv')) +
+                  '">Скачать CSV</a>' +
+                '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' +
+                  esc(clUrl('export=' + encodeURIComponent(key) + '&month=' + encodeURIComponent(m) + '&format=json')) +
+                  '">Скачать JSON</a>' +
+                '</div></div>';
+            }).join('') + '</div>'
+          : '<p class="adm-empty">Записей пока нет — журнал заполнится, когда посетители начнут отправлять формы.</p>') +
+        '</div>';
+
+      var rows = (recent && recent.rows) || [];
+      var list = '<div class="adm-card adm-form"><h3>Последние записи (' + rows.length + ' из ' +
+        ((recent && recent.total) || 0) + ' за текущий месяц)</h3>' +
+        (rows.length
+          ? '<div class="adm-list">' + rows.map(function (r) {
+              var f = r.fields || {};
+              var fields = Object.keys(f).map(function (k) {
+                return '<p class="adm-kv"><b>' + esc(FIELD_LABELS[k] || k) + ':</b> ' + esc(f[k]) + '</p>';
+              }).join('');
+              return '<div class="adm-item"><div class="adm-item-body">' +
+                '<p class="adm-item-meta">' + esc(fmtDate(r.at)) + ' · IP ' + esc(r.ip || '—') + ' · ' + esc(r.page || '') + '</p>' +
+                '<p class="adm-item-title"><span class="adm-pill">' + esc(r.context || r.type || '') + '</span></p>' +
+                fields + '</div></div>';
+            }).join('') + '</div>'
+          : '<p class="adm-empty">За текущий месяц записей нет.</p>') +
+        '</div>';
+
+      $('clResult').innerHTML = head + list;
+    }).catch(function (e) {
+      $('clResult').innerHTML = '';
+      clError('Не удалось получить журнал: ' + (e && e.message ? e.message : 'нет ответа от сервера') +
+        '. Журнал работает только на боевом сайте с PHP (Beget).');
+    });
+  }
+  $('clLoad').addEventListener('click', loadConsents);
+
   /* ---------- Контакты ---------- */
   function renderContacts() {
     $('cPhoneDisplay').value = settings['contact.phone_display'] || '';
@@ -860,6 +1000,10 @@
       saveSettings(dm).then(renderDocs).catch(fail);
     }
     // новая карточка документа: ключ уникальный, имя правится на месте
+    if (act === 'doc-restore') {
+      var rm = {}; rm[btn.dataset.key] = btn.dataset.url;
+      saveSettings(rm).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);
+    }
     /* Возвращает шесть стандартных документов юротдела, если их случайно
        удалили из списка. Свои добавленные документы при этом сохраняются. */
     if (act === 'doc-reset') {

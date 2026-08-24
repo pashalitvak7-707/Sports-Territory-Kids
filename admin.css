@@ -176,3 +176,11 @@ textarea { resize: vertical; }
 .adm-docs-note b { color: var(--a-ink); }
 .adm-nofile { display: inline-block; font-size: 12px; font-weight: 700; color: #9A4A16;
   background: #FFF1E6; border: 1px solid #FFD5B5; border-radius: 8px; padding: 4px 10px; margin-top: 2px; }
+
+/* ---------- История версий документа и журнал согласий ---------- */
+.adm-vers { margin: 6px 0 2px; }
+.adm-vers summary { cursor: pointer; font-size: 12px; font-weight: 700; color: var(--a-green); }
+.adm-ver { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 7px 0; border-bottom: 1px solid var(--a-border); font-size: 13px; }
+.adm-ver:last-child { border-bottom: none; }
+.adm-ver-when { flex: 1; min-width: 200px; color: var(--a-muted); }

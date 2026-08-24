@@ -6,7 +6,7 @@
   <title>Админ-панель — Территория Спорта КИДС</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/png" href="assets/img/logo.png" />
-  <link rel="stylesheet" href="admin.css?v=7" />
+  <link rel="stylesheet" href="admin.css?v=8" />
 </head>
 <body>
 
@@ -50,6 +50,7 @@
           <button data-tab="images">Изображения</button>
           <button data-tab="design">Оформление</button>
           <button data-tab="docs">Документы</button>
+          <button data-tab="consents">Журнал согласий</button>
           <button data-tab="contacts">Контакты</button>
         </nav>
         <div class="adm-header-right">
@@ -192,6 +193,22 @@
         <div id="docsList" class="adm-list"></div>
       </section>
 
+
+      <section id="tab-consents" class="adm-tabpane" hidden>
+        <h2>Журнал согласий</h2>
+        <p class="adm-hint">Здесь хранится подтверждение того, что посетитель действительно поставил галочки согласия: дата и время по каждой галочке, IP-адрес, имя и телефон, редакции документов. Журнал ведётся на сервере сайта (не в этой базе) — оттуда его и можно выгрузить одним файлом, если запросит проверка.</p>
+        <div class="adm-card adm-form">
+          <label>Ключ доступа к журналу
+            <input type="password" id="clKey" autocomplete="off" placeholder="тот же ключ, что в amo-config.php (AMO_SELFTEST_KEY)" />
+          </label>
+          <p class="adm-hint">Журнал содержит персональные данные посетителей, поэтому закрыт отдельным ключом — он не хранится в коде сайта. Ключ запоминается только до конца работы с админкой.</p>
+          <div class="adm-form-actions">
+            <button class="adm-btn adm-btn-primary" id="clLoad" type="button">Открыть журнал</button>
+          </div>
+          <p class="adm-error" id="clError" hidden></p>
+        </div>
+        <div id="clResult"></div>
+      </section>
       <section id="tab-contacts" class="adm-tabpane" hidden>
         <h2>Контакты</h2>
         <p class="adm-hint">Эти данные подставляются во все телефоны, кнопки и ссылки WhatsApp на сайте, а адрес — в подпись под телефоном в футере. Наименование, ИНН, ОГРН, юридический адрес и почта показываются в реквизитах внизу сайта — их наличие требует ч. 2 ст. 10 Закона об информации. Пустое поле = значение по умолчанию из вёрстки.</p>
@@ -243,6 +260,6 @@
     };
   </script>
   <script src="textsizes.js?v=5"></script>
-  <script src="admin.js?v=22"></script>
+  <script src="admin.js?v=24"></script>
 </body>
 </html>
