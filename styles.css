@@ -1431,7 +1431,9 @@ a { text-decoration: none; color: inherit; }
 .sched-table { background: #fff; border: 1px solid #e7ece8; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-sm); }
 /* the last track is fixed: with `auto`, the button-less header row resolved
    different column widths than the body rows and the labels drifted */
-.sch-row { display: grid; grid-template-columns: 1fr 1.15fr 1.15fr 1.35fr 0.85fr 136px; align-items: center;
+/* Колонки: Возраст, День, Время, Тренер и кнопка. Колонка «Места» убрана —
+   освободившаяся ширина распределена между оставшимися (fr тянутся сами). */
+.sch-row { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.6fr 136px; align-items: center;
   gap: 14px; padding: 16px clamp(18px, 1.8vw, 26px); border-bottom: 1px solid #eef2ef; }
 .sch-row:last-child { border-bottom: none; }
 .sch-row[hidden] { display: none; }   /* отфильтрованные занятия исчезают */
@@ -1442,8 +1444,6 @@ a { text-decoration: none; color: inherit; }
 .sch-v { font-size: 15px; color: var(--ink); }
 .sch-dir .sch-v { font-weight: 700; color: var(--green-d); }
 .sch-badge { display: inline-block; background: #EAF6E9; color: #2E8B3E; font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
-.sch-spots { font-weight: 600; color: #2E8B3E; }
-.sch-spots.sch-few { color: #2E8B3E; }   /* места всегда зелёные */
 .sch-act { justify-self: end; }
 .sch-book { font-family: inherit; font-size: 14px; font-weight: 700; color: #fff; background: var(--orange);
   border: none; border-radius: 12px; padding: 11px 20px; cursor: pointer; white-space: nowrap;
@@ -1519,5 +1519,4 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ===================== CMS ADDITIONS ===================== */
-.sch-spots.sch-none { color: #2E8B3E; font-weight: 700; }
 .review-thanks { margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--green-d); }

@@ -432,15 +432,6 @@
   }
 
   /* ---------- Расписание ---------- */
-  function spotsText(n) {
-    n = parseInt(n, 10) || 0;
-    if (n === 0) return api.settings['ui.no_spots'] || 'Нет мест';
-    var d10 = n % 10, d100 = n % 100;
-    var word = (d10 === 1 && d100 !== 11) ? 'место'
-      : (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) ? 'места' : 'мест';
-    return n + ' ' + word;
-  }
-
   function renderSchedule(rows) {
     if (!rows || !rows.length) return;
     var table = document.querySelector('.sched-table');
@@ -458,17 +449,14 @@
       var dir = optLabel('fDir', r.dir, DIR_LABELS[r.dir] || r.dir);
       var age = optLabel('fAge', r.age, AGE_LABELS[r.age] || r.age);
       var day = optLabel('fDay', r.day, DAY_LABELS[r.day] || r.day);
-      var n = parseInt(r.spots, 10) || 0;
-      var spotCls = 'sch-v sch-spots' + (n === 0 ? ' sch-none' : (n <= 2 ? ' sch-few' : ''));
       function cell(k, v) {
         return '<div class="sch-cell"><span class="sch-k">' + k + '</span><span class="sch-v">' + v + '</span></div>';
       }
-      return '<div class="sch-row" data-age="' + esc(r.age) + '" data-dir="' + esc(r.dir) + '" data-day="' + esc(r.day) + '" data-free="' + n + '">' +
+      return '<div class="sch-row" data-age="' + esc(r.age) + '" data-dir="' + esc(r.dir) + '" data-day="' + esc(r.day) + '">' +
         cell(esc(colLabel(0, 'Возраст')), '<span class="sch-badge">' + esc(age) + '</span>') +
         cell(esc(colLabel(1, 'День')), esc(day)) +
         cell(esc(colLabel(2, 'Время')), esc(r.time)) +
         cell(esc(colLabel(3, 'Тренер')), esc(r.coach || '')) +
-        '<div class="sch-cell"><span class="sch-k">' + esc(colLabel(4, 'Места')) + '</span><span class="' + spotCls + '">' + spotsText(n) + '</span></div>' +
         '<div class="sch-cell sch-act"><button type="button" class="sch-book" data-dir="' + esc(dir) + '" data-age="' + esc(age) + '" data-day="' + esc(day) + '" data-time="' + esc(r.time) + '" data-coach="' + esc(r.coach || '') + '">' + esc(bookText) + '</button></div>' +
         '</div>';
     }).join('');

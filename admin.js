@@ -51,7 +51,6 @@
   };
   var EXTRA_TEXTS = [
     { key: 'ui.book_btn', label: 'Кнопка «Записаться» в таблице расписания', def: 'Записаться' },
-    { key: 'ui.no_spots', label: 'Надпись «Нет мест» в расписании', def: 'Нет мест' },
     { key: 'ui.review_thanks', label: 'Сообщение после отправки отзыва', def: 'Спасибо! Отзыв появится на сайте после проверки.' }
   ];
   var textsSubtab = 'desktop';
@@ -384,8 +383,7 @@
     e.preventDefault();
     var row = {
       dir: $('schDir').value, age: $('schAge').value, day: $('schDay').value,
-      time: $('schTime').value.trim(), coach: $('schCoach').value.trim(),
-      spots: parseInt($('schSpots').value, 10) || 0
+      time: $('schTime').value.trim(), coach: $('schCoach').value.trim()
     };
     row.sort = schSort(row.day, row.time);
     var q = schEditId
@@ -411,7 +409,7 @@
         return '<div class="adm-item" data-json="' + esc(JSON.stringify(s)) + '">' +
           '<div class="adm-item-body">' +
           '<p class="adm-item-title"><span class="adm-pill">' + esc(DAYS[s.day] || s.day) + '</span> ' + esc(s.time) + ' — ' + esc(DIRS[s.dir] || s.dir) + '</p>' +
-          '<p class="adm-item-meta">' + esc(AGES[s.age] || s.age) + (s.coach ? ' · ' + esc(s.coach) : '') + ' · мест: ' + s.spots + '</p>' +
+          '<p class="adm-item-meta">' + esc(AGES[s.age] || s.age) + (s.coach ? ' · ' + esc(s.coach) : '') + '</p>' +
           '</div>' +
           '<div class="adm-item-actions">' +
           '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="edit-sch" data-id="' + s.id + '">Изменить</button>' +
@@ -833,7 +831,7 @@
       var s = JSON.parse(btn.closest('.adm-item').dataset.json);
       schEditId = s.id;
       $('schDir').value = s.dir; $('schAge').value = s.age; $('schDay').value = s.day;
-      $('schTime').value = s.time; $('schCoach').value = s.coach; $('schSpots').value = s.spots;
+      $('schTime').value = s.time; $('schCoach').value = s.coach;
       $('schFormTitle').textContent = 'Изменить занятие';
       $('schSaveBtn').textContent = 'Сохранить';
       $('schCancelBtn').hidden = false;

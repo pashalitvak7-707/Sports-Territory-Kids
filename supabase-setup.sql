@@ -28,7 +28,7 @@ create table if not exists public.schedule (
   day   text not null,  -- mon..sun
   time  text not null,  -- например 10:00–10:45
   coach text not null default '',
-  spots int  not null default 0,
+  spots int  not null default 0,   -- больше не используется сайтом (колонка «Места» убрана); оставлена, чтобы не терять данные
   sort  int  not null default 0
 );
 
