@@ -115,6 +115,15 @@
     { c: '#FFFFFF', label: 'Белый' }
   ];
 
+  // пароль к служебным скриптам на сервере (журнал согласий, документы)
+  var CL_KEY = 'tsk_consent_key';
+  function clKey() {
+    try { return window.sessionStorage.getItem(CL_KEY) || ''; } catch (e) { return ''; }
+  }
+  function clSaveKey(v) {
+    try { window.sessionStorage.setItem(CL_KEY, v); } catch (e) {}
+  }
+
   var settings = {};   // key -> value (текущие из базы)
   var coachesCache = [];
 
@@ -155,6 +164,32 @@
       up.forEach(function (r) { settings[r.key] = r.value; });
       del.forEach(function (k) { delete settings[k]; });
     });
+  }
+
+  /* Документы (политики и согласия) хранятся на сервере сайта, а не в
+     Supabase: это доказательство на случай проверки, и оно должно быть под
+     нашим контролем, рядом с журналом согласий. Загрузка закрыта паролем —
+     тем же, что и журнал. Контрольную сумму считает сервер. */
+  function uploadDocFile(file, docKey) {
+    var pass = clKey();
+    if (!pass) return Promise.reject(new Error('Не задан пароль для загрузки документов на сервер.'));
+    var fd = new FormData();
+    fd.append('file', file);
+    fd.append('key', docKey || 'doc');
+    return fetch('docs.php?upload=' + encodeURIComponent(pass), { method: 'POST', body: fd })
+      .then(function (r) { return r.json().catch(function () { return { ok: false, error: 'bad_response' }; }); })
+      .then(function (j) {
+        if (!j || !j.ok) {
+          var msg = j && j.error === 'bad_key' ? 'пароль не подошёл'
+            : j && j.error === 'bad_type' ? 'такой тип файла не разрешён'
+            : j && j.error === 'mime_mismatch' ? 'содержимое файла не совпадает с расширением'
+            : j && j.error === 'too_large' ? 'файл слишком большой'
+            : (j && j.error) || 'неизвестная ошибка';
+          throw new Error('Не удалось загрузить документ на сервер: ' + msg);
+        }
+        // абсолютная ссылка — она попадёт в журнал согласий как доказательство
+        return { url: location.origin + location.pathname.replace(/[^/]*$/, '') + j.url, sha256: j.sha256 };
+      });
   }
 
   /* Контрольная сумма файла (SHA-256). По ней всегда можно доказать, что
@@ -278,7 +313,20 @@
         ? ' У остальных ' + missing + ' не загружен файл — такие карточки на сайте не видны. Загрузите файлы, и они появятся.'
         : ' У всех карточек загружены файлы.') + '</p>';
 
-    var head = summary + '<div class="adm-docs-bar">' +
+    /* Загрузка документов идёт на сервер сайта и закрыта паролем. Если он
+       ещё не введён в этой сессии — просим ввести прямо здесь. */
+    var needPass = !clKey();
+    var passBox = needPass
+      ? '<div class="adm-docs-note warn"><b>Чтобы загружать документы, введите пароль.</b> ' +
+        'Тот же, что и для журнала согласий — документы хранятся на сервере сайта.' +
+        '<div class="adm-docs-bar" style="margin-top:10px">' +
+        '<input type="password" id="docsPass" autocomplete="off" placeholder="пароль" ' +
+        'style="padding:9px 12px;border:1.5px solid var(--a-border);border-radius:9px;font-family:inherit" />' +
+        '<button class="adm-btn adm-btn-primary" data-act="doc-pass" type="button">Сохранить пароль</button>' +
+        '</div></div>'
+      : '';
+
+    var head = summary + passBox + '<div class="adm-docs-bar">' +
       '<button class="adm-btn adm-btn-primary" data-act="doc-add" type="button">+ Добавить документ</button>' +
       '<button class="adm-btn adm-btn-ghost" data-act="doc-reset" type="button">Восстановить стандартные</button>' +
       '<span class="adm-saved" id="docsSaved" hidden>Сохранено ✓</span></div>';
@@ -739,15 +787,16 @@
     if (doc && doc.files[0]) {
       doc.disabled = true;
       var docKey = doc.dataset.dockey, theFile = doc.files[0], fileName = theFile.name;
-      Promise.all([uploadImage(theFile, 'docs'), sha256Hex(theFile)])
+      uploadDocFile(theFile, docKey)
         .then(function (res) {
-          var url = res[0], sha = res[1];
-          var m = {}; m[docKey] = url;
+          var m = {}; m[docKey] = res.url;
           // сначала ссылка на текущий файл, затем запись в историю версий
-          return saveSettings(m).then(function () { return addDocVersion(docKey, url, fileName, sha); });
+          return saveSettings(m).then(function () {
+            return addDocVersion(docKey, res.url, fileName, res.sha256);
+          });
         })
         .then(renderDocs)
-        .catch(fail);
+        .catch(function (e) { fail(e); renderDocs(); });
       return;
     }
     var add = e.target.closest('input[data-galadd]');
@@ -859,14 +908,6 @@
      всех сведений за месяц в CSV или JSON.
      Пароль в коде не хранится: его вводит администратор, и он живёт только
      до конца сессии в браузере. */
-  var CL_KEY = 'tsk_consent_key';
-
-  function clKey() {
-    try { return window.sessionStorage.getItem(CL_KEY) || ''; } catch (e) { return ''; }
-  }
-  function clSaveKey(v) {
-    try { window.sessionStorage.setItem(CL_KEY, v); } catch (e) {}
-  }
   function clUrl(params) {
     return 'consent-log.php?' + params;
   }
@@ -1052,6 +1093,12 @@
       saveSettings(dm).then(renderDocs).catch(fail);
     }
     // новая карточка документа: ключ уникальный, имя правится на месте
+    if (act === 'doc-pass') {
+      var pv = ($('docsPass') && $('docsPass').value || '').trim();
+      if (!pv) return;
+      clSaveKey(pv);
+      renderDocs();
+    }
     if (act === 'doc-restore') {
       var rm = {}; rm[btn.dataset.key] = btn.dataset.url;
       saveSettings(rm).then(function () { renderDocs(); flash('docsSaved'); }).catch(fail);

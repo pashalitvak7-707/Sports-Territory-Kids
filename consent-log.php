@@ -73,41 +73,9 @@ function tsk_client_ip() {
 }
 
 /* ------------------------------------------------------ проверка пароля */
-/* Журнал и диагностика закрыты паролем владельца сайта. Сам пароль здесь НЕ
-   хранится — только его хеш: этот файл лежит в публичном репозитории, и по
-   хешу пароль восстановить нельзя. Проверка идёт через password_verify().
- *
- * Сменить пароль:
- *   1) попросить меня — я пересчитаю хеш и обновлю эту строку; либо
- *   2) задать секрет прямо на сервере в amo-config.php:
- *        define('AMO_SELFTEST_KEY', 'длинная-случайная-строка');
- *      Этот вариант надёжнее: файл не попадает в репозиторий. Если ключ
- *      задан, он работает наравне с паролем ниже. */
-const TSK_PASSWORD_HASH = '$2y$12$UnDikUvFpAI/Go6yI1XZwuxHImMtHR2A7YNRJsPjPWpfgwkWKolFW';
-
-function tsk_secret_key() {
-    $cfg = __DIR__ . '/amo-config.php';
-    if (file_exists($cfg)) {
-        require_once $cfg;
-        if (defined('AMO_SELFTEST_KEY')) return (string)AMO_SELFTEST_KEY;
-    }
-    return '';
-}
-function tsk_require_key($given) {
-    $given = (string)$given;
-    $ok = false;
-    if (TSK_PASSWORD_HASH !== '' && password_verify($given, TSK_PASSWORD_HASH)) $ok = true;
-    if (!$ok) {
-        // секрет из amo-config.php (если задан) тоже подходит
-        $key = tsk_secret_key();
-        if ($key !== '' && hash_equals($key, $given)) $ok = true;
-    }
-    if (!$ok) {
-        http_response_code(403);
-        echo json_encode(array('ok' => false, 'error' => 'bad_key'));
-        exit;
-    }
-}
+/* Пароль и его проверка вынесены в общий tsk-auth.php: тем же паролем
+   закрыто хранилище документов (docs.php). */
+require_once __DIR__ . '/tsk-auth.php';
 
 /* --------------------------------------------- выгрузка журнала (проверка) */
 /* Требование юристов: «обеспечить возможность выгрузки сведений при проверке
