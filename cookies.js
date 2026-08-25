@@ -96,10 +96,14 @@
       /* Фиксируем факт согласия: время и редакции документов, которые
          посетителю показывались в этот момент (ссылки на конкретные файлы).
          IP-адрес добавляется на стороне сервера — см. рекомендации юристов. */
+      var cms = window.TSKCMS;
       var docs = {};
+      var docRefs = [];
       bar.querySelectorAll('a[data-doc]').forEach(function (a) {
+        var key = a.getAttribute('data-doc');
         var href = a.getAttribute('href') || '';
-        docs[a.getAttribute('data-doc')] = (href && href !== '#') ? href : 'не загружен';
+        docs[key] = (href && href !== '#') ? href : 'не загружен';
+        docRefs.push(cms && cms.docRef ? cms.docRef(key, href) : key + '=' + docs[key]);
       });
       writeConsent({
         granted: true,
@@ -114,7 +118,7 @@
         _page: location.pathname,
         _consent_cookie: 'да',
         _consent_cookie_at: new Date().toISOString(),
-        _consent_docs: Object.keys(docs).map(function (k) { return k + '=' + docs[k]; }).join(' | ')
+        _consent_docs: docRefs.join(' | ')
       });
 
       bar.hidden = true;

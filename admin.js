@@ -157,6 +157,21 @@
     });
   }
 
+  /* Контрольная сумма файла (SHA-256). По ней всегда можно доказать, что
+     предъявленный документ — ровно тот, с которым согласился посетитель,
+     даже если ссылка со временем поменяется. */
+  function sha256Hex(file) {
+    if (!window.crypto || !window.crypto.subtle || !file.arrayBuffer) return Promise.resolve('');
+    return file.arrayBuffer()
+      .then(function (buf) { return window.crypto.subtle.digest('SHA-256', buf); })
+      .then(function (d) {
+        return Array.prototype.map.call(new Uint8Array(d), function (b) {
+          return ('0' + b.toString(16)).slice(-2);
+        }).join('');
+      })
+      .catch(function () { return ''; });
+  }
+
   function uploadImage(file, folder) {
     var safe = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-');
     var path = folder + '/' + Date.now() + '-' + safe;
@@ -207,10 +222,10 @@
       return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
     } catch (e) { console.warn('docs.versions:', e); return {}; }
   }
-  function addDocVersion(key, url, fileName) {
+  function addDocVersion(key, url, fileName, sha256) {
     var all = docVersions();
     var list = all[key] || [];
-    list.push({ url: url, at: new Date().toISOString(), name: fileName || '' });
+    list.push({ url: url, at: new Date().toISOString(), name: fileName || '', sha256: sha256 || '' });
     if (list.length > 30) list = list.slice(-30);     // настройка не должна разрастаться
     all[key] = list;
     return saveSettings({ 'docs.versions': JSON.stringify(all) });
@@ -219,10 +234,14 @@
     var list = (docVersions()[key] || []).slice().reverse();
     var known = list.some(function (v) { return v.url === currentUrl; });
     if (!list.length && !currentUrl) return '';
-    var rows = list.map(function (v) {
+    var total = list.length;
+    var rows = list.map(function (v, i) {
       var cur = v.url === currentUrl;
+      var num = total - i;                    // список развёрнут: первая строка — последняя редакция
       return '<div class="adm-ver">' +
-        '<span class="adm-ver-when">' + esc(fmtDate(v.at)) + (v.name ? ' · ' + esc(v.name) : '') +
+        '<span class="adm-ver-when">ред. ' + num + ' от ' + esc(fmtDate(v.at)) +
+        (v.name ? ' · ' + esc(v.name) : '') +
+        (v.sha256 ? ' · sha256:' + esc(v.sha256.slice(0, 12)) + '…' : '') +
         (cur ? ' · <b>текущая</b>' : '') + '</span>' +
         '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(v.url) + '" target="_blank" rel="noopener">Открыть</a>' +
         (cur ? '' : '<button class="adm-btn adm-btn-sm adm-btn-ghost" data-act="doc-restore" data-key="' +
@@ -719,12 +738,13 @@
     var doc = e.target.closest('input[data-dockey]');
     if (doc && doc.files[0]) {
       doc.disabled = true;
-      var docKey = doc.dataset.dockey, fileName = doc.files[0].name;
-      uploadImage(doc.files[0], 'docs')
-        .then(function (url) {
+      var docKey = doc.dataset.dockey, theFile = doc.files[0], fileName = theFile.name;
+      Promise.all([uploadImage(theFile, 'docs'), sha256Hex(theFile)])
+        .then(function (res) {
+          var url = res[0], sha = res[1];
           var m = {}; m[docKey] = url;
           // сначала ссылка на текущий файл, затем запись в историю версий
-          return saveSettings(m).then(function () { return addDocVersion(docKey, url, fileName); });
+          return saveSettings(m).then(function () { return addDocVersion(docKey, url, fileName, sha); });
         })
         .then(renderDocs)
         .catch(fail);
@@ -856,6 +876,38 @@
     el.hidden = !msg;
   }
 
+  /* Реестр документов и их редакций — чтобы по записи в журнале можно было
+     найти, с каким именно текстом человек согласился (требование юристов:
+     «важно фиксировать, с какой редакцией пользователь соглашался»). */
+  function registerHtml() {
+    var vs = docVersions();
+    var items = docsItems();
+    var rows = [];
+    items.forEach(function (it) {
+      var list = vs[it.key] || [];
+      if (!list.length) {
+        if (settings[it.key]) {
+          rows.push('<div class="adm-ver"><span class="adm-ver-when">' + esc(it.name) +
+            ' — редакция не зарегистрирована (файл загружен до появления истории версий)</span>' +
+            '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(settings[it.key]) +
+            '" target="_blank" rel="noopener">Открыть</a></div>');
+        }
+        return;
+      }
+      list.slice().reverse().forEach(function (v, i) {
+        var num = list.length - i;
+        rows.push('<div class="adm-ver"><span class="adm-ver-when"><b>' + esc(it.name) + '</b>, ред. ' + num +
+          ' от ' + esc(fmtDate(v.at)) + (v.sha256 ? ' · sha256:' + esc(v.sha256) : '') +
+          (v.url === settings[it.key] ? ' · <b>текущая</b>' : '') + '</span>' +
+          '<a class="adm-btn adm-btn-sm adm-btn-ghost" href="' + esc(v.url) +
+          '" target="_blank" rel="noopener">Открыть</a></div>');
+      });
+    });
+    return '<div class="adm-card adm-form"><h3>Реестр документов и их редакций</h3>' +
+      '<p class="adm-hint">В каждой записи журнала указано название документа, номер редакции, дата и контрольная сумма файла (sha256). По ней можно доказать, что предъявленный документ — ровно тот, с которым согласился посетитель.</p>' +
+      (rows.length ? rows.join('') : '<p class="adm-empty">Документы ещё не загружены.</p>') + '</div>';
+  }
+
   function renderConsents() {
     $('clKey').value = clKey();
     $('clResult').innerHTML = '';
@@ -918,7 +970,7 @@
           : '<p class="adm-empty">За текущий месяц записей нет.</p>') +
         '</div>';
 
-      $('clResult').innerHTML = head + list;
+      $('clResult').innerHTML = registerHtml() + head + list;
     }).catch(function (e) {
       $('clResult').innerHTML = '';
       clError('Не удалось получить журнал: ' + (e && e.message ? e.message : 'нет ответа от сервера') +

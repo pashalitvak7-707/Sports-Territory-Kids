@@ -115,6 +115,54 @@
       });
     }
   };
+  /* ---------- Реестр редакций документов ----------
+     Требование юристов: в записи о согласии должно быть видно, С КАКОЙ
+     РЕДАКЦИЕЙ документа человек согласился. Одной ссылки мало — она ни о
+     чём не говорит и может со временем измениться. Поэтому собираем по
+     ссылке название документа, номер редакции, дату загрузки и контрольную
+     сумму файла (её считает админка при загрузке). */
+  var docRegistry = null;
+
+  function docItemsFrom(s) {
+    var items = [];
+    try {
+      var parsed = JSON.parse(s['docs.items'] || 'null');
+      if (Array.isArray(parsed)) items = parsed.filter(function (x) { return x && x.key; });
+    } catch (e) { console.warn('docs.items:', e); }
+    if (!items.length) items = window.TSK_DOCS_DEFAULT || [];
+    return items;
+  }
+  function buildDocRegistry() {
+    var s = api.settings;
+    var names = {};
+    docItemsFrom(s).forEach(function (it) { names[it.key] = it.name || it.key; });
+    var reg = { byUrl: {}, names: names };
+    try {
+      var vs = JSON.parse(s['docs.versions'] || '{}');
+      Object.keys(vs).forEach(function (key) {
+        (vs[key] || []).forEach(function (v, i) {
+          if (v && v.url) reg.byUrl[v.url] = {
+            key: key, version: i + 1, at: v.at || '', sha256: v.sha256 || ''
+          };
+        });
+      });
+    } catch (e) { console.warn('docs.versions:', e); }
+    docRegistry = reg;
+    return reg;
+  }
+
+  /* Человекочитаемая ссылка на редакцию — то, что попадёт в журнал согласий */
+  api.docRef = function (docKey, url) {
+    var reg = docRegistry || buildDocRegistry();
+    var name = reg.names[docKey] || docKey;
+    if (!url || url === '#') return name + ' — файл не загружен';
+    var v = reg.byUrl[url];
+    if (!v) return name + ' — ' + url;      // редакция не зарегистрирована (файл загружен давно)
+    var date = v.at ? new Date(v.at).toLocaleDateString('ru-RU') : '';
+    return name + ', ред. ' + v.version + (date ? ' от ' + date : '') +
+      (v.sha256 ? ', sha256:' + v.sha256 : '') + ' — ' + url;
+  };
+
   window.TSKCMS = api;
 
   if (!configured) return;
@@ -124,6 +172,7 @@
     if (!rows) return;
     var s = api.settings;
     rows.forEach(function (r) { if (r.value !== '') s[r.key] = r.value; });
+    docRegistry = null;                     // настройки пришли — реестр пересоберём заново
 
     // Цвета и шрифт → CSS-переменные
     Object.keys(THEME_VARS).forEach(function (key) {
@@ -237,12 +286,7 @@
     // не было ссылок, которые никуда не ведут.
     var docsBox = document.getElementById('docsList');
     if (docsBox) {
-      var items = [];
-      try {
-        var parsed = JSON.parse(s['docs.items'] || 'null');
-        if (Array.isArray(parsed)) items = parsed.filter(function (x) { return x && x.key; });
-      } catch (e) { console.warn('docs.items:', e); }
-      if (!items.length) items = window.TSK_DOCS_DEFAULT || [];
+      var items = docItemsFrom(s);
 
       var html = items.map(function (it) {
         var url = s[it.key];

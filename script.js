@@ -720,10 +720,15 @@
   function stampConsentDocs(form) {
     var list = form.querySelector('.consent-list');
     if (!list) return;
+    var cms = window.TSKCMS;
     var docs = [];
     list.querySelectorAll('a[data-doc]').forEach(function (a) {
+      var key = a.getAttribute('data-doc');
       var href = a.getAttribute('href') || '';
-      docs.push(a.getAttribute('data-doc') + '=' + (href && href !== '#' ? href : 'не загружен'));
+      // название документа, номер редакции, дата и контрольная сумма —
+      // чтобы потом было видно, с каким именно текстом человек согласился
+      docs.push(cms && cms.docRef ? cms.docRef(key, href)
+        : key + '=' + (href && href !== '#' ? href : 'не загружен'));
     });
     setHidden(form, '_consent_docs', docs.join(' | '));
   }
