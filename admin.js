@@ -837,7 +837,7 @@
      Журнал ведёт consent-log.php на сервере сайта, а не эта база: IP-адрес
      виден только серверу. Здесь — просмотр последних записей и выгрузка
      всех сведений за месяц в CSV или JSON.
-     Ключ в коде не хранится: его вводит администратор, и он живёт только
+     Пароль в коде не хранится: его вводит администратор, и он живёт только
      до конца сессии в браузере. */
   var CL_KEY = 'tsk_consent_key';
 
@@ -865,7 +865,7 @@
 
   function loadConsents() {
     var key = $('clKey').value.trim();
-    if (!key) { clError('Введите ключ доступа.'); return; }
+    if (!key) { clError('Введите пароль доступа.'); return; }
     clError('');
     $('clResult').innerHTML = '<p class="adm-empty">Загрузка журнала…</p>';
 
@@ -876,7 +876,7 @@
       var months = res[0], recent = res[1];
       if (!months || months.error === 'bad_key') {
         $('clResult').innerHTML = '';
-        clError('Ключ не подошёл. Это значение AMO_SELFTEST_KEY из файла amo-config.php на сервере.');
+        clError('Пароль не подошёл. Проверьте раскладку и регистр — пароль вводится точно так, как задан.');
         return;
       }
       clSaveKey(key);
