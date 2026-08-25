@@ -61,6 +61,7 @@ function tsk_docs_dir(&$how = null) {
 }
 
 function tsk_json($data, $code = 200) {
+    tsk_cors();
     http_response_code($code);
     header('Content-Type: application/json; charset=utf-8');
     header('X-Content-Type-Options: nosniff');

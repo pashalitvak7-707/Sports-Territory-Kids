@@ -124,6 +124,51 @@
     try { window.sessionStorage.setItem(CL_KEY, v); } catch (e) {}
   }
 
+  /* Журнал согласий и хранилище документов — это скрипты на сервере сайта
+     (PHP на Beget). Если админку открыли не с боевого адреса — например, с
+     копии на GitHub Pages или с файла на диске, — относительная ссылка ведёт
+     в пустоту: PHP там не выполняется. В этом случае обращаемся к боевому
+     сайту напрямую, чтобы журнал открывался из любой копии админки. */
+  var TSK_SITE = 'https://ts-kids.ru/';
+  function phpBase() {
+    var h = (location.hostname || '').toLowerCase();
+    var own = /(^|\.)ts-kids\.ru$/.test(h) || h === 'localhost' || h === '127.0.0.1';
+    return own ? location.pathname.replace(/[^/]*$/, '') : TSK_SITE;
+  }
+  function phpUrl(script) { return phpBase() + script; }
+  function phpRemote() { return phpBase() === TSK_SITE; }
+
+  /* Запрос к служебному скрипту с понятным объяснением, если ответ пришёл
+     не тот. Чаще всего причина одна из двух: сайт на сервере ещё не обновлён
+     или страницу открыли там, где PHP не работает. */
+  function phpJson(url, opts) {
+    return fetch(url, opts || {}).then(function (r) {
+      return r.text().then(function (t) {
+        var data = null;
+        try { data = JSON.parse(t); } catch (e) {}
+        if (data) return data;
+        var why;
+        if (r.status === 404) {
+          why = 'скрипт не найден по адресу ' + url +
+            '. Похоже, сайт на сервере ещё не обновлён — сделайте на Beget git pull.';
+        } else if (/^\s*<(?:!|[a-zA-Z?])/.test(t)) {
+          why = 'по адресу ' + url + ' сервер вернул страницу, а не данные: PHP там не выполняется.';
+        } else {
+          why = 'непонятный ответ сервера (код ' + r.status + ').';
+        }
+        throw new Error(why);
+      });
+    }, function (e) {
+      var what = e && e.message ? e.message : 'запрос не прошёл';
+      throw new Error(phpRemote()
+        ? 'админка открыта не с боевого адреса, поэтому запрос ушёл на ' + TSK_SITE +
+          ' — и не прошёл (' + what + '). Возможные причины: сайт на сервере ещё не обновлён ' +
+          '(нужен git pull на Beget) или браузер не пустил запрос на другой сайт. ' +
+          'Надёжнее всего открыть админку по адресу ' + TSK_SITE + 'admin.html.'
+        : 'нет ответа от сервера (' + what + ').');
+    });
+  }
+
   var settings = {};   // key -> value (текущие из базы)
   var coachesCache = [];
 
@@ -176,8 +221,7 @@
     var fd = new FormData();
     fd.append('file', file);
     fd.append('key', docKey || 'doc');
-    return fetch('docs.php?upload=' + encodeURIComponent(pass), { method: 'POST', body: fd })
-      .then(function (r) { return r.json().catch(function () { return { ok: false, error: 'bad_response' }; }); })
+    return phpJson(phpUrl('docs.php') + '?upload=' + encodeURIComponent(pass), { method: 'POST', body: fd })
       .then(function (j) {
         if (!j || !j.ok) {
           var msg = j && j.error === 'bad_key' ? 'пароль не подошёл'
@@ -188,7 +232,7 @@
           throw new Error('Не удалось загрузить документ на сервер: ' + msg);
         }
         // абсолютная ссылка — она попадёт в журнал согласий как доказательство
-        return { url: location.origin + location.pathname.replace(/[^/]*$/, '') + j.url, sha256: j.sha256 };
+        return { url: new URL(phpUrl(j.url), location.href).href, sha256: j.sha256 };
       });
   }
 
@@ -909,7 +953,7 @@
      Пароль в коде не хранится: его вводит администратор, и он живёт только
      до конца сессии в браузере. */
   function clUrl(params) {
-    return 'consent-log.php?' + params;
+    return phpUrl('consent-log.php') + '?' + params;
   }
   function clError(msg) {
     var el = $('clError');
@@ -963,8 +1007,8 @@
     $('clResult').innerHTML = '<p class="adm-empty">Загрузка журнала…</p>';
 
     Promise.all([
-      fetch(clUrl('months=' + encodeURIComponent(key))).then(function (r) { return r.json(); }),
-      fetch(clUrl('recent=' + encodeURIComponent(key) + '&n=20')).then(function (r) { return r.json(); })
+      phpJson(clUrl('months=' + encodeURIComponent(key))),
+      phpJson(clUrl('recent=' + encodeURIComponent(key) + '&n=20'))
     ]).then(function (res) {
       var months = res[0], recent = res[1];
       if (!months || months.error === 'bad_key') {
@@ -1014,8 +1058,7 @@
       $('clResult').innerHTML = registerHtml() + head + list;
     }).catch(function (e) {
       $('clResult').innerHTML = '';
-      clError('Не удалось получить журнал: ' + (e && e.message ? e.message : 'нет ответа от сервера') +
-        '. Журнал работает только на боевом сайте с PHP (Beget).');
+      clError('Не удалось получить журнал: ' + (e && e.message ? e.message : 'нет ответа от сервера'));
     });
   }
   $('clLoad').addEventListener('click', loadConsents);

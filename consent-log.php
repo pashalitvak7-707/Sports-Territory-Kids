@@ -23,6 +23,10 @@
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+/* Ответы должны читаться и из админки, открытой не с боевого адреса
+   (подробности — в tsk-auth.php, функция tsk_cors) */
+header('Access-Control-Allow-Origin: *');
+header('Vary: Origin');
 
 const TSK_LOG_DIR_NAME = 'tsk-consent-log';
 const TSK_MAX_BODY     = 64 * 1024;   // защита от мусорных запросов
