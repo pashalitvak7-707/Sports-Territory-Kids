@@ -16,6 +16,18 @@
     $('viewNoConfig').hidden = false;
     return;
   }
+  /* Библиотека Supabase подключается отдельным файлом. Если он не загрузился
+     (нет интернета, заблокирован CDN, устаревший кеш), страница раньше просто
+     оставалась пустой — теперь честно об этом сообщаем. */
+  if (!window.supabase || !window.supabase.createClient) {
+    var nc = $('viewNoConfig');
+    nc.hidden = false;
+    nc.querySelector('h1').textContent = 'Не загрузилась библиотека для входа';
+    nc.querySelector('p').innerHTML = 'Страница не смогла подключить библиотеку Supabase. ' +
+      'Обновите страницу (Ctrl+F5). Если не поможет — проверьте интернет и не блокирует ли ' +
+      'запросы расширение браузера или антивирус.';
+    return;
+  }
   var sb = window.supabase.createClient(cfg.url, cfg.anonKey);
 
   /* ---------- Справочники ---------- */
@@ -412,6 +424,61 @@
     });
   }
 
+  /* Причина отказа во входе бывает разной, и лечится она по-разному: одно
+     дело — опечатка в пароле, другое — приостановленный проект в базе. Раньше
+     во всех случаях писали одно и то же «проверьте email и пароль», а если
+     запрос вовсе не проходил, сообщения не было совсем и кнопка оставалась
+     нажатой. Теперь называем причину и подсказываем, что делать. */
+  function loginShow(msg) {
+    $('loginError').innerHTML = msg;
+    $('loginError').hidden = false;
+  }
+
+  /* Отвечает ли вообще база — это отличает «неверный пароль» от «база лежит» */
+  function dbAlive() {
+    return fetch(cfg.url + '/auth/v1/health', { headers: { apikey: cfg.anonKey } })
+      .then(function (r) { return r.ok ? 'ok' : 'code:' + r.status; }, function () { return 'no'; });
+  }
+  var DB_PAUSED = 'Похоже, проект базы данных приостановлен или недоступен. ' +
+    'Зайдите на supabase.com под своей учётной записью, откройте проект ' +
+    'и, если он на паузе, нажмите Restore / Resume project — вход заработает через пару минут.';
+
+  function loginFail(err) {
+    var msg = (err && (err.message || err.error_description || err.error)) || '';
+    var code = (err && (err.code || err.status)) || '';
+    if (/invalid login credentials|invalid_credentials/i.test(msg)) {
+      loginShow('Email или пароль не подходят. Проверьте раскладку и регистр. ' +
+        'Если пароль забыт, его можно задать заново на supabase.com: Authentication → Users → нужный пользователь.');
+      return;
+    }
+    if (/email not confirmed|email_not_confirmed/i.test(msg)) {
+      loginShow('Почта пользователя не подтверждена. Подтвердите её по письму от Supabase ' +
+        'или отметьте пользователя подтверждённым на supabase.com: Authentication → Users.');
+      return;
+    }
+    if (/rate limit|too many/i.test(msg) || code === 429) {
+      loginShow('Слишком много попыток входа подряд — база временно их не принимает. Подождите 10–15 минут и попробуйте снова.');
+      return;
+    }
+    if (/user not found|user_not_found/i.test(msg)) {
+      loginShow('Пользователь с таким email в базе не найден. Проверьте адрес или заведите пользователя на supabase.com: Authentication → Users → Add user.');
+      return;
+    }
+    // остальное: сначала выясняем, отвечает ли база вообще
+    loginShow('Проверяем связь с базой…');
+    dbAlive().then(function (state) {
+      if (state === 'ok') {
+        loginShow('Не удалось войти: ' + (msg || 'база ответила ошибкой') +
+          (code ? ' (код ' + code + ')' : '') + '. База при этом отвечает — дело не в связи.');
+      } else if (state === 'no') {
+        loginShow('Нет связи с базой (' + esc(cfg.url) + '). ' + DB_PAUSED +
+          '<br>Если проект работает — проверьте интернет и не блокирует ли запросы расширение браузера или антивирус.');
+      } else {
+        loginShow('База отвечает ошибкой (' + esc(state.replace('code:', 'код ')) + '). ' + DB_PAUSED);
+      }
+    });
+  }
+
   $('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
     $('loginBtn').disabled = true;
@@ -419,12 +486,13 @@
     sb.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPass').value })
       .then(function (r) {
         $('loginBtn').disabled = false;
-        if (r.error) {
-          $('loginError').textContent = 'Не удалось войти: проверьте email и пароль.';
-          $('loginError').hidden = false;
-          return;
-        }
+        if (r.error) { loginFail(r.error); return; }
         showPanel();
+      })
+      // запрос может не пройти вовсе — без этого кнопка навсегда оставалась нажатой
+      .catch(function (err) {
+        $('loginBtn').disabled = false;
+        loginFail(err);
       });
   });
   $('logoutBtn').addEventListener('click', function () {
@@ -432,6 +500,10 @@
   });
   sb.auth.getSession().then(function (r) {
     if (r.data && r.data.session) showPanel(); else showLogin();
+  }).catch(function () {
+    // не смогли проверить прежний вход — показываем форму, а не пустой экран
+    showLogin();
+    loginShow('Не удалось проверить прежний вход — база не ответила. Попробуйте войти заново.');
   });
 
   /* ---------- Вкладки ---------- */
