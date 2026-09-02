@@ -439,9 +439,10 @@
     return fetch(cfg.url + '/auth/v1/health', { headers: { apikey: cfg.anonKey } })
       .then(function (r) { return r.ok ? 'ok' : 'code:' + r.status; }, function () { return 'no'; });
   }
-  var DB_PAUSED = 'Похоже, проект базы данных приостановлен или недоступен. ' +
-    'Зайдите на supabase.com под своей учётной записью, откройте проект ' +
-    'и, если он на паузе, нажмите Restore / Resume project — вход заработает через пару минут.';
+  var DB_PAUSED = 'Похоже, база данных сейчас не принимает запросы. Зайдите на supabase.com ' +
+    'под своей учётной записью и посмотрите на проект: если наверху висит предупреждение ' +
+    'об исчерпанном лимите (Services restricted / Exceeding usage limits), дело в тарифе — ' +
+    'проверьте раздел Usage у организации; если проект стоит на паузе — нажмите Restore / Resume project.';
 
   function loginFail(err) {
     var msg = (err && (err.message || err.error_description || err.error)) || '';
