@@ -633,7 +633,7 @@
     var icons = Array.prototype.slice.call(root.querySelectorAll('.mf-ic'));
     var cur = 0;
 
-    // the button's logo rolls WhatsApp → Telegram → MAX → VK and back
+    // the button's logo rolls Telegram → MAX → VK and back
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && icons.length > 1) {
       setInterval(function () {
         if (document.hidden) return;
