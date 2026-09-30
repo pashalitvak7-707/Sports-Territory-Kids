@@ -770,10 +770,10 @@ a { text-decoration: none; color: inherit; }
 .coach-card.pd-open .coach-pd { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .coach-photo .coach-pd { transition: none; } }
 
-/* ============ ЧЕКБОКСЫ СОГЛАСИЯ ПОД ФОРМАМИ СБОРА ПД ============
-   Отдельная галочка на каждый документ — требование юристов. Обе
-   обязательные (required), без них форма не отправляется. */
-/* обе галочки в одну строку и по центру; на узких экранах переносятся */
+/* ============ ЧЕКБОКС СОГЛАСИЯ ПОД ФОРМАМИ СБОРА ПД ============
+   Одна галочка на все документы: ссылки перечислены в строке через запятую
+   (так просил клиент). Галочка обязательная (required) — без неё форма не
+   отправляется, а в журнал согласий уходят редакции всех трёх документов. */
 .consent-list { display: flex; flex-flow: row wrap; justify-content: center; align-items: flex-start;
   gap: 8px 22px; text-align: left; width: 100%; }
 .consent-row { display: flex; align-items: flex-start; gap: 9px; cursor: pointer;
@@ -786,9 +786,9 @@ a { text-decoration: none; color: inherit; }
 .consent-row a { text-decoration: underline; color: inherit; }
 .consent-row a:hover { color: var(--green); }
 /* на зелёной плашке «Запишитесь на пробное занятие» — светлый текст */
-/* Галочек три (две политики и согласие), поэтому они идут одним столбцом
-   друг под другом и по левому краю полей ввода — так же, как в форме отзыва
-   и в форме записи, и как в образце, присланном юристами. */
+/* Галочка одна, а текст со ссылками длинный, поэтому строка занимает всю
+   ширину формы и переносится по словам — по левому краю полей ввода, так же
+   как в форме отзыва и в форме записи. */
 .signup-form .consent-list { flex-basis: 100%; margin: 2px 0 0;
   display: flex; flex-flow: column nowrap; align-items: flex-start;
   justify-content: flex-start; gap: 8px; }
@@ -800,13 +800,12 @@ a { text-decoration: none; color: inherit; }
 .review-form .consent-list { flex-flow: column nowrap; align-items: flex-start;
   justify-content: flex-start; gap: 9px; margin-top: clamp(14px, 1.6vw, 18px); }
 .review-form .consent-row { justify-content: flex-start; }
-/* В форме записи (страница расписания) поля идут одной колонкой, поэтому обе
-   галочки стоят друг под другом и по левому краю полей ввода — тот же принцип,
-   что и на главной, где каждая галочка стоит под своим полем. */
+/* В форме записи (страница расписания) поля идут одной колонкой, поэтому
+   галочка стоит по левому краю полей ввода — тот же принцип, что и на главной. */
 .book-form .consent-list { flex-flow: column nowrap; align-items: flex-start;
   justify-content: flex-start; gap: 9px; }
 .book-form .consent-row { justify-content: flex-start; }
-/* на планшетах чуть плотнее — чтобы обе галочки ещё помещались в одну строку */
+/* на планшетах чуть плотнее — текст согласия длинный и переносится */
 @media (max-width: 1000px) {
   .consent-list { gap: 8px 16px; }
   .consent-row { font-size: 12px; gap: 8px; }
