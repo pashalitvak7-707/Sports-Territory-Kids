@@ -74,6 +74,18 @@
   function setBarHeight(bar) {
     var h = bar && !bar.hidden ? Math.ceil(bar.getBoundingClientRect().height) : 0;
     document.documentElement.style.setProperty('--cookie-h', h + 'px');
+    markMore(bar);
+  }
+
+  /* На телефоне текст согласия показывается в компактном окошке с
+     прокруткой. Пока ниже остался непрочитанный текст, помечаем это
+     классом — по нему CSS подсвечивает, что окошко можно пролистать. */
+  function markMore(bar) {
+    if (!bar) return;
+    var t = bar.querySelector('.cookie-text');
+    if (!t) { bar.classList.remove('has-more'); return; }
+    var more = t.scrollHeight - t.clientHeight - t.scrollTop > 4;
+    bar.classList.toggle('has-more', more);
   }
 
   function initBar() {
@@ -85,6 +97,9 @@
     bar.hidden = false;
     document.documentElement.classList.add('cookie-on');
     setBarHeight(bar);
+
+    var txt = bar.querySelector('.cookie-text');
+    if (txt) txt.addEventListener('scroll', function () { markMore(bar); }, { passive: true });
 
     var rt;
     window.addEventListener('resize', function () {
